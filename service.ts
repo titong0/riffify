@@ -3,7 +3,7 @@ import { ArtistFromSearch } from "./types";
 
 export const getArtistsQuery = async (artist: string) => {
   const params = new URLSearchParams({ query: artist });
-  password && params.append("password", password);
+  password && params.append("key", password);
   console.log("ABOUT TO FETCH TO");
   console.log(`${api}/search?${params}`);
   const data = await fetch(`${api}/search?${params}`);
