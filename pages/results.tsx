@@ -17,6 +17,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
         </h2>
         {results.map((channel) => (
           <ChannelItem
+            key={channel.id}
             name={channel.name}
             id={channel.id}
             thumbnails={channel.thumbnails}
@@ -33,10 +34,9 @@ export const getServerSideProps: GetServerSideProps<{
   results: ArtistFromSearch[] | null;
   artist: string | null;
 }> = async (ctx) => {
-  let artist = ctx.query.artist;
+  const artist = readFirstInQuery(ctx.query.artist);
   if (!artist) return { props: { results: null, artist: null } };
 
-  artist = readFirstInQuery(artist);
   try {
     const results = await getArtistsQuery(artist);
 
