@@ -11,10 +11,17 @@ export type TodayRes = {
   allSongs: string[];
 };
 
+export type ReqError = {
+  statusCode: number;
+  error: string;
+  message: string;
+};
+
 type SongDetails = {
   title: string;
   id: string;
   duration: string;
+  startAt: number;
   album: {
     name: string;
     url: string;
