@@ -3,7 +3,7 @@ import React from "react";
 import Combobox from "../../components/Combobox";
 import Game from "../../components/Game";
 import { getTodaySong } from "../../service";
-import { TodayRes } from "../../types";
+import { ReqError, TodayRes } from "../../types";
 import { readFirstInQuery } from "../../utils";
 
 const Artist = ({
@@ -23,6 +23,9 @@ export const getServerSideProps: GetServerSideProps<TodayRes> = async (ctx) => {
   const id = readFirstInQuery(ctx.params?.id);
   if (!id) return { notFound: true, props: {} };
   const today = await getTodaySong(id);
-  console.log(today.allSongs.length);
+  if ("error" in today) {
+    return { notFound: true, props: {} };
+  }
+
   return { props: today };
 };
