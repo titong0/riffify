@@ -11,5 +11,10 @@ module.exports = {
       },
     },
   },
+  safelist: [
+    {
+      pattern: /bg-(green)-(.)/,
+    },
+  ],
   plugins: [require("tailwindcss-radix")({ variantPrefix: "rdx" })],
 };
