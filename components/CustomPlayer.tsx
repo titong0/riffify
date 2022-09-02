@@ -5,6 +5,6 @@ type VideoPlayerProps = YouTubePlayerProps & {
 };
 
 const VideoPlayer = ({ playerRef, ...props }: VideoPlayerProps) => {
-  return <ReactPlayer ref={playerRef} {...props} width="100%" height="0px" />;
+  return <ReactPlayer ref={playerRef} {...props} width="0" height="0px" />;
 };
 export default VideoPlayer;
