@@ -37,6 +37,7 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
         setValidInput(true);
       }
     },
+    id: "SONG-CHOOSE",
     items: songs,
   });
 
