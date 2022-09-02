@@ -1,5 +1,5 @@
 import { api, password } from "./config";
-import { ArtistFromSearch, TodayRes } from "./types";
+import { ArtistFromSearch, ReqError, TodayRes } from "./types";
 
 export const getArtistsQuery = async (artist: string) => {
   const params = new URLSearchParams({ query: artist });
@@ -11,10 +11,11 @@ export const getArtistsQuery = async (artist: string) => {
   return results;
 };
 
-export const getTodaySong = async (artistId: string) => {
+export const getTodaySong = async (artistId: string, date?: Date) => {
   const params = new URLSearchParams({ artistId: artistId });
   password && params.append("key", password);
+  date && params.append("date", `${date.getTime()}`);
   const req = await fetch(`${api}/today?${params}`);
-  const data: TodayRes = await req.json();
+  const data: TodayRes | ReqError = await req.json();
   return data;
 };
