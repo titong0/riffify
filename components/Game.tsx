@@ -8,7 +8,7 @@ import ProgressBar from "./ProgressBar";
 
 const Game = ({ song, allSongs }: TodayRes) => {
   const [fails, setFails] = useState<string[]>([]);
-  fails.length === 5 && alert("PERDISTE. PEREJIL");
+
   return (
     <div className="flex w-full justify-center mt-12 p-2">
       <div className="w-full max-w-lg h-auto bg-gray-200 text-black rounded-md">
