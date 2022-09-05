@@ -1,4 +1,6 @@
 import * as Tabs from "@radix-ui/react-tabs";
+import Link from "next/link";
+import CTA from "./CTA";
 
 const Search = () => {
   return (
@@ -42,12 +44,12 @@ const InputBar = () => {
         <input
           placeholder="Kanye west"
           name="artist"
-          className="bg-emerald-300 w-full p-1 mb-2 rounded-sm border-black focus:border"
+          className="bg-emerald-300 w-full p-1 mb-2 h-16 rounded-sm border-black focus:border"
+          minLength={1}
+          required
           type="text"
         />
-        <button className="p-2 px-8 ml-auto rounded-2xl text-white border border-black w-full bg-emerald-500">
-          Search
-        </button>
+        <CTA>Search</CTA>
       </Tabs.Content>
       <Tabs.Content
         value="Playlist"
@@ -61,10 +63,12 @@ const InputBar = () => {
           className="bg-emerald-300 p-1 mb-2 rounded-sm border-black w-full"
           type="text"
           placeholder="https://www.youtube.com/watch?v=Rlf8KP4ZikM&list=PLKmth_ELXsKjXeutQqFz7LgWUiVxw_dFy"
-        />{" "}
-        <button className="p-2 px-8 ml-auto rounded-2xl text-white border border-black w-full bg-emerald-500">
-          Go to playlist
-        </button>
+        />
+        <Link href="/feature-not-done" passHref>
+          <a>
+            <CTA>Go to playlist</CTA>
+          </a>
+        </Link>
       </Tabs.Content>
     </>
   );

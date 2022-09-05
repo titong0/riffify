@@ -1,17 +1,21 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import Head from "next/head";
 import React from "react";
-import Combobox from "../../components/Combobox";
 import Game from "../../components/Game";
 import { getTodaySong } from "../../service";
 import { ReqError, TodayRes } from "../../types";
-import { readFirstInQuery } from "../../utils";
+import { readFirstInArray } from "../../utils";
 
 const Artist = ({
   song,
   allSongs,
+  artist,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
+      <Head>
+        <title>{artist} heardle</title>
+      </Head>
       <Game song={song} allSongs={allSongs} />
     </>
   );
@@ -20,12 +24,17 @@ const Artist = ({
 export default Artist;
 
 export const getServerSideProps: GetServerSideProps<TodayRes> = async (ctx) => {
-  const id = readFirstInQuery(ctx.params?.id);
+  const id = readFirstInArray(ctx.params?.id);
+  const artist = readFirstInArray(ctx.query?.artist);
+
   if (!id) return { notFound: true, props: {} };
+  if (!artist) return { notFound: true, props: {} };
+
   const today = await getTodaySong(id);
   if ("error" in today) {
     return { notFound: true, props: {} };
   }
-
-  return { props: today };
+  return {
+    props: { song: today.song, allSongs: today.allSongs, artist: artist },
+  };
 };

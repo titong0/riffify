@@ -9,6 +9,7 @@ export type ArtistFromSearch = {
 export type TodayRes = {
   song: SongDetails;
   allSongs: string[];
+  artist?: string;
 };
 
 export type ReqError = {

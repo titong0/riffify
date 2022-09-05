@@ -9,9 +9,9 @@ const ProgressBar = ({ fails }: ProgressBarProps) => {
       {["w-1/12", "w-2/12", "w-4/12", "w-8/12"].map((bar, idx) => (
         <div
           key={bar}
-          className={`${bar} h-full bg-green-${200 + 100 * idx} ${
-            fails < idx ? "brightness-50" : ""
-          }`}
+          className={`${bar} h-full 
+           bg-green-${200 + 100 * idx}
+           ${fails < idx ? "brightness-50" : ""}`}
         ></div>
       ))}
     </div>
