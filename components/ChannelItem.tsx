@@ -5,7 +5,7 @@ import { ArtistFromSearch } from "../types";
 
 const ChannelItem: React.FC<ArtistFromSearch> = ({ id, name, thumbnails }) => {
   return (
-    <Link href={`/artist/${id}?&artist=${name}`} passHref>
+    <Link href={`/artist/${id}?&artist=${name}&noLive=true`} passHref>
       <a>
         <div className="flex items-center p-2 border-b dark:hover:bg-gray-800">
           <Image
@@ -13,7 +13,7 @@ const ChannelItem: React.FC<ArtistFromSearch> = ({ id, name, thumbnails }) => {
             width={50}
             height={50}
             className="rounded-full"
-          />{" "}
+          />
           <span className="ml-3"> {name}</span>
         </div>
       </a>

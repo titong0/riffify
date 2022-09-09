@@ -26,11 +26,12 @@ export default Artist;
 export const getServerSideProps: GetServerSideProps<TodayRes> = async (ctx) => {
   const id = readFirstInArray(ctx.params?.id);
   const artist = readFirstInArray(ctx.query?.artist);
+  const noLive = readFirstInArray(ctx.query?.noLive);
 
   if (!id) return { notFound: true, props: {} };
   if (!artist) return { notFound: true, props: {} };
 
-  const today = await getTodaySong(id);
+  const today = await getTodaySong(id, Boolean(noLive));
   if ("error" in today) {
     return { notFound: true, props: {} };
   }

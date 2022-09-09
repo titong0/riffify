@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import BaseReactPlayer, { BaseReactPlayerProps } from "react-player/base";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdPause } from "react-icons/md";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
@@ -48,15 +49,22 @@ const Player = ({ id, startsAt, secondsLimit }: PlayerProps) => {
           url={url}
           playing={playing}
           onPlay={() => setPlaysStart(Date.now())}
+          onPause={() => setPlaysStart(0)}
           onReady={handleReady}
         />
       </div>
-      <button
-        className="border-2 p-2 w-12 h-12"
-        onClick={() => setPlaying(!playing)}
-      >
-        {!playing ? <BsFillPlayFill size="30" /> : <MdPause size="30" />}
-      </button>
+      {ready ? (
+        <button
+          className="border-2 p-2 w-12 h-12"
+          onClick={() => setPlaying(!playing)}
+        >
+          {!playing ? <BsFillPlayFill size="30" /> : <MdPause size="30" />}
+        </button>
+      ) : (
+        <span className="border-2 p-2 w-12 h-12">
+          <AiOutlineLoading size="30" className="animate-spin" />
+        </span>
+      )}
     </>
   );
 };
