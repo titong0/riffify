@@ -14,38 +14,43 @@ type PlayerProps = {
 };
 
 const Player = ({ id, startsAt, secondsLimit }: PlayerProps) => {
-  console.log("limit", secondsLimit);
   const [playing, setPlaying] = useState(false);
-  const [playStart, setPlaysStart] = useState(0);
+  const [startedPlaying, setPlaysStart] = useState(0);
+  const [ready, setReady] = useState(false);
 
   const url = `https://www.youtube.com/watch?v=${id}`;
   const playerRef = useRef<BaseReactPlayer<BaseReactPlayerProps>>(null);
 
   useEffect(() => {
     const id = setInterval(() => {
-      if (Date.now() - playStart > secondsLimit * 1000) {
+      if (Date.now() - startedPlaying > secondsLimit * 1000) {
         playerRef.current?.seekTo(startsAt);
-
         setPlaying(false);
         setPlaysStart(0);
         clearInterval(id);
       }
     }, 100);
-
     return () => {
       clearInterval(id);
     };
-  }, [playStart]);
+  }, [startedPlaying]);
+
+  const handleReady = () => {
+    setReady(true);
+    playerRef.current?.seekTo(startsAt);
+  };
 
   return (
     <>
-      <VideoPlayer
-        playerRef={playerRef}
-        url={url}
-        playing={playing}
-        onPlay={() => setPlaysStart(Date.now())}
-        onReady={() => playerRef.current?.seekTo(startsAt)}
-      />
+      <div className="fixed top-0 left-0">
+        <VideoPlayer
+          playerRef={playerRef}
+          url={url}
+          playing={playing}
+          onPlay={() => setPlaysStart(Date.now())}
+          onReady={handleReady}
+        />
+      </div>
       <button
         className="border-2 p-2 w-12 h-12"
         onClick={() => setPlaying(!playing)}
