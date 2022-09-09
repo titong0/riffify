@@ -13,7 +13,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
   return (
     <>
       <Head>
-        <title>Search results for {artist}</title>
+        <title>{`Search results for ${artist}`}</title>
       </Head>
       <div className="w-full flex justify-center">
         <div className="max-w-2xl w-full">

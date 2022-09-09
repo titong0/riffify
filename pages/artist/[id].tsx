@@ -14,7 +14,7 @@ const Artist = ({
   return (
     <>
       <Head>
-        <title>{artist} heardle</title>
+        <title>{`${artist} heardle`}</title>
       </Head>
       <Game song={song} allSongs={allSongs} />
     </>
