@@ -1,27 +1,14 @@
 import React from "react";
+import Fail from "./Fail";
 
 const FailsDisplay = ({ fails }: { fails: string[] }) => {
+  const failDivs = Array.from({ ...fails, length: 5 });
+
   return (
-    <div className="flex flex-col items-center gap-2 min-h-32 p-2 bg-teal-100 dark:bg-gray-800">
-      {Array.from({ length: 5 }).map((_, idx) => {
-        if (fails[idx] === "RESERVED-KEYWORD-FOR-SKIPS")
-          return (
-            <div
-              key={fails[idx]}
-              className="w-full border h-10 p-2 dark:text-gray-200 italic text-center"
-            >
-              Skipped
-            </div>
-          );
-        return (
-          <div
-            key={idx}
-            className="w-full border p-2 min-h-5 dark:text-blue-100"
-          >
-            {fails[idx]}
-          </div>
-        );
-      })}
+    <div className="flex flex-col items-center gap-2 min-h-32 p-2 bg-emerald-50 text-neutral-900 dark:bg-gray-800 dark:text-blue-100">
+      {failDivs.map((fail, idx) => (
+        <Fail content={fail} idx={idx} />
+      ))}
     </div>
   );
 };
