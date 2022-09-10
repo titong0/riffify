@@ -4,6 +4,7 @@ import BaseReactPlayer, { BaseReactPlayerProps } from "react-player/base";
 import { BsFillPlayFill } from "react-icons/bs";
 import { MdPause } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
+import PlaytimeBar from "./PlaytimeBar";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
@@ -12,9 +13,10 @@ type PlayerProps = {
   startsAt: number;
   secondsLimit: number;
   name: string;
+  fails: string[];
 };
 
-const Player = ({ id, startsAt, secondsLimit }: PlayerProps) => {
+const Player = ({ id, startsAt, secondsLimit, fails }: PlayerProps) => {
   const [playing, setPlaying] = useState(false);
   const [startedPlaying, setPlaysStart] = useState(0);
   const [ready, setReady] = useState(false);
@@ -42,17 +44,16 @@ const Player = ({ id, startsAt, secondsLimit }: PlayerProps) => {
   };
 
   return (
-    <>
-      <div className="fixed top-0 left-0">
-        <VideoPlayer
-          playerRef={playerRef}
-          url={url}
-          playing={playing}
-          onPlay={() => setPlaysStart(Date.now())}
-          onPause={() => setPlaysStart(0)}
-          onReady={handleReady}
-        />
-      </div>
+    <div className="flex w-full items-center p-1">
+      <PlaytimeBar playing={playing} fails={fails.length} />
+      <VideoPlayer
+        playerRef={playerRef}
+        url={url}
+        playing={playing}
+        onPlay={() => setPlaysStart(Date.now())}
+        onPause={() => setPlaysStart(0)}
+        onReady={handleReady}
+      />
       {ready ? (
         <button
           className="border-2 p-2 w-12 h-12"
@@ -65,7 +66,7 @@ const Player = ({ id, startsAt, secondsLimit }: PlayerProps) => {
           <AiOutlineLoading size="30" className="animate-spin" />
         </span>
       )}
-    </>
+    </div>
   );
 };
 
