@@ -10,7 +10,7 @@ const BAR_POINTS = ["12%", "25%", "50%", "100%"];
 
 const PlaytimeBar = ({ fails, playing }: PlaytimeBarProps) => {
   return (
-    <div className="px-1 relative m-2 flex w-full text-black">
+    <div className="px-2 relative m-2 flex w-full text-black">
       <motion.div
         initial={{ left: "0" }}
         animate={{ left: playing ? BAR_POINTS[fails] : "0" }}
