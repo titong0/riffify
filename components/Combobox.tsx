@@ -48,7 +48,7 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
           This sounds like...
         </label>
         <div
-          className="flex shadow-sm bg-emerald-300 gap-0.5"
+          className="flex shadow-sm bg-emerald-200 gap-0.5"
           {...getComboboxProps()}
         >
           <input

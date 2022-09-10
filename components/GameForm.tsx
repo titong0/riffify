@@ -23,11 +23,10 @@ const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
     const name = form.song.value;
 
     if (!allSongs.includes(name)) return;
-    if (name === correctSong) return alert("BIEN");
+    if (name === correctSong)
+      return pushFail(name + "RESERVED-KEYWORD-FOR-CORRECTS");
     if (name === "RESERVED-KEYWORD-FOR-SKIPS") return;
     pushFail(name);
-    fails.length === 5 &&
-      alert("PERDISTE. PEREJIL. EL TEMA ERA: " + correctSong);
   };
   return (
     <form onSubmit={submit}>

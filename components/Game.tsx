@@ -11,21 +11,23 @@ const Game = ({ song, allSongs }: TodayRes) => {
 
   return (
     <div className="flex w-full justify-center p-2">
-      <div className="w-full max-w-lg h-auto bg-gray-200 text-black rounded-md">
+      <div className="w-full max-w-lg bg-gray-200 text-black rounded-md">
         <FailsDisplay fails={fails} />
-        <Player
-          startsAt={song.startAt}
-          name={song.title}
-          secondsLimit={Math.pow(2, fails.length + 1)}
-          id={song.id}
-          fails={fails}
-        />
-        <GameForm
-          fails={fails}
-          setFails={setFails}
-          correctSong={song.title}
-          allSongs={allSongs}
-        />
+        <section className="py-4">
+          <Player
+            startsAt={song.startAt}
+            name={song.title}
+            secondsLimit={Math.pow(2, fails.length + 1)}
+            id={song.id}
+            fails={fails}
+          />
+          <GameForm
+            fails={fails}
+            setFails={setFails}
+            correctSong={song.title}
+            allSongs={allSongs}
+          />
+        </section>
       </div>
     </div>
   );
