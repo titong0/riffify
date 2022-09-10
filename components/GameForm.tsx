@@ -23,9 +23,13 @@ const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
     const name = form.song.value;
 
     if (!allSongs.includes(name)) return;
-    if (name === correctSong)
+    if (name === correctSong) {
       return pushFail(name + "RESERVED-KEYWORD-FOR-CORRECTS");
+    }
     if (name === "RESERVED-KEYWORD-FOR-SKIPS") return;
+    if (fails.length === 4) {
+      alert("perdiste amigo 👎. Era " + correctSong);
+    }
     pushFail(name);
   };
   return (

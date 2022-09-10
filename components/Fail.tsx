@@ -23,6 +23,7 @@ const Fail = ({ content, idx }: { content: string; idx: number }) => {
 
   // CORRECT RECTANGLE
   if (content.includes("RESERVED-KEYWORD-FOR-CORRECTS")) {
+    alert("ganaste amigo 👍");
     return (
       <div
         key={content}
@@ -33,6 +34,7 @@ const Fail = ({ content, idx }: { content: string; idx: number }) => {
       </div>
     );
   }
+
   // FAIL RECTANGLES
   return (
     <div
