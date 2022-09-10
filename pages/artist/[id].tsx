@@ -16,7 +16,8 @@ const Artist = ({
       <Head>
         <title>{`${artist} heardle`}</title>
       </Head>
-      <Game song={song} allSongs={allSongs} />
+      <h1 className="my-4 text-lg text-center">{artist} heardle</h1>
+      <Game artist={artist} song={song} allSongs={allSongs} />
     </>
   );
 };
@@ -25,17 +26,16 @@ export default Artist;
 
 export const getServerSideProps: GetServerSideProps<TodayRes> = async (ctx) => {
   const id = readFirstInArray(ctx.params?.id);
-  const artist = readFirstInArray(ctx.query?.artist);
   const noLive = readFirstInArray(ctx.query?.noLive);
 
   if (!id) return { notFound: true, props: {} };
-  if (!artist) return { notFound: true, props: {} };
 
   const today = await getTodaySong(id, Boolean(noLive));
   if ("error" in today) {
     return { notFound: true, props: {} };
   }
+
   return {
-    props: { song: today.song, allSongs: today.allSongs, artist: artist },
+    props: { song: today.song, allSongs: today.allSongs, artist: today.artist },
   };
 };
