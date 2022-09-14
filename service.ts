@@ -13,6 +13,7 @@ export const getArtistsQuery = async (artist: string) => {
 
 export const getTodaySong = async (artistId: string) => {
   const params = new URLSearchParams({ artistId: artistId });
+  params.append("noLive", "true");
   password && params.append("key", password);
 
   // params.append("date", `${date.getTime()}`);
