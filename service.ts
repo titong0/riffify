@@ -16,6 +16,7 @@ export const getTodaySong = async (artistId: string) => {
   params.append("noLive", "true");
   password && params.append("key", password);
 
+  console.log(`${api}/today?${params}`);
   // params.append("date", `${date.getTime()}`);
   const req = await fetch(`${api}/today?${params}`);
   const data: TodayRes | ReqError = await req.json();
