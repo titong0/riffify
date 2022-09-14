@@ -48,5 +48,5 @@ export const getStaticProps: GetStaticProps<TodayRes> = async (ctx) => {
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return { paths: ["/artist/UCRY5dYsbIN5TylSbd7gVnZg"], fallback: true };
+  return { paths: ["/artist/UCRY5dYsbIN5TylSbd7gVnZg"], fallback: "blocking" };
 };
