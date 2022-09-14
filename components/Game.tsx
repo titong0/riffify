@@ -1,5 +1,5 @@
 import React, { Suspense, useRef, useState } from "react";
-import { SongDetails, TodayRes } from "../types";
+import { SongDetails } from "../types";
 import FailsDisplay from "./FailsDisplay";
 import GameForm from "./GameForm";
 import Player from "./Player";
