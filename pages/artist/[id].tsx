@@ -40,6 +40,7 @@ export const getStaticProps: GetStaticProps<TodayRes> = async (ctx) => {
     return { notFound: true, props: {} };
   }
   console.log("GENERATED PAGE FOR: ", today.artist);
+  console.log(today);
 
   return {
     props: { song: today.song, allSongs: today.allSongs, artist: today.artist },
