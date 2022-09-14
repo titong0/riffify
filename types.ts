@@ -6,7 +6,7 @@ export type ArtistFromSearch = {
   thumbnails: Thumbnail[];
 };
 
-type TodayRes = {
+export type TodayRes = {
   song: SongDetails;
   allSongs: string[];
   artist: string;
