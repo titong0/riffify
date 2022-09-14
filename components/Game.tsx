@@ -1,12 +1,16 @@
-import dynamic from "next/dynamic";
 import React, { Suspense, useRef, useState } from "react";
-import { TodayRes } from "../types";
+import { SongDetails, TodayRes } from "../types";
 import FailsDisplay from "./FailsDisplay";
 import GameForm from "./GameForm";
 import Player from "./Player";
-import PlaytimeBar from "./PlaytimeBar";
 
-const Game = ({ song, allSongs }: TodayRes) => {
+const Game = ({
+  song,
+  allSongs,
+}: {
+  song: SongDetails;
+  allSongs: string[];
+}) => {
   const [fails, setFails] = useState<string[]>([]);
 
   return (

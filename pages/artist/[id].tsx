@@ -1,36 +1,52 @@
 import {
-  GetServerSideProps,
   GetStaticPaths,
   GetStaticProps,
   InferGetServerSidePropsType,
 } from "next";
 import Head from "next/head";
 import React from "react";
-import { BsCheckLg } from "react-icons/bs";
 import Game from "../../components/Game";
 import { getTodaySong } from "../../service";
-import { ReqError, TodayRes } from "../../types";
+import { TodayProps } from "../../types";
 import { readFirstInArray } from "../../utils";
+import { useEffect } from "react";
+import { host } from "../../config";
+
+const isToday = (date1: Date, date2: Date) => {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+};
 
 const Artist = ({
   song,
   allSongs,
   artist,
+  id,
+  generatedAt,
 }: InferGetServerSidePropsType<typeof getStaticProps>) => {
+  const isUpdated = isToday(new Date(), generatedAt);
+
+  useEffect(() => {
+    if (isUpdated) return;
+    fetch(`${host}/api/revalidate/${id}`);
+  }, []);
   return (
     <>
       <Head>
         <title>{`${artist} heardle`}</title>
       </Head>
       <h1 className="my-4 text-lg text-center">{artist} heardle</h1>
-      <Game artist={artist} song={song} allSongs={allSongs} />
+      <Game song={song} allSongs={allSongs} />
     </>
   );
 };
 
 export default Artist;
 
-export const getStaticProps: GetStaticProps<TodayRes> = async (ctx) => {
+export const getStaticProps: GetStaticProps<TodayProps> = async (ctx) => {
   const id = readFirstInArray(ctx.params?.id);
 
   if (!id) return { notFound: true, props: {} };
@@ -39,10 +55,17 @@ export const getStaticProps: GetStaticProps<TodayRes> = async (ctx) => {
   if ("error" in today) {
     return { notFound: true, props: {} };
   }
+
   console.log("GENERATED PAGE FOR: ", today.artist);
 
   return {
-    props: { song: today.song, allSongs: today.allSongs, artist: today.artist },
+    props: {
+      song: today.song,
+      allSongs: today.allSongs,
+      artist: today.artist,
+      id: id,
+      generatedAt: new Date(),
+    },
   };
 };
 

@@ -6,11 +6,15 @@ export type ArtistFromSearch = {
   thumbnails: Thumbnail[];
 };
 
-export type TodayRes = {
+type TodayRes = {
   song: SongDetails;
   allSongs: string[];
   artist: string;
 };
+export type TodayProps = {
+  id: string;
+  generatedAt: Date;
+} & TodayRes;
 
 export type ReqError = {
   statusCode: number;
@@ -18,7 +22,7 @@ export type ReqError = {
   message: string;
 };
 
-type SongDetails = {
+export type SongDetails = {
   title: string;
   id: string;
   duration: string;
