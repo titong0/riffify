@@ -11,10 +11,9 @@ export const getArtistsQuery = async (artist: string) => {
   return results;
 };
 
-export const getTodaySong = async (artistId: string, noLive: boolean) => {
+export const getTodaySong = async (artistId: string) => {
   const params = new URLSearchParams({ artistId: artistId });
   password && params.append("key", password);
-  noLive && params.append("noLive", noLive.toString());
 
   // params.append("date", `${date.getTime()}`);
   const req = await fetch(`${api}/today?${params}`);

@@ -1,6 +1,12 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetServerSidePropsType,
+} from "next";
 import Head from "next/head";
 import React from "react";
+import { BsCheckLg } from "react-icons/bs";
 import Game from "../../components/Game";
 import { getTodaySong } from "../../service";
 import { ReqError, TodayRes } from "../../types";
@@ -10,7 +16,7 @@ const Artist = ({
   song,
   allSongs,
   artist,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: InferGetServerSidePropsType<typeof getStaticProps>) => {
   return (
     <>
       <Head>
@@ -24,18 +30,22 @@ const Artist = ({
 
 export default Artist;
 
-export const getServerSideProps: GetServerSideProps<TodayRes> = async (ctx) => {
+export const getStaticProps: GetStaticProps<TodayRes> = async (ctx) => {
   const id = readFirstInArray(ctx.params?.id);
-  const noLive = readFirstInArray(ctx.query?.noLive);
 
   if (!id) return { notFound: true, props: {} };
 
-  const today = await getTodaySong(id, Boolean(noLive));
+  const today = await getTodaySong(id);
   if ("error" in today) {
     return { notFound: true, props: {} };
   }
+  console.log("GENERATED PAGE FOR: ", today.artist);
 
   return {
     props: { song: today.song, allSongs: today.allSongs, artist: today.artist },
   };
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return { paths: [], fallback: true };
 };
