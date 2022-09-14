@@ -27,7 +27,7 @@ const Artist = ({
   id,
   generatedAt,
 }: InferGetServerSidePropsType<typeof getStaticProps>) => {
-  const isUpdated = isToday(new Date(), generatedAt);
+  const isUpdated = isToday(new Date(), new Date(generatedAt));
 
   useEffect(() => {
     if (isUpdated) return;
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps<TodayProps> = async (ctx) => {
       allSongs: today.allSongs,
       artist: today.artist,
       id: id,
-      generatedAt: new Date(),
+      generatedAt: new Date().toString(),
     },
   };
 };

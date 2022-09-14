@@ -13,7 +13,7 @@ export type TodayRes = {
 };
 export type TodayProps = {
   id: string;
-  generatedAt: Date;
+  generatedAt: string;
 } & TodayRes;
 
 export type ReqError = {
