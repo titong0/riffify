@@ -1,5 +1,6 @@
 import * as Tabs from "@radix-ui/react-tabs";
 import Link from "next/link";
+import { Router, useRouter } from "next/router";
 import CTA from "./CTA";
 
 const Search = () => {
@@ -24,32 +25,40 @@ const Search = () => {
           </Tabs.Trigger>
         ))}
       </Tabs.List>
-      <form action="/results">
-        <InputBar />
-      </form>
+      <InputBar />
     </Tabs.Root>
   );
 };
 
 const InputBar = () => {
+  const Router = useRouter();
+
   return (
     <>
       <Tabs.Content
         value="Artist"
         className="flex flex-col m-2 gap-2 rdx-state-inactive:hidden"
       >
-        <label className="" htmlFor="artist">
-          Type your artist's name
-        </label>
-        <input
-          placeholder="Kanye west"
-          name="artist"
-          className="bg-emerald-300 w-full p-1 mb-2 h-16 rounded-sm border-black focus:border"
-          minLength={1}
-          required
-          type="text"
-        />
-        <CTA>Search</CTA>
+        <form
+          onSubmit={(e: any) => {
+            e.preventDefault();
+            const artist = new FormData(e.target).get("artist");
+            Router.push(`search/${artist!}`);
+          }}
+        >
+          <label className="" htmlFor="artist">
+            Type your artist's name
+          </label>
+          <input
+            placeholder="Kanye west"
+            name="artist"
+            className="bg-emerald-300 w-full p-1 mb-2 h-16 rounded-sm border-black focus:border"
+            minLength={1}
+            required
+            type="text"
+          />
+          <CTA>Search</CTA>
+        </form>
       </Tabs.Content>
       <Tabs.Content
         value="Playlist"

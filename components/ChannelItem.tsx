@@ -3,9 +3,21 @@ import Link from "next/link";
 import React from "react";
 import { ArtistFromSearch } from "../types";
 
-const ChannelItem: React.FC<ArtistFromSearch> = ({ id, name, thumbnails }) => {
+const ChannelItem: React.FC<ArtistFromSearch & { idx: number }> = ({
+  id,
+  name,
+  thumbnails,
+  idx,
+}) => {
   return (
-    <Link href={`/artist/${id}?&noLive=true`} passHref>
+    // prefetch only first 3 results to save bandwidth
+    // comparison returns undefined instead of true to prevent this behavior
+    // https://github.com/vercel/next.js/issues/9522
+    <Link
+      href={`/artist/${id}?&noLive=true`}
+      passHref
+      prefetch={idx <= 3 ? undefined : false}
+    >
       <a>
         <div className="flex items-center p-2 border-b dark:hover:bg-gray-800">
           <Image

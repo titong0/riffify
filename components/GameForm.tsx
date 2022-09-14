@@ -37,7 +37,7 @@ const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
       <Combobox allSongs={allSongs} setValidInput={setValidInput} />
       <div className="flex w-full justify-between p-2">
         <button
-          className="border border-black p-2 rounded-sm"
+          className="border border-black p-2 rounded-sm hover:bg-gray-300"
           disabled={fails.length >= 3}
           type={"reset"}
           onClick={() => pushFail("RESERVED-KEYWORD-FOR-SKIPS")}
@@ -48,7 +48,7 @@ const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
         </button>
         <span> {validInput}</span>
         <button
-          className="p-2 px-4 bg-emerald-400 hover:outline outline-offset-2 active:bg-emerald-600 rounded-md"
+          className="p-2 px-4 bg-emerald-400 hover:outline outline-offset-2 active:bg-emerald-600 rounded-md transition"
           disabled={fails.length === 5}
         >
           Submit
