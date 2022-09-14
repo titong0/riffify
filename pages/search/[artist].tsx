@@ -1,12 +1,18 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from "next";
 import Head from "next/head";
 import React from "react";
-import ChannelItem from "../components/ChannelItem";
-import { getArtistsQuery } from "../service";
-import { ArtistFromSearch } from "../types";
-import { readFirstInArray } from "../utils";
+import ChannelItem from "../../components/ChannelItem";
+import { getArtistsQuery } from "../../service";
+import { ArtistFromSearch } from "../../types";
+import { readFirstInArray } from "../../utils";
 
-type pageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+type pageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 const SearchResults = ({ results, artist }: pageProps) => {
   if (results === null) return <div>No results for that artist</div>;
@@ -36,16 +42,16 @@ const SearchResults = ({ results, artist }: pageProps) => {
 
 export default SearchResults;
 
-export const getServerSideProps: GetServerSideProps<{
+export const getStaticProps: GetStaticProps<{
   results: ArtistFromSearch[] | null;
   artist: string | null;
 }> = async (ctx) => {
-  const artist = readFirstInArray(ctx.query.artist);
+  const artist = readFirstInArray(ctx.params?.artist);
+
   if (!artist) return { props: { results: null, artist: null } };
 
   try {
     const results = await getArtistsQuery(artist);
-
     return { props: { results, artist } };
   } catch (error) {
     return {
@@ -53,4 +59,8 @@ export const getServerSideProps: GetServerSideProps<{
       props: { results: null, artist: "" },
     };
   }
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return { paths: ["/search/kanye"], fallback: "blocking" };
 };
