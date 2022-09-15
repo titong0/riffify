@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { readFirstInArray } from "../../utils";
-const CronJob = require("node-cron").CronJob;
+const cron = require("node-cron");
 
 const VALIDATED_TODAY = new Set<string>();
 
-new CronJob("0 0 * * * *", () => {
+cron.schedule("* * * * *", () => {
   VALIDATED_TODAY.clear();
 });
 
