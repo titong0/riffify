@@ -14,7 +14,7 @@ export default async function handler(
 ) {
   // Check for secret to confirm this is a valid request
   const id = readFirstInArray(req.query.id);
-  if (!id || id.length !== 11) {
+  if (!id || id.length !== 24) {
     return res.status(401).json({ message: "Invalid id" });
   }
 

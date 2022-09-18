@@ -28,7 +28,8 @@ const Artist = ({
   generatedAt,
 }: InferGetServerSidePropsType<typeof getStaticProps>) => {
   const isUpdated = isToday(new Date(), new Date(generatedAt));
-
+  console.log("generated at");
+  console.log(generatedAt);
   useEffect(() => {
     if (isUpdated) return;
     fetch(`${host}/api/revalidate?id=${id}`);
