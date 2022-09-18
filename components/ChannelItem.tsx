@@ -14,7 +14,7 @@ const ChannelItem: React.FC<ArtistFromSearch & { idx: number }> = ({
     // comparison returns undefined instead of true to prevent this behavior
     // https://github.com/vercel/next.js/issues/9522
     <Link
-      href={`/artist/${id}?&noLive=true`}
+      href={`/artist/${id}`}
       passHref
       prefetch={idx <= 3 ? undefined : false}
     >

@@ -22,15 +22,17 @@ const SearchResults = ({ results, artist }: pageProps) => {
           <h2 className="my-8 text-center textl-xl font-bold font-sans">
             Results for: {artist}
           </h2>
-          {results.map((channel, idx) => (
-            <ChannelItem
-              idx={idx}
-              key={channel.id}
-              name={channel.name}
-              id={channel.id}
-              thumbnails={channel.thumbnails}
-            />
-          ))}
+          <div className="animate-[fade-in_1s_ease-in]">
+            {results.map((channel, idx) => (
+              <ChannelItem
+                idx={idx}
+                key={channel.id}
+                name={channel.name}
+                id={channel.id}
+                thumbnails={channel.thumbnails}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>

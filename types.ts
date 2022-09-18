@@ -1,5 +1,3 @@
-import { DetailedHTMLProps, FormHTMLAttributes } from "react";
-
 export type ArtistFromSearch = {
   name: string;
   id: string;
@@ -9,8 +7,14 @@ export type ArtistFromSearch = {
 export type TodayRes = {
   song: SongDetails;
   allSongs: string[];
-  artist: string;
+  artist: {
+    name: string;
+    avatar: Thumbnail[];
+    description?: string;
+    id: string;
+  };
 };
+
 export type TodayProps = {
   id: string;
   generatedAt: string;
