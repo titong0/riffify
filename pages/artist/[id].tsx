@@ -31,7 +31,7 @@ const Artist = ({
 
   useEffect(() => {
     if (isUpdated) return;
-    fetch(`${host}/api/revalidate/${id}`);
+    fetch(`${host}/api/revalidate?id=${id}`);
   }, []);
   return (
     <>
