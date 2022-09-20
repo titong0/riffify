@@ -4,18 +4,11 @@ import React from "react";
 import Game from "../../components/Game";
 import { getTodaySong } from "../../service";
 import { TodayProps } from "../../types";
-import { readFirstInArray } from "../../utils";
+import { isToday, readFirstInArray } from "../../utils";
 import { useEffect } from "react";
 import { host } from "../../config";
 import { useRouter } from "next/router";
-
-const isToday = (date1: Date, date2: Date) => {
-  return (
-    date1.getFullYear() === date2.getFullYear() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getDate() === date2.getDate()
-  );
-};
+import BgImage from "../../components/BgImage";
 
 const Artist = ({
   song,
@@ -24,15 +17,17 @@ const Artist = ({
   id,
   generatedAt,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const isUpdated = isToday(new Date(), new Date(generatedAt));
+  const isUpdated = isToday(new Date(generatedAt));
   const Router = useRouter();
+
   useEffect(() => {
     if (isUpdated) return;
     fetch(`${host}/api/revalidate?id=${id}`).then((i) => {
-      i.ok &&
+      if (i.ok) {
         setTimeout(() => {
           Router.reload();
         }, 3000);
+      }
     });
   }, []);
   return (
@@ -40,23 +35,7 @@ const Artist = ({
       <Head>
         <title>{`${artist.name} heardle`}</title>
       </Head>
-      <div className="fixed h-screen w-full -z-50 top-0 opacity-20">
-        <img
-          className="max-h bg-contain bg-repeat bg-opacity-40 max-h-full w-full"
-          src={artist.avatar[0]?.url}
-          referrerPolicy={"no-referrer"}
-        />
-        <img
-          className="max-h bg-contain bg-repeat bg-opacity-40 max-h-full w-full"
-          src={artist.avatar[0]?.url}
-          referrerPolicy={"no-referrer"}
-        />
-        <img
-          className="max-h bg-contain bg-repeat bg-opacity-40 max-h-full w-full"
-          src={artist.avatar[0]?.url}
-          referrerPolicy={"no-referrer"}
-        />
-      </div>
+      <BgImage url={artist.avatar[0].url} />
 
       {!isUpdated && (
         <div>
@@ -65,7 +44,7 @@ const Artist = ({
         </div>
       )}
       <h1 className="my-4 text-lg text-center">{artist.name} heardle</h1>
-      <Game song={song} allSongs={allSongs} />
+      <Game song={song} allSongs={allSongs} artistId={id} />
     </>
   );
 };
@@ -82,7 +61,7 @@ export const getStaticProps: GetStaticProps<TodayProps> = async (ctx) => {
     return { notFound: true, props: {} };
   }
 
-  console.log("GENERATED PAGE FOR: ", today.artist);
+  console.log("GENERATED PAGE FOR: ", today.artist.name);
   return {
     props: {
       song: today.song,

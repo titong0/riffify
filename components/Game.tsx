@@ -1,17 +1,21 @@
-import React, { Suspense, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import { SongDetails } from "../types";
+import { getFails } from "../utils";
 import FailsDisplay from "./FailsDisplay";
 import GameForm from "./GameForm";
 import Player from "./Player";
 
-const Game = ({
-  song,
-  allSongs,
-}: {
+type GameProps = {
   song: SongDetails;
   allSongs: string[];
-}) => {
+  artistId: string;
+};
+
+const Game = ({ song, allSongs, artistId }: GameProps) => {
   const [fails, setFails] = useState<string[]>([]);
+  useEffect(() => {
+    setFails(getFails(artistId));
+  }, []);
 
   return (
     <div className="flex w-full justify-center p-2">
@@ -29,6 +33,7 @@ const Game = ({
             fails={fails}
             setFails={setFails}
             correctSong={song.title}
+            artistId={artistId}
             allSongs={allSongs}
           />
         </section>

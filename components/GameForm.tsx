@@ -1,20 +1,29 @@
 import React, { useState } from "react";
+import { saveFails } from "../utils";
 import Combobox from "./Combobox";
 import FailsDisplay from "./FailsDisplay";
 
 type FormProps = {
+  artistId: string;
   allSongs: string[];
   correctSong: string;
   fails: string[];
   setFails: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
+const GameForm = ({
+  artistId,
+  allSongs,
+  correctSong,
+  fails,
+  setFails,
+}: FormProps) => {
   const [validInput, setValidInput] = useState(false);
 
   const pushFail = (fail: string) => {
     const failsCopy = [...fails, fail];
     setFails(failsCopy);
+    saveFails(artistId, failsCopy);
   };
 
   const submit = (e: React.FormEvent) => {
@@ -26,10 +35,6 @@ const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
     if (name === correctSong) {
       return pushFail(name + "RESERVED-KEYWORD-FOR-CORRECTS");
     }
-    if (name === "RESERVED-KEYWORD-FOR-SKIPS") return;
-    if (fails.length === 4) {
-      alert("perdiste amigo 👎. Era " + correctSong);
-    }
     pushFail(name);
   };
   return (
@@ -37,7 +42,7 @@ const GameForm = ({ allSongs, correctSong, fails, setFails }: FormProps) => {
       <Combobox allSongs={allSongs} setValidInput={setValidInput} />
       <div className="flex w-full justify-between p-2">
         <button
-          className="border border-black p-2 rounded-sm hover:bg-gray-300"
+          className="border border-black p-2 rounded-sm enabled:hover:bg-gray-300"
           disabled={fails.length >= 3}
           type={"reset"}
           onClick={() => pushFail("RESERVED-KEYWORD-FOR-SKIPS")}

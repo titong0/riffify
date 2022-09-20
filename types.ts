@@ -44,10 +44,9 @@ type Thumbnail = {
   height: number;
 };
 
-interface SongNameElements extends HTMLFormControlsCollection {
-  yourInputName: HTMLInputElement;
-}
+export type StorageFails = {
+  date: Date;
+  fails: string[];
+};
 
-export interface SongNameForm extends HTMLFormElement {
-  readonly elements: SongNameElements;
-}
+export type StorageStats = {};
