@@ -15,10 +15,8 @@ const Fail = ({ content, idx }: { content: string; idx: number }) => {
       <div
         key={idx}
         className="flex items-center w-full border border-current h-16 sm:h-12 p-2 
-        italic text-center
-        text-black bg-gray-600
-        dark:text-gray-400 dark:bg-transparent
-
+        italic text-center bg-transparent
+        text-black dark:text-gray-400 
         animate-[fade-in_700ms]"
       >
         <MdBlock size={30} className="mr-4" />
@@ -47,7 +45,7 @@ const Fail = ({ content, idx }: { content: string; idx: number }) => {
   return (
     <div
       key={content}
-      className="flex items-center w-full border border-current p-2 h-16 sm:h-12 bg-red-500"
+      className="flex items-center w-full border border-current p-2 h-16 sm:h-12 bg-red-300 dark:bg-red-900"
     >
       <MdClear size={30} color="#fff" className="mr-4" /> {content}
     </div>

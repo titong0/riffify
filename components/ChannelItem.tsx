@@ -19,7 +19,10 @@ const ChannelItem: React.FC<ArtistFromSearch & { idx: number }> = ({
       prefetch={idx <= 3 ? undefined : false}
     >
       <a>
-        <div className="flex items-center p-2 border-b dark:hover:bg-gray-800">
+        <div
+          className="flex items-center p-2 border-b border-current
+        hover:bg-gray-200 dark:hover:bg-gray-800"
+        >
           <Image
             unoptimized
             src={thumbnails[1].url || thumbnails[0].url}
