@@ -18,7 +18,7 @@ const Game = ({ song, allSongs, artistId }: GameProps) => {
   }, []);
 
   return (
-    <div className="flex w-full justify-center p-2">
+    <div className="flex w-full justify-center p-2 mb-8">
       <div className="w-full max-w-lg bg-gray-200 text-black rounded-md shadow-xl">
         <FailsDisplay fails={fails} />
         <section className="py-4">

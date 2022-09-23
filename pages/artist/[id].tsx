@@ -43,8 +43,13 @@ const Artist = ({
           reload the page as soon as it is updated
         </div>
       )}
-      <h1 className="my-4 text-lg text-center">{artist.name} heardle</h1>
+      <h1 className="py-7 text-2xl text-center">{artist.name} heardle</h1>
       <Game song={song} allSongs={allSongs} artistId={id} />
+      <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
+        <pre className="p-2 max-w-prose whitespace-pre-wrap">
+          {artist.description || null}
+        </pre>
+      </section>
     </>
   );
 };
