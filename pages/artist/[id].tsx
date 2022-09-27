@@ -45,11 +45,12 @@ const Artist = ({
       )}
       <h1 className="py-7 text-2xl text-center">{artist.name} heardle</h1>
       <Game song={song} allSongs={allSongs} artistId={id} />
-      <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
+      {/* Might use this in the future */}
+      {/* <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
         <pre className="p-2 max-w-prose whitespace-pre-wrap">
           {artist.description || null}
         </pre>
-      </section>
+      </section> */}
     </>
   );
 };
