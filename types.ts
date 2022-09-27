@@ -43,10 +43,11 @@ type Thumbnail = {
   width: number;
   height: number;
 };
+export type Attempt = { content: string; type: "Skip" | "Success" | "Fail" };
 
 export type StorageFails = {
   date: Date;
-  fails: string[];
+  tries: Attempt[];
 };
 
 export type StorageStats = {};

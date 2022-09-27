@@ -1,19 +1,16 @@
 import React from "react";
 import { MdBlock, MdCheck, MdClear } from "react-icons/md";
+import { Attempt } from "../types";
 
-const Fail = ({ content, idx }: { content: string; idx: number }) => {
-  if (!content)
+const Fail = ({ attempt }: { attempt: Attempt }) => {
+  if (typeof attempt === "undefined")
     return (
-      <div
-        key={idx}
-        className="flex items-center w-full border border-current p-2 h-16 sm:h-12"
-      ></div>
+      <div className="flex items-center w-full border border-current p-2 h-16 sm:h-12"></div>
     );
-  // SKIP RECTANGLES
-  if (content === "RESERVED-KEYWORD-FOR-SKIPS")
+
+  if (attempt.type === "Skip")
     return (
       <div
-        key={idx}
         className="flex items-center w-full border border-current h-16 sm:h-12 p-2 
         italic text-center bg-transparent
         text-black dark:text-gray-400 
@@ -24,19 +21,17 @@ const Fail = ({ content, idx }: { content: string; idx: number }) => {
       </div>
     );
 
-  // CORRECT RECTANGLE
-  if (content.includes("RESERVED-KEYWORD-FOR-CORRECTS")) {
-    alert("ganaste amigo 👍");
+  if (attempt.type === "Success") {
     return (
       <div
-        key={content}
+        key={attempt.content}
         className="flex items-center w-full border p-2 h-16 sm:h-12 
         bg-emerald-400 dark:bg-emerald-400 
         text-white dark:text-emerald-900
         bg-opacity-80"
       >
         <MdCheck size={30} color="#00000" className="mr-4" />
-        {content.replace("RESERVED-KEYWORD-FOR-CORRECTS", "")}
+        {attempt.content}
       </div>
     );
   }
@@ -44,10 +39,10 @@ const Fail = ({ content, idx }: { content: string; idx: number }) => {
   // FAIL RECTANGLES
   return (
     <div
-      key={content}
+      key={attempt.content}
       className="flex items-center w-full border border-current p-2 h-16 sm:h-12 bg-red-300 dark:bg-red-900"
     >
-      <MdClear size={30} color="#fff" className="mr-4" /> {content}
+      <MdClear size={30} color="#fff" className="mr-4" /> {attempt.content}
     </div>
   );
 };

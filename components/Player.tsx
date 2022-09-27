@@ -5,6 +5,7 @@ import { BsFillPlayFill } from "react-icons/bs";
 import { MdPause } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
+import { Attempt } from "../types";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
@@ -13,10 +14,10 @@ type PlayerProps = {
   startsAt: number;
   secondsLimit: number;
   name: string;
-  fails: string[];
+  attempts: Attempt[];
 };
 
-const Player = ({ id, startsAt, secondsLimit, fails }: PlayerProps) => {
+const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
   const [playing, setPlaying] = useState(false);
   const [startedPlaying, setPlaysStart] = useState(0);
   const [ready, setReady] = useState(false);
@@ -45,7 +46,7 @@ const Player = ({ id, startsAt, secondsLimit, fails }: PlayerProps) => {
 
   return (
     <div className="flex flex-col sm:flex-row w-full items-center p-1 px-2">
-      <PlaytimeBar playing={playing} fails={fails.length} />
+      <PlaytimeBar playing={playing} fails={attempts.length} />
       <VideoPlayer
         playerRef={playerRef}
         url={url}

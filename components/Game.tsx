@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { SongDetails } from "../types";
-import { getFails } from "../utils";
+import { SongDetails, Attempt } from "../types";
+import { getAttempts } from "../utils";
 import FailsDisplay from "./FailsDisplay";
 import GameForm from "./GameForm";
 import Player from "./Player";
@@ -12,26 +12,26 @@ type GameProps = {
 };
 
 const Game = ({ song, allSongs, artistId }: GameProps) => {
-  const [fails, setFails] = useState<string[]>([]);
+  const [attempts, setAttempts] = useState<Attempt[]>([]);
   useEffect(() => {
-    setFails(getFails(artistId));
+    setAttempts(getAttempts(artistId));
   }, []);
 
   return (
     <div className="flex w-full justify-center p-2 mb-8">
       <div className="w-full max-w-lg bg-gray-200 text-black rounded-md shadow-xl">
-        <FailsDisplay fails={fails} />
+        <FailsDisplay attempts={attempts} />
         <section className="py-4">
           <Player
             startsAt={song.startAt}
             name={song.title}
-            secondsLimit={Math.pow(2, fails.length + 1)}
+            secondsLimit={Math.pow(2, attempts.length + 1)}
             id={song.id}
-            fails={fails}
+            attempts={attempts}
           />
           <GameForm
-            fails={fails}
-            setFails={setFails}
+            attempts={attempts}
+            setAttempts={setAttempts}
             correctSong={song.title}
             artistId={artistId}
             allSongs={allSongs}

@@ -1,8 +1,9 @@
 import React from "react";
+import { Attempt } from "../types";
 import Fail from "./Fail";
 
-const FailsDisplay = ({ fails }: { fails: string[] }) => {
-  const failDivs = Array.from({ ...fails, length: 5 });
+const FailsDisplay = ({ attempts }: { attempts: Attempt[] }) => {
+  const attemptsDivs = Array.from({ ...attempts, length: 5 });
 
   return (
     <div
@@ -10,8 +11,11 @@ const FailsDisplay = ({ fails }: { fails: string[] }) => {
     bg-slate-300 text-neutral-900
     dark:bg-gray-800 dark:text-blue-100"
     >
-      {failDivs.map((fail, idx) => (
-        <Fail content={fail} idx={idx} key={idx.toString() + fail} />
+      {attemptsDivs.map((attempt, idx) => (
+        <Fail
+          attempt={attempt}
+          key={idx.toString() + JSON.stringify(attempt)}
+        />
       ))}
     </div>
   );

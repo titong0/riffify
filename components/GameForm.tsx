@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { saveFails } from "../utils";
+import { Attempt } from "../types";
+import { analyzeTry, saveTries } from "../utils";
 import Combobox from "./Combobox";
 import FailsDisplay from "./FailsDisplay";
 
@@ -7,23 +8,23 @@ type FormProps = {
   artistId: string;
   allSongs: string[];
   correctSong: string;
-  fails: string[];
-  setFails: React.Dispatch<React.SetStateAction<string[]>>;
+  attempts: Attempt[];
+  setAttempts: React.Dispatch<React.SetStateAction<Attempt[]>>;
 };
 
 const GameForm = ({
   artistId,
   allSongs,
   correctSong,
-  fails,
-  setFails,
+  attempts,
+  setAttempts,
 }: FormProps) => {
   const [validInput, setValidInput] = useState(false);
 
-  const pushFail = (fail: string) => {
-    const failsCopy = [...fails, fail];
-    setFails(failsCopy);
-    saveFails(artistId, failsCopy);
+  const pushTry = (fail: Attempt) => {
+    const attsCopy = [...attempts, fail];
+    setAttempts(attsCopy);
+    saveTries(artistId, attsCopy);
   };
 
   const submit = (e: React.FormEvent) => {
@@ -31,11 +32,8 @@ const GameForm = ({
     const form = e.target as any;
     const name = form.song.value;
 
-    if (!allSongs.includes(name)) return;
-    if (name === correctSong) {
-      return pushFail(name + "RESERVED-KEYWORD-FOR-CORRECTS");
-    }
-    pushFail(name);
+    const attemptObj = analyzeTry(name, correctSong);
+    pushTry(attemptObj);
   };
   return (
     <form onSubmit={submit}>
@@ -43,18 +41,18 @@ const GameForm = ({
       <div className="flex w-full justify-between p-2">
         <button
           className="border border-black p-2 rounded-sm enabled:hover:bg-gray-300"
-          disabled={fails.length >= 3}
+          disabled={attempts.length >= 3}
           type={"reset"}
-          onClick={() => pushFail("RESERVED-KEYWORD-FOR-SKIPS")}
+          onClick={() => pushTry(analyzeTry("RESERVED-SKIP", correctSong))}
         >
-          {fails.length >= 3
+          {attempts.length >= 3
             ? "No more skips"
-            : `Skip (+${Math.pow(2, fails.length + 1)}s)`}
+            : `Skip (+${Math.pow(2, attempts.length + 1)}s)`}
         </button>
         <span> {validInput}</span>
         <button
           className="p-2 px-4 bg-emerald-400 hover:outline outline-offset-2 active:bg-emerald-600 rounded-md transition"
-          disabled={fails.length === 5}
+          disabled={attempts.length === 5}
         >
           Submit
         </button>
