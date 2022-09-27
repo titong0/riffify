@@ -11,7 +11,7 @@ const Fail = ({ attempt }: { attempt: Attempt }) => {
   if (attempt.type === "Skip")
     return (
       <div
-        className="flex items-center w-full border border-current h-16 sm:h-12 p-2 
+        className="flex items-center w-full border border-current min-h-16 sm:min-h-12 p-2 
         italic text-center bg-transparent
         text-black dark:text-gray-400 
         animate-[fade-in_700ms]"
@@ -25,7 +25,7 @@ const Fail = ({ attempt }: { attempt: Attempt }) => {
     return (
       <div
         key={attempt.content}
-        className="flex items-center w-full border p-2 h-16 sm:h-12 
+        className="flex items-center w-full border p-2 min-h-16 sm:min-h-12 
         bg-emerald-400 dark:bg-emerald-400 
         text-white dark:text-emerald-900
         bg-opacity-80"
@@ -40,7 +40,7 @@ const Fail = ({ attempt }: { attempt: Attempt }) => {
   return (
     <div
       key={attempt.content}
-      className="flex items-center w-full border border-current p-2 h-16 sm:h-12 bg-red-300 dark:bg-red-900"
+      className="flex items-center w-full border border-current p-2 min-h-16 sm:min-h-12 bg-red-300 dark:bg-red-900"
     >
       <MdClear size={30} color="#fff" className="mr-4" /> {attempt.content}
     </div>

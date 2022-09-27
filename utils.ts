@@ -1,4 +1,4 @@
-import { StorageFails, Attempt } from "./types";
+import { StorageFails, Attempt, GameState } from "./types";
 
 /**
  * This function prevents the site from crushing if someone does something like
@@ -69,4 +69,11 @@ export const saveTries = (artistId: string, newTryArray: Attempt[]) => {
     tries: newTryArray,
   };
   localStorage.setItem(`tries-${artistId}`, JSON.stringify(newTryObj));
+};
+
+export const getGameState = (attempts: Attempt[]): GameState => {
+  if (!attempts.length) return "Playing";
+  if (attempts[attempts.length - 1].type === "Success") return "Succeded";
+  if (attempts.length === 5) return "Failed";
+  return "Playing";
 };

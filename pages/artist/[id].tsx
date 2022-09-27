@@ -1,13 +1,12 @@
+import React, { useEffect } from "react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import React from "react";
-import Game from "../../components/Game";
+import { useRouter } from "next/router";
+import GameWrapper from "../../components/GameWrapper";
 import { getTodaySong } from "../../service";
 import { TodayProps } from "../../types";
 import { isToday, readFirstInArray } from "../../utils";
-import { useEffect } from "react";
 import { host } from "../../config";
-import { useRouter } from "next/router";
 import BgImage from "../../components/BgImage";
 
 const Artist = ({
@@ -30,21 +29,21 @@ const Artist = ({
       }
     });
   }, []);
+
   return (
     <>
       <Head>
         <title>{`${artist.name} heardle`}</title>
       </Head>
-      <BgImage url={artist.avatar[0].url} />
-
       {!isUpdated && (
         <div>
           You are the first person to play this artist today! sorry, we will
           reload the page as soon as it is updated
         </div>
       )}
-      <h1 className="py-7 text-2xl text-center">{artist.name} heardle</h1>
-      <Game song={song} allSongs={allSongs} artistId={id} />
+      <h1 className="py-7 text-2xl text-center">{artist.name} heardle</h1>{" "}
+      <BgImage url={artist.avatar[0].url} />
+      <GameWrapper allSongs={allSongs} artist={artist} id={id} song={song} />
       {/* Might use this in the future */}
       {/* <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
         <pre className="p-2 max-w-prose whitespace-pre-wrap">

@@ -4,17 +4,12 @@ export type ArtistFromSearch = {
   thumbnails: Thumbnail[];
 };
 
-export type TodayRes = {
-  song: SongDetails;
-  allSongs: string[];
-  artist: {
-    name: string;
-    avatar: Thumbnail[];
-    description?: string;
-    id: string;
-  };
+export type Artist = {
+  name: string;
+  avatar: Thumbnail[];
+  description?: string;
+  id: string;
 };
-
 export type TodayProps = {
   id: string;
   generatedAt: string;
@@ -38,11 +33,15 @@ export type SongDetails = {
   };
 };
 
+export type GameState = "Playing" | "Failed" | "Succeded";
+
 type Thumbnail = {
   url: string;
   width: number;
   height: number;
 };
+export type StorageStats = {};
+
 export type Attempt = { content: string; type: "Skip" | "Success" | "Fail" };
 
 export type StorageFails = {
@@ -50,4 +49,8 @@ export type StorageFails = {
   tries: Attempt[];
 };
 
-export type StorageStats = {};
+export type TodayRes = {
+  song: SongDetails;
+  allSongs: string[];
+  artist: Artist;
+};
