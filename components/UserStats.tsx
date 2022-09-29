@@ -14,22 +14,29 @@ const ArtistStats = ({ artistId }: ArtistStatsProps) => {
     setStats(getArtistStats(artistId));
   }, []);
 
-  if (stats === undefined) return null;
+  if (stats === undefined || stats === null) return null;
 
   return (
     <div className="flex flex-col w-full my-4 z-20">
       <div className="flex flex-col gap-3 w-full">
         {stats.attemptsNeeded.map((attempts, idx) => {
           const width = (attempts * 100) / totalAttempts!;
-          console.log(width);
+
           return (
-            <div className="flex items-center w-full mx-2">
-              <span className="w-12">{idx === 5 ? "Fails" : idx}</span>
-              <div
-                style={{ width: `${width}%` }}
-                className="h-4 bg-red-400"
-                key={width + attempts}
-              ></div>
+            <div className="flex items-center w-full px-2">
+              {idx === 5 ? (
+                <span className="w-1/12 text-red-400">Fails</span>
+              ) : (
+                <span className="w-1/12">{idx + 1}</span>
+              )}
+              <div className="w-10/12">
+                <div
+                  style={{ width: `${width}%` }}
+                  className="mx-4 h-5 bg-green-300"
+                  key={width + attempts}
+                ></div>
+                <span> {attempts}</span>
+              </div>
             </div>
           );
         })}

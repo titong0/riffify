@@ -4,7 +4,7 @@ import CTA from "./CTA";
 import ArtistStats from "./UserStats";
 
 const WinningScreen = ({ artistId }: { artistId: string }) => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
     <div className="">
       <button
@@ -18,7 +18,7 @@ const WinningScreen = ({ artistId }: { artistId: string }) => {
         <AlertDialog.Overlay />
         <AlertDialog.Content>
           <div
-            className="absolute top-16 left-1/2 w-11/12 md:w-2/3 min-h-72 bg-gray-700 rounded-md -translate-x-1/2
+            className="absolute top-16 left-1/2 w-[95%] md:w-4/5 max-w-2xl min-h-72 bg-gray-700 rounded-md -translate-x-1/2
           p-2 animate-[fade-in_600ms]"
           >
             <AlertDialog.Title className="text-2xl my-2 font-bold text-center">
