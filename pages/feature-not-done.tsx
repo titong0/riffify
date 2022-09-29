@@ -36,6 +36,15 @@ const NoFeature = () => {
               height="172"
             />
           </div>
+          Here's some of the things that are (likely) coming soon
+          <ul className="list-disc list-inside m-2">
+            <li>Site redesign</li>
+            <li>Better stats tracking</li>
+            <li>Playlist mode</li>
+            <li>Favorites system</li>
+            <li>Most played heardles</li>
+            <li>Many more things I can't think of right now</li>
+          </ul>
           <Link href="/funding" passHref>
             <CTA>Alright... you convinced me..</CTA>
           </Link>
