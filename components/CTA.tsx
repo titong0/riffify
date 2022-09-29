@@ -1,10 +1,10 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
-type CTAProps = { children: any } & React.DetailedHTMLProps<
+type CTAProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >;
-const CTA = ({ children, ...props }: CTAProps) => {
+const CTA = ({ ...props }: CTAProps, ref: any) => {
   return (
     <button
       {...props}
@@ -13,9 +13,9 @@ const CTA = ({ children, ...props }: CTAProps) => {
       hover:outline outline-offset-2 outline-black
       active:bg-emerald-800 transition"
     >
-      {children}
+      {props.children}
     </button>
   );
 };
 
-export default CTA;
+export default forwardRef(CTA);
