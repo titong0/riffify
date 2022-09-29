@@ -1,9 +1,10 @@
 import { useCombobox } from "downshift";
 import React, { memo, useState } from "react";
+import { StateSetter } from "../types";
 
 type ComboProps = {
   allSongs: string[];
-  setValidInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setValidInput: StateSetter<boolean>;
 };
 const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
   const [songs, setSongs] = useState(allSongs);

@@ -43,7 +43,12 @@ const Artist = ({
       )}
       <h1 className="py-7 text-2xl text-center">{artist.name} heardle</h1>{" "}
       <BgImage url={artist.avatar[0].url} />
-      <GameWrapper allSongs={allSongs} artist={artist} id={id} song={song} />
+      <GameWrapper
+        allSongs={allSongs}
+        artist={artist}
+        artistId={id}
+        song={song}
+      />
       {/* Might use this in the future */}
       {/* <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
         <pre className="p-2 max-w-prose whitespace-pre-wrap">

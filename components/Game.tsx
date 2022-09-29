@@ -1,6 +1,6 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { SongDetails, Attempt, GameState } from "../types";
-import { getAttempts, getGameState } from "../utils";
+import React, { useState } from "react";
+import { SongDetails, Attempt, GameState, StateSetter } from "../types";
+import { getGameState } from "../utils";
 import FailsDisplay from "./FailsDisplay";
 import GameForm from "./GameForm";
 import Player from "./Player";
@@ -9,16 +9,19 @@ type GameProps = {
   song: SongDetails;
   allSongs: string[];
   artistId: string;
-  setGameState: React.Dispatch<React.SetStateAction<GameState>>;
+  gameState: GameState;
+  attempts: Attempt[];
+  setAttempts: StateSetter<Attempt[]>;
 };
 
-const Game = ({ song, allSongs, artistId, setGameState }: GameProps) => {
-  const [attempts, setAttempts] = useState<Attempt[]>([]);
-  setGameState(getGameState(attempts));
-  useEffect(() => {
-    setAttempts(getAttempts(artistId));
-  }, []);
-
+const Game = ({
+  song,
+  allSongs,
+  artistId,
+  gameState,
+  attempts,
+  setAttempts,
+}: GameProps) => {
   return (
     <div className="flex w-full justify-center p-2 mb-8">
       <div className="w-full max-w-lg bg-gray-200 text-black rounded-md shadow-xl">
@@ -32,11 +35,12 @@ const Game = ({ song, allSongs, artistId, setGameState }: GameProps) => {
             attempts={attempts}
           />
           <GameForm
-            attempts={attempts}
-            setAttempts={setAttempts}
+            allSongs={allSongs}
             correctSong={song.title}
             artistId={artistId}
-            allSongs={allSongs}
+            gameState={gameState}
+            attempts={attempts}
+            setAttempts={setAttempts}
           />
         </section>
       </div>

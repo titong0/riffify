@@ -1,4 +1,4 @@
-import { StorageFails, Attempt, GameState } from "./types";
+import { Attempt, GameState } from "./types";
 
 /**
  * This function prevents the site from crushing if someone does something like
@@ -33,42 +33,6 @@ export const isToday = (date1: Date) => {
     date1.getMonth() === today.getMonth() &&
     date1.getDate() === today.getDate()
   );
-};
-
-const readTries = (artistId: string) => {
-  const storageName = `tries-${artistId}`;
-  const storedFails: StorageFails | null = JSON.parse(
-    localStorage.getItem(storageName) || "null"
-  );
-  return storedFails;
-};
-
-export const getAttempts = (artistId: string) => {
-  const tries = readTries(artistId);
-
-  // if the "tries" object is not in localStorage OR if the object is old
-  if (tries === null || !isToday(new Date(tries.date))) {
-    return [];
-  }
-  return tries.tries;
-};
-
-export const saveTries = (artistId: string, newTryArray: Attempt[]) => {
-  const tries = readTries(artistId);
-
-  if (tries === null || !isToday(new Date(tries.date))) {
-    localStorage.setItem(
-      `tries-${artistId}`,
-      JSON.stringify({ date: new Date(), tries: newTryArray })
-    );
-    return;
-  }
-
-  const newTryObj = {
-    date: tries.date,
-    tries: newTryArray,
-  };
-  localStorage.setItem(`tries-${artistId}`, JSON.stringify(newTryObj));
 };
 
 export const getGameState = (attempts: Attempt[]): GameState => {
