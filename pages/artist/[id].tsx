@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import GameWrapper from "../../components/GameWrapper";
+import GameWrapper from "../../components/Game-thingies/GameWrapper";
 import { getTodaySong } from "../../service";
 import { TodayProps } from "../../types";
 import { isToday, readFirstInArray } from "../../utils";

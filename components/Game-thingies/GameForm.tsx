@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { saveTries } from "../storageUtils";
-import { Attempt, GameState, StateSetter } from "../types";
-import { analyzeTry } from "../utils";
+import { saveTries } from "../../storageUtils";
+import { Attempt, GameState, StateSetter } from "../../types";
+import { analyzeTry } from "../../utils";
 import Combobox from "./Combobox";
 import FailsDisplay from "./FailsDisplay";
 

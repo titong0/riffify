@@ -1,6 +1,6 @@
 import React from "react";
-import { Attempt } from "../types";
-import Fail from "./Fail";
+import { Attempt } from "../../types";
+import Fail from "./../Fail";
 
 const FailsDisplay = ({ attempts }: { attempts: Attempt[] }) => {
   const attemptsDivs = Array.from({ ...attempts, length: 5 });

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { SongDetails, Attempt, GameState, StateSetter } from "../types";
 import { getGameState } from "../utils";
-import FailsDisplay from "./FailsDisplay";
-import GameForm from "./GameForm";
-import Player from "./Player";
+import FailsDisplay from "./Game-thingies/FailsDisplay";
+import GameForm from "./Game-thingies/GameForm";
+import Player from "./Game-thingies/Player";
 
 type GameProps = {
   song: SongDetails;

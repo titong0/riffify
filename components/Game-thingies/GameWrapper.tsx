@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getAttempts, writeStats } from "../storageUtils";
-import { Artist, Attempt, GameState, SongDetails } from "../types";
-import { getGameState } from "../utils";
-import BgImage from "./BgImage";
-import FailScreen from "./FailScreen";
-import Game from "./Game";
-import WinningScreen from "./WinningScreen";
+import { getAttempts, writeStats } from "../../storageUtils";
+import { Artist, Attempt, GameState, SongDetails } from "../../types";
+import { getGameState } from "../../utils";
+import FailScreen from "../FailScreen";
+import Game from "../Game";
+import WinningScreen from "../WinningScreen";
 
 type GameWrapProps = {
   artist: Artist;

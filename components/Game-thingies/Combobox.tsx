@@ -1,6 +1,6 @@
 import { useCombobox } from "downshift";
 import React, { memo, useState } from "react";
-import { StateSetter } from "../types";
+import { StateSetter } from "../../types";
 
 type ComboProps = {
   allSongs: string[];
