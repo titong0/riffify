@@ -61,5 +61,5 @@ export const getStaticProps: GetStaticProps<{
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
-  return { paths: ["/search/kanye"], fallback: "blocking" };
+  return { paths: [], fallback: "blocking" };
 };
