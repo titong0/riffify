@@ -1,16 +1,20 @@
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import React from "react";
+import { z } from "zod/lib";
 import ChannelItem from "../../components/ChannelItem";
 import { getArtistsQuery } from "../../service";
-import { ArtistFromSearch } from "../../types";
-import { readFirstInArray } from "../../utils";
+import {
+  ArtistSearchResultSchema,
+  ArtistSearchSchema,
+} from "../../shared/schemas";
+import { ArtistSearch } from "../../server/search";
 
 type pageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 const SearchResults = ({ results, artist }: pageProps) => {
   if (results === null) return <div>No results for that artist</div>;
-
+  if (typeof results === "string") return <pre>{results}</pre>;
   return (
     <>
       <Head>
@@ -42,20 +46,23 @@ const SearchResults = ({ results, artist }: pageProps) => {
 export default SearchResults;
 
 export const getStaticProps: GetStaticProps<{
-  results: ArtistFromSearch[] | null;
-  artist: string | null;
+  results: Awaited<ReturnType<typeof ArtistSearch> | string>;
+  artist: string;
 }> = async (ctx) => {
-  const artist = readFirstInArray(ctx.params?.artist);
+  const parsed = ArtistSearchSchema.safeParse(ctx.params!.artist);
 
-  if (!artist) return { props: { results: null, artist: null } };
+  if (!parsed.success)
+    return { redirect: { destination: "/404", permanent: false } };
+
+  const artist = parsed.data;
 
   try {
-    const results = await getArtistsQuery(artist);
+    const results = await ArtistSearch(artist);
     return { props: { results, artist } };
   } catch (error) {
     return {
-      redirect: { destination: "/server-down" },
-      props: { results: null, artist: null },
+      redirect: { destination: "/server-down", permanent: false },
+      // props: {},
     };
   }
 };
