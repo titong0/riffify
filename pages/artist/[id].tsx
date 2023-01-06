@@ -8,6 +8,8 @@ import { TodayProps } from "../../types";
 import { isToday, readFirstInArray } from "../../utils";
 import { host } from "../../config";
 import BgImage from "../../components/BgImage";
+import { getAllSongs } from "../../server/getAllSongs";
+import { idSchema } from "../../shared/schemas";
 
 const Artist = ({
   song,
@@ -20,19 +22,19 @@ const Artist = ({
   const Router = useRouter();
 
   useEffect(() => {
-    if (isUpdated) return;
-    fetch(`${host}/api/revalidate?id=${id}`).then((i) => {
-      if (i.ok) {
-        setTimeout(() => {
-          Router.reload();
-        }, 3000);
-      }
-    });
+    // if (isUpdated) return;
+    // fetch(`${host}/api/revalidate?id=${id}`).then((i) => {
+    //   if (i.ok) {
+    //     setTimeout(() => {
+    //       Router.reload();
+    //     }, 3000);
+    //   }
+    // });
   }, []);
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>{`${artist.name} heardle`}</title>
       </Head>
       {!isUpdated && (
@@ -48,7 +50,7 @@ const Artist = ({
         artist={artist}
         artistId={id}
         song={song}
-      />
+      /> */}
       {/* Might use this in the future */}
       {/* <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
         <pre className="p-2 max-w-prose whitespace-pre-wrap">
@@ -62,25 +64,20 @@ const Artist = ({
 export default Artist;
 
 export const getStaticProps: GetStaticProps<TodayProps> = async (ctx) => {
-  const id = readFirstInArray(ctx.params?.id);
+  const parsed = idSchema.safeParse(ctx.params!.id);
+  if (!parsed.success) return { notFound: true };
 
-  if (!id) return { notFound: true, props: {} };
+  const today = await getAllSongs(parsed.data);
 
-  const today = await getTodaySong(id);
-  if ("error" in today) {
-    return { notFound: true, props: {} };
-  }
-
-  console.log("GENERATED PAGE FOR: ", today.artist.name);
   return {
     props: {
-      song: today.song,
-      allSongs: today.allSongs,
-      artist: today.artist,
-      id: id,
-      generatedAt: new Date().toString(),
+      // song: today.song,
+      // allSongs: today.allSongs,
+      // artist: today.artist,
+      // id: idSchema,
+      // generatedAt: new Date().toString(),
     },
-  };
+  } as any;
 };
 
 export const getStaticPaths: GetStaticPaths = () => {

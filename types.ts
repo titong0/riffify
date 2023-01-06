@@ -37,11 +37,7 @@ export type GameState = "Playing" | "Failed" | "Succeded";
 
 export type StateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 
-type Thumbnail = {
-  url: string;
-  width: number;
-  height: number;
-};
+type Thumbnail = {};
 export type StorageStats = {};
 
 export type Attempt = { content: string; type: "Skip" | "Success" | "Fail" };

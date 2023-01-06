@@ -51,8 +51,7 @@ export const getStaticProps: GetStaticProps<{
 }> = async (ctx) => {
   const parsed = ArtistSearchSchema.safeParse(ctx.params!.artist);
 
-  if (!parsed.success)
-    return { redirect: { destination: "/404", permanent: false } };
+  if (!parsed.success) return { notFound: true };
 
   const artist = parsed.data;
 

@@ -8,10 +8,10 @@ const ThumbnailSchema = z.object({
   height: z.number(),
 });
 
-const id = z.string().length(24);
+export const idSchema = z.string().length(24);
 
 export const ArtistSearchResultSchema = z.object({
   name: z.string(),
-  id: id,
+  id: idSchema,
   thumbnails: ThumbnailSchema.array(),
 });
