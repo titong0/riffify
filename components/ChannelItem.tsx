@@ -1,28 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { ArtistFromSearch } from "../types";
+import { ArtistResult } from "../shared/schemas";
 
-const ChannelItem: React.FC<ArtistFromSearch & { idx: number }> = ({
+type ChannelItemProps = ArtistResult & {
+  shouldPrefetch: undefined | false;
+};
+
+const ChannelItem: React.FC<ChannelItemProps> = ({
   id,
   name,
   thumbnails,
-  idx,
+  shouldPrefetch,
 }) => {
   return (
     // prefetch only first 3 results to save bandwidth
     // comparison returns undefined instead of true to prevent this behavior
     // https://github.com/vercel/next.js/issues/9522
-    <Link
-      href={`/artist/${id}`}
-      passHref
-      prefetch={idx <= 3 ? undefined : false}
-    >
+    <Link href={`/artist/${id}`} passHref prefetch={shouldPrefetch}>
       <a>
-        <div
-          className="flex items-center p-2 border-b border-current
-        hover:bg-gray-200 dark:hover:bg-gray-800"
-        >
+        <div className="flex items-center p-2 border-b border-current hover:bg-gray-200 dark:hover:bg-gray-800">
           <Image
             unoptimized
             src={thumbnails[1].url || thumbnails[0].url}

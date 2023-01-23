@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
+import {
+  Artist,
+  Game_Song,
+  Page_ArtistGameProps,
+  Song,
+} from "../../shared/schemas";
 import { getAttempts, writeStats } from "../../storageUtils";
-import { Artist, Attempt, GameState, SongDetails } from "../../types";
+import { Attempt, GameState } from "../../types";
 import { getGameState } from "../../utils";
 import FailScreen from "../FailScreen";
 import Game from "../Game";
@@ -8,17 +14,16 @@ import WinningScreen from "../WinningScreen";
 
 type GameWrapProps = {
   artist: Artist;
-  song: SongDetails;
+  song: Game_Song;
   allSongs: string[];
-  artistId: string;
 };
-const GameWrapper = ({ song, allSongs, artistId }: GameWrapProps) => {
+const GameWrapper = ({ song, allSongs, artist }: GameWrapProps) => {
   const [gameState, setGameState] = useState<GameState>("Playing");
   const [attempts, setAttempts] = useState<Attempt[]>([]);
 
   useEffect(() => {
     if (gameState !== "Playing") {
-      writeStats(artistId, gameState === "Succeded", attempts.length - 1);
+      writeStats(artist.id, gameState === "Succeded", attempts.length - 1);
     }
   }, [gameState]);
 
@@ -28,7 +33,7 @@ const GameWrapper = ({ song, allSongs, artistId }: GameWrapProps) => {
   }, [attempts]);
 
   useEffect(() => {
-    setAttempts(getAttempts(artistId));
+    setAttempts(getAttempts(artist.id));
   }, []);
 
   return (
@@ -36,12 +41,12 @@ const GameWrapper = ({ song, allSongs, artistId }: GameWrapProps) => {
       <Game
         song={song}
         allSongs={allSongs}
-        artistId={artistId}
+        artistId={artist.id}
         gameState={gameState}
         attempts={attempts}
         setAttempts={setAttempts}
       />
-      {gameState === "Succeded" && <WinningScreen artistId={artistId} />}
+      {gameState === "Succeded" && <WinningScreen artistId={artist.id} />}
       {gameState === "Failed" && <FailScreen />}
     </>
   );
