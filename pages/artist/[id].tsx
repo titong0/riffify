@@ -61,8 +61,15 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
 ) => {
   const parsed = ArtistIdSchema.safeParse(ctx.params!.id);
   if (!parsed.success) return { notFound: true };
-
+  const now = new Date();
+  console.log(`---------------------------
+  FETCHING ARTIST:....
+  `);
   const today = await getToday(parsed.data, true);
+  console.log(`
+    FINISHED FETCHING FETCHING ARTIST:.... ${
+      new Date().getMilliseconds() - now.getMilliseconds()
+    }ms`);
 
   return {
     props: {
