@@ -1,6 +1,5 @@
 import Grid from "youtubei.js/dist/src/parser/classes/Grid";
 import MusicCarouselShelf from "youtubei.js/dist/src/parser/classes/MusicCarouselShelf";
-import MusicImmersiveHeader from "youtubei.js/dist/src/parser/classes/MusicImmersiveHeader";
 import MusicShelf from "youtubei.js/dist/src/parser/classes/MusicShelf";
 import MusicTwoRowItem from "youtubei.js/dist/src/parser/classes/MusicTwoRowItem";
 import SectionList from "youtubei.js/dist/src/parser/classes/SectionList";
