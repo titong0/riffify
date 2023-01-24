@@ -2,8 +2,6 @@ export type GameState = "Playing" | "Failed" | "Succeded";
 
 export type StateSetter<Type> = React.Dispatch<React.SetStateAction<Type>>;
 
-export type StorageStats = {};
-
 export type Attempt = { content: string; type: "Skip" | "Success" | "Fail" };
 
 export type StorageFails = {

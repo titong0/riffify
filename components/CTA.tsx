@@ -4,18 +4,15 @@ type CTAProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >;
-const CTA = ({ ...props }: CTAProps, ref: any) => {
+const CTA = ({ ...props }: CTAProps) => {
   return (
     <button
       {...props}
-      className="p-2 px-8 ml-auto rounded-2xl w-full
-     text-white border border-black bg-emerald-500
-      hover:outline outline-offset-2 outline-black
-      active:bg-emerald-800 transition"
+      className="w-full p-2 px-8 ml-auto text-white transition border border-black rounded-2xl bg-emerald-500 hover:outline outline-offset-2 outline-black active:bg-emerald-800"
     >
       {props.children}
     </button>
   );
 };
 
-export default forwardRef(CTA);
+export default CTA;

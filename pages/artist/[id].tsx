@@ -18,16 +18,16 @@ const Artist: React.FC<ArtistProps> = ({
   const isUpdated = isToday(new Date(generatedAt));
   const Router = useRouter();
 
-  useEffect(() => {
-    // if (isUpdated) return;
-    // fetch(`${host}/api/revalidate?id=${id}`).then((i) => {
-    //   if (i.ok) {
-    //     setTimeout(() => {
-    //       Router.reload();
-    //     }, 3000);
-    //   }
-    // });
-  }, []);
+  // useEffect(() => {
+  // if (isUpdated) return;
+  // fetch(`${host}/api/revalidate?id=${id}`).then((i) => {
+  //   if (i.ok) {
+  //     setTimeout(() => {
+  //       Router.reload();
+  //     }, 3000);
+  //   }
+  // });
+  // }, []);
 
   return (
     <>

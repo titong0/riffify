@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Artist,
-  Game_Song,
-  Page_ArtistGameProps,
-  Song,
-} from "../../shared/schemas";
+import { Artist, Game_Song } from "../../shared/schemas";
 import { getAttempts, writeStats } from "../../storageUtils";
 import { Attempt, GameState } from "../../types";
 import { getGameState } from "../../utils";
@@ -25,6 +20,7 @@ const GameWrapper = ({ song, allSongs, artist }: GameWrapProps) => {
     if (gameState !== "Playing") {
       writeStats(artist.id, gameState === "Succeded", attempts.length - 1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState]);
 
   // This is likely a bad solution but I couldn't find a better way
@@ -34,7 +30,7 @@ const GameWrapper = ({ song, allSongs, artist }: GameWrapProps) => {
 
   useEffect(() => {
     setAttempts(getAttempts(artist.id));
-  }, []);
+  }, [artist.id]);
 
   return (
     <>

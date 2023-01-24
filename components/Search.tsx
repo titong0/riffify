@@ -7,19 +7,14 @@ const Search = () => {
   return (
     <Tabs.Root
       defaultValue="Artist"
-      className="border border-black bg-gray-100 dark:bg-gray-300 text-gray-900"
+      className="text-gray-900 bg-gray-100 border border-black dark:bg-gray-300"
     >
-      <Tabs.List className="flex justify-around border-blue bg-gray-200">
+      <Tabs.List className="flex justify-around bg-gray-200 border-blue">
         {["Artist", "Playlist"].map((mode, idx) => (
           <Tabs.Trigger
             key={mode}
             value={mode}
-            className="p-1 w-full transition hover:bg-emerald-300 
-            rdx-state-active:underline
-            rdx-state-active:border-b-2
-            border-b
-            rdx-state-inactive:text-gray-600
-            border-black"
+            className="w-full p-1 transition border-b border-black hover:bg-emerald-300 rdx-state-active:underline rdx-state-active:border-b-2 rdx-state-inactive:text-gray-600"
           >
             {mode}
           </Tabs.Trigger>
@@ -37,7 +32,7 @@ const InputBar = () => {
     <>
       <Tabs.Content
         value="Artist"
-        className="flex flex-col m-2 gap-2 rdx-state-inactive:hidden"
+        className="flex flex-col gap-2 m-2 rdx-state-inactive:hidden"
       >
         <form
           onSubmit={(e: any) => {
@@ -47,12 +42,12 @@ const InputBar = () => {
           }}
         >
           <label className="" htmlFor="artist">
-            Type your artist's name
+            Type your artist&apos;s name
           </label>
           <input
-            placeholder="Kanye west"
+            placeholder="Luis Alberto Spinneta"
             name="artist"
-            className="bg-emerald-300 w-full p-1 mb-2 h-16 rounded-sm border-black focus:border"
+            className="w-full h-16 p-1 mb-2 border-black rounded-sm bg-emerald-300 focus:border"
             minLength={1}
             required
             type="text"
@@ -62,21 +57,19 @@ const InputBar = () => {
       </Tabs.Content>
       <Tabs.Content
         value="Playlist"
-        className="flex flex-col m-2 gap-2 rdx-state-inactive:hidden"
+        className="flex flex-col gap-2 m-2 rdx-state-inactive:hidden"
       >
         <label className="" htmlFor="playlist">
-          Type your playlist's url
+          Type your playlist&apos;s url
         </label>
         <input
           name="playlist"
-          className="bg-emerald-300 p-1 mb-2 rounded-sm border-black w-full"
+          className="w-full p-1 mb-2 border-black rounded-sm bg-emerald-300"
           type="text"
           placeholder="https://www.youtube.com/watch?v=Rlf8KP4ZikM&list=PLKmth_ELXsKjXeutQqFz7LgWUiVxw_dFy"
         />
         <Link href="/feature-not-done" passHref>
-          <a>
-            <CTA>Go to playlist</CTA>
-          </a>
+          <CTA>Go to playlist</CTA>
         </Link>
       </Tabs.Content>
     </>

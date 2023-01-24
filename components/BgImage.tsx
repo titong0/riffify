@@ -1,20 +1,24 @@
+import Image from "next/image";
 import React from "react";
 
 const BgImage = ({ url }: { url: string }) => {
   return (
-    <div className="fixed h-screen w-full -z-50 top-0 opacity-20">
-      <img
-        className="max-h bg-contain bg-repeat bg-opacity-40 max-h-full w-full"
+    <div className="fixed top-0 w-full h-screen -z-50 opacity-20">
+      <Image
+        className="w-full max-h-full bg-repeat bg-contain max-h bg-opacity-40"
+        src={url}
+        referrerPolicy={"no-referrer"}
+        alt=""
+      />
+      <Image
+        alt=""
+        className="w-full max-h-full bg-repeat bg-contain max-h bg-opacity-40"
         src={url}
         referrerPolicy={"no-referrer"}
       />
-      <img
-        className="max-h bg-contain bg-repeat bg-opacity-40 max-h-full w-full"
-        src={url}
-        referrerPolicy={"no-referrer"}
-      />
-      <img
-        className="max-h bg-contain bg-repeat bg-opacity-40 max-h-full w-full"
+      <Image
+        alt=""
+        className="w-full max-h-full bg-repeat bg-contain max-h bg-opacity-40"
         src={url}
         referrerPolicy={"no-referrer"}
       />
