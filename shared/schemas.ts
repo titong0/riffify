@@ -64,7 +64,7 @@ export const TodaySongResponseSchema = z.object({
 });
 export const Page_GamePropsSchema = TodaySongResponseSchema.and(
   z.object({
-    generatedAt: z.string().datetime(),
+    generatedAt: z.string(),
   })
 );
 
