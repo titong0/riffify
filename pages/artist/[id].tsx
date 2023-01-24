@@ -63,13 +63,13 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   if (!parsed.success) return { notFound: true };
   const now = new Date();
   console.log(`---------------------------
-  FETCHING ARTIST:....
-  `);
+  FETCHING ARTIST:....`);
   const today = await getToday(parsed.data, true);
-  console.log(`
-    FINISHED FETCHING FETCHING ARTIST:.... ${
+  console.log(
+    `FINISHED FETCHING FETCHING ARTIST:.... ${
       new Date().getMilliseconds() - now.getMilliseconds()
-    }ms`);
+    }ms`
+  );
 
   return {
     props: {

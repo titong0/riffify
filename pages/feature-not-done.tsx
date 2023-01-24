@@ -4,7 +4,6 @@ import Link from "next/link";
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
 import CTA from "../components/CTA";
-
 const NoFeature = () => {
   return (
     <>
@@ -19,24 +18,22 @@ const NoFeature = () => {
           <p>
             This feature is not available yet but it <em>likely</em> will in the
             future. If you enjoy the site, please consider checking out{" "}
-            <Link
-              href="/funding"
-              passHref
-              className="text-emerald-500 hover:text-emerald-700"
-            >
-              <span className="underline">donating</span>{" "}
-              <AiOutlineHeart className="inline-block" width="20" />
+            <Link href="/funding" passHref>
+              <a className="text-emerald-500 hover:text-emerald-700">
+                <span className="underline">donating</span>{" "}
+                <AiOutlineHeart className="inline-block" width="20" />
+              </a>
             </Link>
             .
           </p>
           Here&apos;s a cool pic of my cat.
           <div className="flex justify-center my-3">
             <Image
-              alt="My cat cuco"
               className="w-11/12"
               src="/cuco.png"
               width="242"
               height="172"
+              alt="My cat cuco"
             />
           </div>
           Here&apos;s some of the things that are (likely) coming soon
@@ -56,5 +53,4 @@ const NoFeature = () => {
     </>
   );
 };
-
 export default NoFeature;
