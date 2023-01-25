@@ -9,7 +9,13 @@ const Index = () => {
         <title>Auto heardle</title>
       </Head>
       <div>
-        <h1 className="text-2xl my-8 text-center">Auto heardle</h1>
+        <header className="my-8 text-center">
+          <h1 className="text-2xl font-medium">Auto heardle</h1>
+          <h2>
+            Play heardle for <span className="underline">any</span> artist you
+            want!
+          </h2>
+        </header>
         <div className="flex justify-center">
           <div className="w-full max-w-xl m-2">
             <Search />
