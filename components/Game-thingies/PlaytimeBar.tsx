@@ -1,29 +1,27 @@
 import React from "react";
-import { motion } from "framer-motion";
 
 type PlaytimeBarProps = {
-  fails: number;
+  failAmount: number;
   playing: boolean;
 };
 
 const BAR_POINTS = ["12%", "25%", "50%", "100%"];
 
-const PlaytimeBar = ({ fails, playing }: PlaytimeBarProps) => {
+const PlaytimeBar = ({ failAmount, playing }: PlaytimeBarProps) => {
+  const secondsAvailable = Math.pow(2, failAmount + 1);
   return (
     <div className="relative m-2 flex w-full text-black">
-      {/* TODO: implement manually because framer-motion is heavy */}
-      <motion.div
-        initial={{ left: "0" }}
-        animate={{ left: playing ? BAR_POINTS[fails] : "0" }}
-        transition={{
-          ease: "linear",
-          duration: playing ? Math.pow(2, fails + 1) : 0.5,
+      <div
+        className="absolute h-6 w-1 bg-stone-900"
+        style={{
+          left: playing ? BAR_POINTS[failAmount] : "0",
+          transitionDuration: playing ? `${secondsAvailable}s` : "0.5s",
+          transitionTimingFunction: "linear",
         }}
-        className="absolute left-0 h-6 w-1 bg-stone-900"
-      ></motion.div>
+      ></div>
 
       {["w-2/12", "w-2/12", "w-4/12", "w-8/12"].map((width, idx) => {
-        const DISABLED = fails < idx;
+        const DISABLED = failAmount < idx;
         return (
           <div
             key={width + idx}
