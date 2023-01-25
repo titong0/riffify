@@ -2,49 +2,73 @@ import React from "react";
 import { MdBlock, MdCheck, MdClear } from "react-icons/md";
 import { Attempt } from "../types";
 
-const Fail = ({ attempt }: { attempt: Attempt }) => {
-  if (typeof attempt === "undefined")
+const Fail = ({ attempt }: { attempt: Attempt | undefined }) => {
+  if (!attempt)
     return (
-      <div className="flex items-center w-full border border-current p-2 h-16 sm:h-12"></div>
+      <div className="flex items-center w-full h-2 p-2 border border-current"></div>
     );
 
-  if (attempt.type === "Skip")
-    return (
-      <div
-        className="flex items-center w-full border border-current min-h-16 sm:min-h-12 p-2 
-        italic text-center bg-transparent
-        text-black dark:text-gray-400 
-        animate-[fade-in_500ms]"
-      >
-        <MdBlock size={30} className="mr-4" />
-        Skipped
-      </div>
-    );
+  const attemptType = attempt.type;
 
-  if (attempt.type === "Success") {
+  if (attemptType === "Skip") {
     return (
-      <div
-        key={attempt.content}
-        className="flex items-center w-full border p-2 min-h-16 sm:min-h-12 
-        bg-emerald-400 dark:bg-emerald-400 
-        text-white dark:text-emerald-900
-        bg-opacity-80 animate-[fade-in_500ms]"
-      >
-        <MdCheck size={30} color="#00000" className="mr-4" />
-        {attempt.content}
-      </div>
+      <FailLayout
+        className="italic"
+        icon={<MdBlock size={30} />}
+        text="Skipped"
+      ></FailLayout>
     );
   }
+  if (attemptType === "Success") {
+    return (
+      <FailLayout
+        className="bg-emerald-400 bg-opacity-80"
+        icon={<MdCheck size={30} color="#00000" />}
+        text={attempt.content}
+      ></FailLayout>
+    );
+  }
+  if (attemptType === "Fail") {
+    return (
+      <FailLayout
+        className="bg-red-300"
+        icon={<MdClear size={30} color="#fff" />}
+        text={
+          <span className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
+            {attempt.content}
+          </span>
+        }
+      ></FailLayout>
+      // <div
+      //   key={attempt.content}
+      //   className="flex items-center w-full border p-2 h-10 border-black
+      // dark:bg-red-900 animate-[fade-in_500ms]"
+      // >
+      //
+      //
+      // </div>
+    );
+  }
+  return null;
+};
 
-  // FAIL RECTANGLES
+type FailLayoutProps = {
+  icon: React.ReactNode;
+  text: React.ReactNode | string;
+  className: string;
+};
+const FailLayout: React.FC<FailLayoutProps> = ({ icon, text, className }) => {
   return (
     <div
-      key={attempt.content}
-      className="flex items-center w-full border border-current p-2 min-h-16 sm:min-h-12 bg-red-300 dark:bg-red-900 animate-[fade-in_500ms]"
+      className={
+        "grid grid-cols-8 sm:grid-cols-12 items-center w-full border border-black h-10 px-2 animate-[fade-in_500ms]" +
+        " " +
+        className
+      }
     >
-      <MdClear size={30} color="#fff" className="mr-4" /> {attempt.content}
+      <div className="col-start-1 col-end-2 w-fit">{icon}</div>
+      <div className="flex col-start-2 col-span-full"> {text}</div>
     </div>
   );
 };
-
 export default Fail;

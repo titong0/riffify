@@ -3,14 +3,13 @@ import { Attempt } from "../../types";
 import Fail from "./../Fail";
 
 const FailsDisplay = ({ attempts }: { attempts: Attempt[] }) => {
-  const attemptsDivs = Array.from({ ...attempts, length: 5 });
+  const attemptsDivs: Array<Attempt | undefined> = Array.from({
+    ...attempts,
+    length: 5,
+  });
 
   return (
-    <div
-      className="flex flex-col items-center gap-2 min-h-32 p-2 
-    bg-slate-300 text-neutral-900
-    dark:bg-gray-800 dark:text-blue-100"
-    >
+    <div className="flex flex-col items-center gap-2 p-2 bg-slate-300">
       {attemptsDivs.map((attempt, idx) => (
         <Fail
           attempt={attempt}

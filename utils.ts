@@ -41,3 +41,7 @@ export const getGameState = (attempts: Attempt[]): GameState => {
   if (attempts.length === 5) return "Failed";
   return "Playing";
 };
+
+export const randomWithMax = (max: number) => {
+  return Math.floor(Math.random() * max);
+};

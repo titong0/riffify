@@ -24,7 +24,7 @@ const Game = ({
   setAttempts,
 }: GameProps) => {
   return (
-    <div className="flex justify-center w-full p-2 mb-8">
+    <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-black bg-gray-200 rounded-md shadow-xl">
         <FailsDisplay attempts={attempts} />
         <section className="py-4">

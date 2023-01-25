@@ -151,6 +151,7 @@ const removeSameName = (songs: string[]) => {
 export const bigFilter = (noLives: boolean, songs: Song[]) => {
   const names = songs.map((a) => a.title);
   const noDups = removeSameName(names);
+  console.log(noDups);
   const noLive = removeKeywords(noDups.songs, noLives);
   const parenthesis = removeParenthesis(noLive.songs);
   const removed = [
