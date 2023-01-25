@@ -13,11 +13,11 @@ class Document extends NextDocument {
             crossOrigin="true"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700;500&display=swap"
             rel="stylesheet"
           />
         </Head>
-        <body className="font-libre bg-zinc-100 dark:bg-gray-900 dark:text-gray-100">
+        <body className="font-libre bg-stone-100 dark:bg-gray-900 dark:text-gray-100">
           <Main />
           <NextScript />
         </body>
