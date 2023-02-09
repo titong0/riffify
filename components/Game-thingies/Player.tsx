@@ -46,8 +46,9 @@ const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
 
   return (
     <div className="flex flex-col sm:flex-row w-full items-center p-1 px-2">
-      <PlaytimeBar playing={playing} fails={attempts.length} />
+      <PlaytimeBar playing={playing} failAmount={attempts.length} />
       <VideoPlayer
+        volume={0.5}
         playerRef={playerRef}
         url={url}
         playing={playing}
