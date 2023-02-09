@@ -3,9 +3,10 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import GameWrapper from "../../components/Game-thingies/GameWrapper";
-import { isToday, readFirstInArray } from "../../utils";
+import { isToday } from "../../utils";
 import { ArtistIdSchema, Page_ArtistGameProps } from "../../shared/schemas";
 import { getToday } from "../../server/getTodaySong";
+import { host } from "../../config";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -18,16 +19,16 @@ const Artist: React.FC<ArtistProps> = ({
   const isUpdated = isToday(new Date(generatedAt));
   const Router = useRouter();
 
-  // useEffect(() => {
-  // if (isUpdated) return;
-  // fetch(`${host}/api/revalidate?id=${id}`).then((i) => {
-  //   if (i.ok) {
-  //     setTimeout(() => {
-  //       Router.reload();
-  //     }, 3000);
-  //   }
-  // });
-  // }, []);
+  useEffect(() => {
+    if (isUpdated) return;
+    fetch(`${host}/api/revalidate?id=${artist.id}`).then((i) => {
+      if (i.ok) {
+        setTimeout(() => {
+          Router.reload();
+        }, 3000);
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -64,7 +65,9 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   const now = new Date();
   console.log(`---------------------------
   FETCHING ARTIST:....`);
+
   const today = await getToday(parsed.data, true);
+
   console.log(
     `FINISHED FETCHING FETCHING ARTIST:.... ${
       new Date().getMilliseconds() - now.getMilliseconds()

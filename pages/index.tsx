@@ -17,7 +17,7 @@ const Index = () => {
           </h2>
         </header>
         <div className="flex justify-center">
-          <div className="w-full max-w-xl m-2">
+          <div className="w-full max-w-3xl m-2">
             <Search />
           </div>
         </div>
