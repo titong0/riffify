@@ -31,6 +31,7 @@ const PLACEHOLDER_POSSIBILITIES = [
   "Luis Alberto Spinneta",
   "Pescado Rabioso",
   "Artic Monkeys",
+  "Kamada",
   "Frank Ocean",
   "Little Simz",
   "Tyler, The Creator",
@@ -62,22 +63,24 @@ const InputBar = () => {
             const artist = new FormData(e.target).get("artist");
             Router.push(`search/${artist!}`);
           }}
-        >
-          <label className="" htmlFor="artist">
-            Type your artist&apos;s name
-          </label>
-          <input
-            placeholder={
-              PLACEHOLDER_POSSIBILITIES[
-                randomWithMax(PLACEHOLDER_POSSIBILITIES.length)
-              ]
-            }
-            name="artist"
-            className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 focus:border"
-            minLength={1}
-            required
-            type="text"
-          />
+        ><div>
+          
+            <label className="" htmlFor="artist">
+              Type your artist&apos;s name
+            </label>
+            <input
+              placeholder={
+                PLACEHOLDER_POSSIBILITIES[
+                  randomWithMax(PLACEHOLDER_POSSIBILITIES.length)
+                ]
+              }
+              name="artist"
+              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 focus:border"
+              minLength={1}
+              required
+              type="text"
+            />
+        </div>
           <CTA>Search</CTA>
         </form>
       </Tabs.Content>
