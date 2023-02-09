@@ -16,7 +16,8 @@ import {
   TodaySongResponseSchema,
 } from "../shared/schemas";
 import { youtube } from "./search";
-import { bigFilter, calculateStart, selectToday } from "./songChoosingUtils";
+import { calculateStart, selectToday } from "./songChoosingUtils";
+import { bigFilter } from "./songDuplicationUtils";
 
 export const getToday = async (
   artistId: string,
@@ -51,6 +52,7 @@ const getAllSongs = async (
     if (!albums) return null;
     return Promise.all(albums.map((album) => getSongsFromAlbum(album)));
   });
+
   const singlesFetch = getFullSection(singles).then((singles) => {
     if (!singles) return null;
     return Promise.all(singles.map((single) => getSongsFromAlbum(single)));
@@ -90,6 +92,7 @@ const removeUnnecesarySections = (
 
 const getFullSection = async (section: MusicCarouselShelf | undefined) => {
   if (!section) return null;
+
   const client = await youtube;
   const button = section.header?.more_content;
   if (!button) {
@@ -98,14 +101,15 @@ const getFullSection = async (section: MusicCarouselShelf | undefined) => {
     }
     throw new Error("no button nor album.contents");
   }
-
   const page = await button.endpoint.call(client.actions, {
     parse: true,
     client: "YTMUSIC",
   });
+
   if (!page) throw new Error("No page");
 
   const single_col = page.contents.item().as(SingleColumnBrowseResults);
+
   const grid = single_col.tabs
     .firstOfType(Tab)
     ?.content?.as(SectionList)
