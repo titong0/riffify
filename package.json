@@ -24,7 +24,7 @@
     "react-icons": "^4.4.0",
     "react-player": "^2.10.1",
     "tailwindcss-radix": "^2.5.0",
-    "youtubei.js": "^2.7.0",
+    "youtubei.js": "^2.9.0",
     "zod": "^3.0.0"
   },
   "devDependencies": {
