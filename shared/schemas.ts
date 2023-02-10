@@ -29,6 +29,11 @@ export const SongSchema = z.object({
   duration: string(),
   album: AlbumShortSchema,
 });
+const RemovedSongSchema = z.object({
+  title: z.string(),
+  id: z.string(),
+  reason: z.string(),
+});
 const Game_SongSchema = z.object({ startAt: z.number() }).and(SongSchema);
 
 export const YT_SongSchema = z.object({
@@ -57,9 +62,11 @@ export const YT_ArtistHeaderSchema = z.object({
   description: z.object({ text: z.string() }),
   thumbnail: z.object({ contents: ThumbnailSchema.array() }),
 });
+
 export const TodaySongResponseSchema = z.object({
   artist: ArtistSchema,
   song: Game_SongSchema,
+  removed: RemovedSongSchema.array(),
   allSongs: z.string().array(),
 });
 export const Page_GamePropsSchema = TodaySongResponseSchema.and(
@@ -68,6 +75,7 @@ export const Page_GamePropsSchema = TodaySongResponseSchema.and(
   })
 );
 
+export type RemovedSong = z.infer<typeof RemovedSongSchema>;
 export type Page_ArtistGameProps = z.infer<typeof Page_GamePropsSchema>;
 export type Artist = z.infer<typeof ArtistSchema>;
 export type Song = z.infer<typeof SongSchema>;

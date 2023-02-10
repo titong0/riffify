@@ -27,7 +27,7 @@ export const getToday = async (
   const artist = await client.music.getArtist(artistId);
 
   const allSongs = await getAllSongs(artist.sections);
-  const { songs } = bigFilter(noLive, allSongs);
+  const { songs, removed } = bigFilter(noLive, allSongs);
 
   const artistInfo = getArtistInfo(artist);
 
@@ -38,6 +38,7 @@ export const getToday = async (
 
   return {
     song: { startAt: startTime, ...todaySong },
+    removed,
     allSongs: songs.map((i) => i.title),
     artist: { id: artistId, ...artistInfo },
   };

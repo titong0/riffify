@@ -1,15 +1,8 @@
-import { Song } from "../shared/schemas";
-
-type ShortSong = { title: string; id: string };
-type RemovedSong = ShortSong & {
-  reason:
-    | "Included keyword"
-    | "Duplicated name"
-    | "Same text before parenthesis";
-};
+import { RemovedSong, Song } from "../shared/schemas";
 
 type RemovableKeyword =
-  | "live"
+  | "(live"
+  | " live"
   | "radio"
   | "version"
   | "en vivo"
@@ -29,14 +22,15 @@ type RemovableKeyword =
  * @returns
  */
 const removeKeywords = (
-  songs: ShortSong[],
+  songs: Song[],
   noLive: boolean,
   keywordsToRemove?: RemovableKeyword[]
 ) => {
   if (!noLive) return { songs, removed: [] };
   const removedSongs: RemovedSong[] = [];
   const REMOVE_KEYWORDS = keywordsToRemove || [
-    "live",
+    "(live",
+    " live",
     "radio",
     "version",
     "en vivo",
@@ -51,12 +45,15 @@ const removeKeywords = (
   ];
 
   songs = songs.filter((song) => {
-    const shouldRemove = REMOVE_KEYWORDS.find(
+    const keywordFound = REMOVE_KEYWORDS.find(
       (keyword) => song.title.toLowerCase().indexOf(keyword) !== -1
     );
 
-    if (shouldRemove) {
-      removedSongs.push({ ...song, reason: "Included keyword" });
+    if (keywordFound) {
+      removedSongs.push({
+        ...song,
+        reason: `Included keyword: ${keywordFound} `,
+      });
       return false;
     }
     return true;
@@ -75,8 +72,8 @@ const removeKeywords = (
  * only 'White Ferrari' and 'White' will stay
 
  * */
-const removeParenthesis = (songs: ShortSong[]) => {
-  const shortestSongs: ShortSong[] = [];
+const removeParenthesis = (songs: Song[]) => {
+  const shortestSongs: Song[] = [];
   const removedSongs: RemovedSong[] = [];
 
   let a = 0;
@@ -121,18 +118,15 @@ const removeParenthesis = (songs: ShortSong[]) => {
     if (existingSong.title.length > currentSongTitle.length) {
       removedSongs.push({
         ...existingSong,
-        reason: "Same text before parenthesis",
+        reason: `Same text as ${currentSongTitle} before parenthesis`,
       });
       shortestSongs[matchIdx] = songs[i];
-      console.log(
-        `REMOVED: ${existingSong.title} in favor of ${currentSong.title}`
-      );
       continue;
     }
     // if the newly found song has a larger title, push to removed
     removedSongs.push({
       ...currentSong,
-      reason: "Same text before parenthesis",
+      reason: `Same text before parenthesis as ${currentSongTitle}`,
     });
   }
 
@@ -142,25 +136,41 @@ const removeParenthesis = (songs: ShortSong[]) => {
 /**
  * remove songs with same name
  */
-const removeSameName = (songs: ShortSong[]) => {
+const removeSameName = (songs: Song[]) => {
   const namesSet = new Set<string>();
+  const idsSet = new Set<string>();
   const removedSongs: RemovedSong[] = [];
 
   songs = songs.filter((song) => {
-    const name = song.title;
-    if (!namesSet.has(name)) {
-      namesSet.add(name);
-      return true;
+    const normalizedTitle = song.title
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+    if (idsSet.has(song.id)) {
+      removedSongs.push({
+        ...song,
+        reason: `Duplicated id with ${song.title}`,
+      });
+      return false;
     }
-    removedSongs.push({ ...song, reason: "Duplicated name" });
-    return false;
+    if (namesSet.has(normalizedTitle)) {
+      removedSongs.push({
+        ...song,
+        reason: `Duplicated name`,
+      });
+      return false;
+    }
+    console.log(normalizedTitle);
+    idsSet.add(song.id);
+    namesSet.add(normalizedTitle);
+    return true;
   });
   return { songs, removed: removedSongs };
 };
 
 export const bigFilter = (noLives: boolean, songs: Song[]) => {
-  const nameAndIds = songs.map((song) => ({ title: song.title, id: song.id }));
-  const noDups = removeSameName(nameAndIds);
+  const noDups = removeSameName(songs);
   const noLive = removeKeywords(noDups.songs, noLives);
   const parenthesis = removeParenthesis(noLive.songs);
   const removed = [
@@ -168,8 +178,12 @@ export const bigFilter = (noLives: boolean, songs: Song[]) => {
     ...noLive.removed,
     ...parenthesis.removed,
   ];
-  console.log(JSON.stringify(removed, null, 2));
-  // return { songs: validSongs, removed: removedSongs };
+  console.log(JSON.stringify(parenthesis, null, 2));
+
+  return {
+    songs: parenthesis.songs,
+    removed: removed,
+  };
 };
 
 const getBeforeParenthesis = (text: string) => {
