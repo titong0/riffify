@@ -4,7 +4,7 @@ import React from "react";
 class Document extends NextDocument {
   render() {
     return (
-      <Html>
+      <Html className="dark">
         <Head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
@@ -17,7 +17,7 @@ class Document extends NextDocument {
             rel="stylesheet"
           />
         </Head>
-        <body className="min-h-screen font-libre bg-gradient-to-b dark:from-purplish dark:to-cyan-800 dark:bg-neutral-900 dark:text-gray-100 dark">
+        <body className="min-h-screen font-libre bg-gradient-to-b dark:from-purplish dark:to-cyan-800 dark:bg-neutral-900 dark:text-gray-100">
           <Main />
           <NextScript />
         </body>

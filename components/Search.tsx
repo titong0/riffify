@@ -82,7 +82,7 @@ const InputBar = () => {
               type="text"
             />
           </div>
-          <CTA className="">Search </CTA>
+          <CTA className="p-2 px-6">Search </CTA>
         </form>
       </Tabs.Content>
       <Tabs.Content
