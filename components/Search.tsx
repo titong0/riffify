@@ -1,6 +1,7 @@
 import * as Tabs from "@radix-ui/react-tabs";
 import Link from "next/link";
 import { Router, useRouter } from "next/router";
+import { BsSearch } from "react-icons/bs";
 import { randomWithMax } from "../utils";
 import CTA from "./CTA";
 
@@ -8,14 +9,14 @@ const Search = () => {
   return (
     <Tabs.Root
       defaultValue="Artist"
-      className="text-gray-900 bg-gray-100 border border-black dark:bg-gray-300"
+      className="text-gray-900 bg-gray-900 border border-black dark:text-gray-100 "
     >
       <Tabs.List className="flex justify-around border-blue">
         {["Artist", "Playlist"].map((mode, idx) => (
           <Tabs.Trigger
             key={mode}
             value={mode}
-            className="w-full p-3 transition bg-gray-200 border-b border-black rdx-state-active:underline rdx-state-active:border-b-2 rdx-state-inactive:text-gray-600 rdx-state-inactive:bg-gray-300 hover:bg-gray-100"
+            className="w-full p-2 transition bg-gray-200 border-b border-black dark:bg-slate-700 dark:text-gray-200 rdx-state-active:underline rdx-h rdx-state-active:border-b-2 rdx-state-inactive:text-gray-300 rdx-state-inactive:bg-slate-500"
           >
             {mode}
           </Tabs.Trigger>
@@ -63,8 +64,8 @@ const InputBar = () => {
             const artist = new FormData(e.target).get("artist");
             Router.push(`search/${artist!}`);
           }}
-        ><div>
-          
+        >
+          <div>
             <label className="" htmlFor="artist">
               Type your artist&apos;s name
             </label>
@@ -75,13 +76,13 @@ const InputBar = () => {
                 ]
               }
               name="artist"
-              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 focus:border"
+              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 dark:bg-gray-600 focus:border dark:text-gray-900"
               minLength={1}
               required
               type="text"
             />
-        </div>
-          <CTA>Search</CTA>
+          </div>
+          <CTA className="">Search </CTA>
         </form>
       </Tabs.Content>
       <Tabs.Content

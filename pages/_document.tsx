@@ -17,7 +17,7 @@ class Document extends NextDocument {
             rel="stylesheet"
           />
         </Head>
-        <body className="font-libre bg-stone-100 dark:bg-neutral-900 dark:text-gray-100">
+        <body className="min-h-screen font-libre bg-gradient-to-b dark:from-slate-600 dark:to-slate-800 dark:bg-neutral-900 dark:text-gray-100">
           <Main />
           <NextScript />
         </body>
