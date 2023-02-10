@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { saveTries } from "../../storageUtils";
 import { Attempt, GameState, StateSetter } from "../../types";
 import { analyzeTry } from "../../utils";
+import CTA from "../CTA";
 import Combobox from "./Combobox";
 import FailsDisplay from "./FailsDisplay";
 
@@ -42,9 +43,9 @@ const GameForm = ({
     <form onSubmit={submit}>
       <Combobox allSongs={allSongs} setValidInput={setValidInput} />
 
-      <div className="flex w-full justify-between p-2">
+      <div className="flex justify-between w-full p-2">
         <button
-          className="border border-black p-2 rounded-sm enabled:hover:bg-gray-300"
+          className="p-2 border border-current rounded-sm enabled:hover:bg-gray-300"
           disabled={attempts.length >= 3 || gameState !== "Playing"}
           type={"reset"}
           onClick={() => pushTry(analyzeTry("RESERVED-SKIP", correctSong))}
@@ -53,16 +54,15 @@ const GameForm = ({
             ? "No more skips"
             : `Skip (+${Math.pow(2, attempts.length + 1)}s)`}
         </button>
-
-        <button
-          className="p-2 px-4 bg-emerald-400 hover:outline outline-offset-2 active:bg-emerald-600 rounded-md transition
-          disabled:bg-emerald-200 disabled:hover:outline-none"
+        <CTA
+          className="p-2 px-6 w-fit"
           disabled={
             attempts.length === 5 || !validInput || gameState !== "Playing"
           }
         >
           Submit
-        </button>
+        </CTA>
+        {/* <button className="p-2 px-4 transition rounded-md bg-emerald-400 hover:outline outline-offset-2 active:bg-emerald-600 disabled:bg-emerald-200 disabled:hover:outline-none"></button> */}
       </div>
     </form>
   );

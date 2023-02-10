@@ -7,6 +7,9 @@ module.exports = {
 
   theme: {
     extend: {
+      colors: {
+        purplish: "#332B47",
+      },
       fontFamily: {
         libre: ["Libre Franklin", "sans-serif"],
       },

@@ -5,7 +5,7 @@ import { BsFillPlayFill } from "react-icons/bs";
 import { MdPause } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
-import { Attempt } from "../../types";
+import { Attempt, GameState } from "../../types";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
@@ -26,6 +26,7 @@ const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
   const playerRef = useRef<BaseReactPlayer<BaseReactPlayerProps>>(null);
 
   useEffect(() => {
+    console.log({ secondsLimit });
     const id = setInterval(() => {
       if (Date.now() - startedPlaying > secondsLimit * 1000) {
         playerRef.current?.seekTo(startsAt);

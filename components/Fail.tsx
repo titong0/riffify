@@ -61,7 +61,7 @@ const FailLayout: React.FC<FailLayoutProps> = ({ icon, text, className }) => {
   return (
     <div
       className={
-        "grid grid-cols-8 sm:grid-cols-12 items-center w-full border border-black h-9 px-2 animate-[fade-in_500ms]" +
+        "grid grid-cols-8 sm:grid-cols-12 items-center w-full border border-current h-9 px-2 animate-[fade-in_500ms]" +
         " " +
         className
       }

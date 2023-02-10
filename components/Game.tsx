@@ -25,13 +25,15 @@ const Game = ({
 }: GameProps) => {
   return (
     <div className="flex justify-center w-full mb-8">
-      <div className="w-full max-w-lg text-black bg-gray-200 rounded-md shadow-xl">
+      <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
         <FailsDisplay attempts={attempts} />
-        <section className="py-4">
+        <section className="py-2s">
           <Player
             startsAt={song.startAt}
             name={song.title}
-            secondsLimit={Math.pow(2, attempts.length + 1)}
+            secondsLimit={
+              gameState === "Playing" ? Math.pow(2, attempts.length + 1) : 16
+            }
             id={song.id}
             attempts={attempts}
           />

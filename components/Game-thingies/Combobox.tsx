@@ -43,13 +43,13 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
   });
 
   return (
-    <div className="relative mb-4 text-black">
+    <div className="relative mb-4">
       <div className="flex flex-col gap-1">
         <label className="mb-1 text-center" {...getLabelProps()}>
           This sounds like...
         </label>
         <div
-          className="flex shadow-sm bg-emerald-200 gap-0.5"
+          className="flex shadow-sm bg-black opacity-50 border gap-0.5"
           {...getComboboxProps()}
         >
           <input
@@ -78,7 +78,7 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
               className={`
                 ${highlightedIndex === index ? "bg-emerald-200" : ""}
                 ${selectedItem === item ? "font-bold" : ""}
-                py-2 px-3 shadow-sm`}
+                py-2 px-3 shadow-sm text-black`}
               key={`${item}${index}`}
               {...getItemProps({ item, index })}
             >

@@ -9,7 +9,8 @@ const CTA = ({ ...props }: CTAProps) => {
     <button
       {...props}
       className={twMerge(
-        "w-full p-2 px-8 ml-auto text-white transition border border-black rounded-xl bg-emerald-500 hover:outline outline-offset-2 outline-black active:bg-emerald-800",
+        `ml-auto text-white transition border border-black rounded-xl
+         hover:outline outline-offset-2 outline-black bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 `,
         props.className
       )}
     >

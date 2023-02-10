@@ -9,7 +9,7 @@ const FailsDisplay = ({ attempts }: { attempts: Attempt[] }) => {
   });
 
   return (
-    <div className="flex flex-col items-center gap-2 p-2 bg-slate-300">
+    <div className="flex flex-col items-center gap-2 p-2 text-gray-200">
       {attemptsDivs.map((attempt, idx) => (
         <Fail
           attempt={attempt}
