@@ -37,7 +37,7 @@ const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
     return () => {
       clearInterval(id);
     };
-  }, [startedPlaying]);
+  }, [startedPlaying, playing, startsAt, secondsLimit]);
 
   const handleReady = () => {
     setReady(true);
@@ -45,26 +45,25 @@ const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row w-full items-center p-1 px-2">
+    <div className="grid w-full grid-cols-10 px-2 justify-items-center sm:flex-row">
       <PlaytimeBar playing={playing} failAmount={attempts.length} />
-      <VideoPlayer
-        volume={0.5}
-        playerRef={playerRef}
-        url={url}
-        playing={playing}
-        onPlay={() => setPlaysStart(Date.now())}
-        onPause={() => setPlaysStart(0)}
-        onReady={handleReady}
-      />
+      <div className="fixed">
+        <VideoPlayer
+          volume={0.5}
+          playerRef={playerRef}
+          url={url}
+          playing={playing}
+          onPlay={() => setPlaysStart(Date.now())}
+          onPause={() => setPlaysStart(0)}
+          onReady={handleReady}
+        />
+      </div>
       {ready ? (
-        <button
-          className="border-2 p-2 w-12 h-12"
-          onClick={() => setPlaying(!playing)}
-        >
-          {!playing ? <BsFillPlayFill size="30" /> : <MdPause size="30" />}
+        <button className="w-6 h-6" onClick={() => setPlaying(!playing)}>
+          {!playing ? <BsFillPlayFill size="25" /> : <MdPause size="30" />}
         </button>
       ) : (
-        <span className="border-2 p-2 w-12 h-12">
+        <span className="w-12 h-12 p-2 border-2">
           <AiOutlineLoading size="30" className="animate-spin" />
         </span>
       )}

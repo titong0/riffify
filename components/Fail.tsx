@@ -5,7 +5,7 @@ import { Attempt } from "../types";
 const Fail = ({ attempt }: { attempt: Attempt | undefined }) => {
   if (!attempt)
     return (
-      <div className="flex items-center w-full h-2 p-2 border border-current"></div>
+      <div className="flex items-center w-full p-2 border border-current h-9"></div>
     );
 
   const attemptType = attempt.type;
@@ -14,7 +14,7 @@ const Fail = ({ attempt }: { attempt: Attempt | undefined }) => {
     return (
       <FailLayout
         className="italic"
-        icon={<MdBlock size={30} />}
+        icon={<MdBlock size={25} />}
         text="Skipped"
       ></FailLayout>
     );
@@ -61,7 +61,7 @@ const FailLayout: React.FC<FailLayoutProps> = ({ icon, text, className }) => {
   return (
     <div
       className={
-        "grid grid-cols-8 sm:grid-cols-12 items-center w-full border border-black h-10 px-2 animate-[fade-in_500ms]" +
+        "grid grid-cols-8 sm:grid-cols-12 items-center w-full border border-black h-9 px-2 animate-[fade-in_500ms]" +
         " " +
         className
       }

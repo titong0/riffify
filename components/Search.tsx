@@ -76,7 +76,7 @@ const InputBar = () => {
                 ]
               }
               name="artist"
-              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 dark:bg-gray-600 focus:border dark:text-gray-900"
+              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 dark:bg-gray-600 focus:border dark:text-gray-300"
               minLength={1}
               required
               type="text"

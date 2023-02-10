@@ -28,7 +28,7 @@ export const getToday = async (
 
   const allSongs = await getAllSongs(artist.sections);
   const { songs, removed } = bigFilter(noLive, allSongs);
-
+  // el punto es q el codigo tiene q hacer lo siguiente para q stremeeo el navegador ahora
   const artistInfo = getArtistInfo(artist);
 
   const todayIdx = selectToday(songs.length, new Date());

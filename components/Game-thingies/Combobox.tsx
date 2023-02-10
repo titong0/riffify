@@ -43,9 +43,9 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
   });
 
   return (
-    <div className="relative text-black mb-4">
+    <div className="relative mb-4 text-black">
       <div className="flex flex-col gap-1">
-        <label className="text-center my-2" {...getLabelProps()}>
+        <label className="mb-1 text-center" {...getLabelProps()}>
           This sounds like...
         </label>
         <div
@@ -70,7 +70,7 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
       </div>
       <ul
         {...getMenuProps()}
-        className="absolute p-0 w-full bg-white shadow-md max-h-80 overflow-y-auto"
+        className="absolute w-full p-0 overflow-y-auto bg-white shadow-md max-h-80"
       >
         {isOpen &&
           songs.map((item, index) => (
