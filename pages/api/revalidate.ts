@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { readFirstInArray } from "../../utils";
+import { z } from "zod";
+import { ArtistIdSchema } from "../../shared/schemas";
 const cron = require("node-cron");
 
 const VALIDATED_TODAY = new Set<string>();
@@ -13,10 +14,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   // Check for secret to confirm this is a valid request
-  const id = readFirstInArray(req.query.id);
-  if (!id || id.length !== 24) {
+  const parse = ArtistIdSchema.safeParse(req.query.id);
+  if (!parse.success) {
     return res.status(401).json({ message: "Invalid id" });
   }
+  const id = parse.data;
 
   try {
     if (VALIDATED_TODAY.has(id) === true) return;
