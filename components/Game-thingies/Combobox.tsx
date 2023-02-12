@@ -49,7 +49,7 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
           This sounds like...
         </label>
         <div
-          className="flex shadow-sm bg-black opacity-50 border gap-0.5"
+          className="flex shadow-sm bg-transparent opacity-100 border gap-0.5"
           {...getComboboxProps()}
         >
           <input

@@ -15,9 +15,16 @@ type PlayerProps = {
   secondsLimit: number;
   name: string;
   attempts: Attempt[];
+  gameState: GameState;
 };
 
-const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
+const Player = ({
+  id,
+  startsAt,
+  secondsLimit,
+  attempts,
+  gameState,
+}: PlayerProps) => {
   const [playing, setPlaying] = useState(false);
   const [startedPlaying, setPlaysStart] = useState(0);
   const [ready, setReady] = useState(false);
@@ -47,7 +54,11 @@ const Player = ({ id, startsAt, secondsLimit, attempts }: PlayerProps) => {
 
   return (
     <div className="grid w-full grid-cols-10 px-2 justify-items-center sm:flex-row">
-      <PlaytimeBar playing={playing} failAmount={attempts.length} />
+      <PlaytimeBar
+        gameState={gameState}
+        playing={playing}
+        failAmount={attempts.length}
+      />
       <div className="fixed">
         <VideoPlayer
           volume={0.5}

@@ -29,6 +29,7 @@ const Game = ({
         <FailsDisplay attempts={attempts} />
         <section className="py-2s">
           <Player
+            gameState={gameState}
             startsAt={song.startAt}
             name={song.title}
             secondsLimit={

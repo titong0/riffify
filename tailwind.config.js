@@ -15,8 +15,8 @@ module.exports = {
         libre: ["Libre Franklin", "sans-serif"],
       },
       minHeight: {
-        32: "16rem",
         5: "2.5rem",
+        32: "16rem",
       },
       keyframes: {
         "fade-in": {

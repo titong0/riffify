@@ -1,18 +1,19 @@
 import { RemovedSong, Song } from "../shared/schemas";
 
-type RemovableKeyword =
-  | "(live"
-  | " live"
-  | "radio"
-  | "version"
-  | "en vivo"
-  | "vivo"
-  | "special"
-  | "instrumental"
-  | "beat"
-  | "commentary"
-  | "demo"
-  | "remix";
+const RemovableKeywords = [
+  "(live",
+  " live",
+  "radio",
+  "version",
+  "en vivo",
+  "vivo",
+  "special",
+  "instrumental",
+  "beat",
+  "commentary",
+  "demo",
+  "remix",
+] as const;
 
 /**
  *
@@ -24,25 +25,11 @@ type RemovableKeyword =
 const removeKeywords = (
   songs: Song[],
   noLive: boolean,
-  keywordsToRemove?: RemovableKeyword[]
+  keywordsToRemove?: typeof RemovableKeywords
 ) => {
   if (!noLive) return { songs, removed: [] };
   const removedSongs: RemovedSong[] = [];
-  const REMOVE_KEYWORDS = keywordsToRemove || [
-    "(live",
-    " live",
-    "radio",
-    "version",
-    "en vivo",
-    "vivo",
-    "special",
-    "instrumental",
-    "beat",
-    "commentary",
-    "demo",
-    "sessions",
-    "remix",
-  ];
+  const REMOVE_KEYWORDS = keywordsToRemove || RemovableKeywords;
 
   songs = songs.filter((song) => {
     const keywordFound = REMOVE_KEYWORDS.find(
@@ -161,7 +148,6 @@ const removeSameName = (songs: Song[]) => {
       });
       return false;
     }
-    console.log(normalizedTitle);
     idsSet.add(song.id);
     namesSet.add(normalizedTitle);
     return true;
@@ -178,7 +164,7 @@ export const bigFilter = (noLives: boolean, songs: Song[]) => {
     ...noLive.removed,
     ...parenthesis.removed,
   ];
-  console.log(JSON.stringify(parenthesis, null, 2));
+  // console.log(JSON.stringify(parenthesis, null, 2));
 
   return {
     songs: parenthesis.songs,
