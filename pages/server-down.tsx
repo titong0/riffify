@@ -15,9 +15,7 @@ const serverDown = () => {
           </span>
         </p>
       </div>
-      <Link href="/">
-        <a className="px-6 py-2 border rounded-md">Go back</a>
-      </Link>
+      <Link href="/">Go back</Link>
     </div>
   );
 };

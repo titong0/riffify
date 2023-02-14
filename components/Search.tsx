@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Router, useRouter } from "next/router";
 import { BsSearch } from "react-icons/bs";
 import { randomWithMax } from "../utils";
-import CTA from "./CTA";
+import CTA from "./common/CTA";
 
 const Search = () => {
   return (

@@ -1,7 +1,7 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import React, { useState } from "react";
 import { Game_Song } from "../shared/schemas";
-import CTA from "./CTA";
+import CTA from "./common/CTA";
 import SongSnippet from "./SongSnippet";
 import ArtistStats from "./UserStats";
 
@@ -30,7 +30,7 @@ const WinningScreen = ({ song, failAmount }: WinningScreenProps) => {
               className="absolute top-16 left-1/2 w-[95%] md:w-4/5 max-w-2xl min-h-72 bg-gray-900 rounded-md -translate-x-1/2
             p-2 animate-[fade-in_600ms] animate-[] z-50 flex flex-col items-center"
             >
-              <AlertDialog.Title className="text-2xl my-2 font-bold text-center">
+              <AlertDialog.Title className="my-2 text-2xl font-bold text-center">
                 {" "}
                 You won!
               </AlertDialog.Title>

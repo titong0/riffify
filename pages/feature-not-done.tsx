@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { AiOutlineHeart } from "react-icons/ai";
-import CTA from "../components/CTA";
+import CTA from "../components/common/CTA";
 const NoFeature = () => {
   return (
     <>
