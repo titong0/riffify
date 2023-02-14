@@ -62,27 +62,37 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
 ) => {
   const parsed = ArtistIdSchema.safeParse(ctx.params!.id);
   if (!parsed.success) return { notFound: true };
-  const now = new Date();
-  console.log(`---------------------------
+  const id = parsed.data;
+  try {
+    const now = new Date();
+    console.log(`---------------------------
   FETCHING ARTIST:....`);
+    const today = await getToday(id, true);
 
-  const today = await getToday(parsed.data, true);
+    console.log(
+      `FINISHED FETCHING FETCHING ARTIST:.... ${
+        new Date().getMilliseconds() - now.getMilliseconds()
+      }ms`
+    );
 
-  console.log(
-    `FINISHED FETCHING FETCHING ARTIST:.... ${
-      new Date().getMilliseconds() - now.getMilliseconds()
-    }ms`
-  );
-
-  return {
-    props: {
-      song: today.song,
-      allSongs: today.allSongs,
-      artist: today.artist,
-      removed: today.removed,
-      generatedAt: new Date().toString(),
-    },
-  };
+    return {
+      props: {
+        song: today.song,
+        allSongs: today.allSongs,
+        artist: today.artist,
+        removed: today.removed,
+        generatedAt: new Date().toString(),
+      },
+    };
+  } catch (error) {
+    console.dir(error);
+    return {
+      redirect: {
+        destination: `/no-grid?from=${id}`,
+        statusCode: 301,
+      },
+    };
+  }
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
