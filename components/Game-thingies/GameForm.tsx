@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { saveTries } from "../../storageUtils";
 import { Attempt, GameState, StateSetter } from "../../types";
 import { analyzeTry } from "../../utils";
-import CTA from "../CTA";
+import CTA from "../common/CTA";
 import Combobox from "./Combobox";
 import FailsDisplay from "./FailsDisplay";
 
