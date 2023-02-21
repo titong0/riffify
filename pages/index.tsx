@@ -1,8 +1,18 @@
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from "next";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Search from "../components/Search";
+import TrendingHeardle from "../components/TrendingHeardle";
+import { Artist } from "../shared/schemas";
+import { getTrendingHeardles } from "./api/trackArtist";
 
-const Index = () => {
+type LandingProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+const Index: React.FC<LandingProps> = ({ artists }) => {
   return (
     <>
       <Head>
@@ -18,6 +28,12 @@ const Index = () => {
         </header>
         <div className="flex justify-center">
           <div className="w-full max-w-2xl m-2">
+            <div className="flex items-center w-full gap-2">
+              {artists &&
+                artists.map((artist) => (
+                  <TrendingHeardle key={artist.id} {...artist} />
+                ))}
+            </div>
             <Search />
           </div>
         </div>
@@ -25,5 +41,11 @@ const Index = () => {
     </>
   );
 };
-
+export const getServerSideProps: GetServerSideProps<{
+  artists: Artist[] | null;
+}> = async (ctx: GetServerSidePropsContext) => {
+  const trendings = getTrendingHeardles() || null;
+  console.log(trendings);
+  return { props: { artists: trendings } };
+};
 export default Index;

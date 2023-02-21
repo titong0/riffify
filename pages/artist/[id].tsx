@@ -16,19 +16,16 @@ const Artist: React.FC<ArtistProps> = ({
   artist,
   generatedAt,
 }) => {
-  const isUpdated = isToday(new Date(generatedAt));
-  const Router = useRouter();
-
   useEffect(() => {
-    if (isUpdated) return;
-    fetch(`${host}/api/revalidate?id=${artist.id}`).then((i) => {
-      if (i.ok) {
-        setTimeout(() => {
-          Router.reload();
-        }, 3000);
-      }
+    const serializedArtist = JSON.stringify(artist);
+    fetch(`${host}/api/trackArtist`, {
+      method: "POST",
+      body: serializedArtist,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
-  }, []);
+  }, [artist]);
 
   return (
     <>
@@ -36,12 +33,6 @@ const Artist: React.FC<ArtistProps> = ({
         <title>{`${artist.name} heardle`}</title>
       </Head>
 
-      {!isUpdated && (
-        <div>
-          You are the first person to play this artist today! sorry, we will
-          reload the page as soon as it is updated
-        </div>
-      )}
       <h1 className="text-2xl text-center py-7">{artist.name} heardle</h1>
       {/* <BgImage url={artist.avatar[0].url} /> */}
       <GameWrapper allSongs={allSongs} artist={artist} song={song} />
@@ -63,10 +54,11 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   const parsed = ArtistIdSchema.safeParse(ctx.params!.id);
   if (!parsed.success) return { notFound: true };
   const id = parsed.data;
+
   try {
     const now = new Date();
     console.log(`---------------------------
-  FETCHING ARTIST:....`);
+    FETCHING ARTIST:....`);
     const today = await getToday(id, true);
 
     console.log(
@@ -85,7 +77,6 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
       },
     };
   } catch (error) {
-    console.dir(error);
     return {
       redirect: {
         destination: `/no-grid?from=${id}`,

@@ -21,5 +21,6 @@ const CTA = React.forwardRef<HTMLButtonElement, CTAProps>(
     );
   }
 );
+CTA.displayName = "CTA";
 
 export default CTA;
