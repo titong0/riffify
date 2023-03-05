@@ -1,3 +1,4 @@
+import { createClient } from "@supabase/supabase-js";
 import Grid from "youtubei.js/dist/src/parser/classes/Grid";
 import MusicCarouselShelf from "youtubei.js/dist/src/parser/classes/MusicCarouselShelf";
 import MusicShelf from "youtubei.js/dist/src/parser/classes/MusicShelf";
@@ -19,6 +20,9 @@ import { youtube } from "./search";
 import { calculateStart, selectToday } from "./songChoosingUtils";
 import { bigFilter } from "./songDuplicationUtils";
 
+const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
+const supabaseKey = process.env.SUPABASE_KEY || "";
+const supabase = createClient(SUPABASE_URL, supabaseKey);
 export const getToday = async (
   artistId: string,
   noLive: boolean
