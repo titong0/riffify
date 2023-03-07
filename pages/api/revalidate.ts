@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { ArtistIdSchema } from "../../shared/schemas";
+import { ArtistIdSchema } from "../../shared/libSchemas";
 const cron = require("node-cron");
 
 const VALIDATED_TODAY = new Set<string>();

@@ -10,7 +10,7 @@ type ChannelItemProps = Omit<Artist, "description"> & {
 const ChannelItem: React.FC<ChannelItemProps> = ({
   id,
   name,
-  thumbnails,
+  thumbnail,
   shouldPrefetch,
 }) => {
   return (
@@ -21,7 +21,7 @@ const ChannelItem: React.FC<ChannelItemProps> = ({
       <div className="flex items-center p-2 border-b border-current hover:bg-gray-200 dark:hover:bg-gray-800">
         <Image
           unoptimized
-          src={thumbnails[1].url || thumbnails[0].url}
+          src={thumbnail}
           referrerPolicy={"no-referrer"}
           width={50}
           height={50}

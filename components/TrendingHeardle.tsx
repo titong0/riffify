@@ -6,11 +6,11 @@ const TrendingHeardle: React.FC<Artist> = ({
   description,
   id,
   name,
-  thumbnails,
+  thumbnail,
 }) => {
   return (
     <div className="flex flex-col">
-      <Image unoptimized layout="fill" src={thumbnails[0].url} alt="" />
+      <Image unoptimized layout="fill" src={thumbnail} alt="" />
       <h4>{name}</h4>
     </div>
   );

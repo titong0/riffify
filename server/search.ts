@@ -1,5 +1,5 @@
 import { Innertube } from "youtubei.js";
-import { YT_ArtistSearchSchema } from "../shared/schemas";
+import { YT_ArtistSearchSchema } from "../shared/libSchemas";
 export const youtube = Innertube.create();
 
 export const ArtistSearch = async (artistName: string) => {
@@ -14,7 +14,11 @@ export const ArtistSearch = async (artistName: string) => {
 
   const data = search.results.map((channel) => {
     const parsed = YT_ArtistSearchSchema.parse(channel);
-    return parsed;
+    return {
+      name: parsed.name,
+      id: parsed.id,
+      thumbnail: parsed.thumbnails[0].url,
+    };
   });
   return data;
 };
