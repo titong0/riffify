@@ -47,26 +47,26 @@ export const getToday = async (
 const getAllSongs = async (
   sections: (MusicCarouselShelf | MusicShelf)[]
 ): Promise<Array<Song>> => {
-  const { albums, singles } = removeUnnecesarySections(sections);
+  const { albumsSection, singlesSection } = removeUnnecesarySections(sections);
 
-  const albumsFetch = getFullSection(albums).then((albums) => {
+  const albumsFetch = getFullSection(albumsSection).then((albums) => {
     if (!albums) return null;
     return Promise.all(albums.map((album) => getSongsFromAlbum(album)));
   });
 
-  const singlesFetch = getFullSection(singles).then((singles) => {
+  const singlesFetch = getFullSection(singlesSection).then((singles) => {
     if (!singles) return null;
     return Promise.all(singles.map((single) => getSongsFromAlbum(single)));
   });
 
-  const fullAlbumsAndSingles = await Promise.all([albumsFetch, singlesFetch]);
+  const [albums, singles] = await Promise.all([albumsFetch, singlesFetch]);
   const allSongs: Array<Song> = [];
 
-  if (fullAlbumsAndSingles[0]) {
-    allSongs.push(...fullAlbumsAndSingles[0].flat(1));
+  if (albums) {
+    allSongs.push(...albums[0].flat(1));
   }
-  if (fullAlbumsAndSingles[1]) {
-    allSongs.push(...fullAlbumsAndSingles[1].flat(1));
+  if (singles) {
+    allSongs.push(...singles[1].flat(1));
   }
 
   return allSongs;
@@ -75,20 +75,20 @@ const getAllSongs = async (
 const removeUnnecesarySections = (
   sections: (MusicCarouselShelf | MusicShelf)[]
 ) => {
-  const albums = sections
+  const albumsSection = sections
     .find((section) => {
       if (section.is(MusicCarouselShelf))
         return section.header?.title.text === "Albums";
     })
     ?.as(MusicCarouselShelf);
-  const singles = sections
+  const singlesSection = sections
     .find((section) => {
       if (section.is(MusicCarouselShelf))
         return section.header?.title.text === "Singles";
     })
     ?.as(MusicCarouselShelf);
 
-  return { albums, singles };
+  return { albumsSection, singlesSection };
 };
 
 const getFullSection = async (section: MusicCarouselShelf | undefined) => {
@@ -124,11 +124,9 @@ const getFullSection = async (section: MusicCarouselShelf | undefined) => {
 const getSongsFromAlbum = async (
   sectionItem: MusicTwoRowItem
 ): Promise<Array<Song>> => {
+  const id = sectionItem.endpoint.payload.browseId;
   const client = await youtube;
-  const albumRes = await client.music.getAlbum(
-    sectionItem.endpoint.payload.browseId
-  );
-
+  const albumRes = await client.music.getAlbum(id);
   return albumRes.contents.map((albumSong) => {
     const song = YT_SongSchema.parse(albumSong);
     const album = YT_AlbumSchema.parse(albumRes);
@@ -137,6 +135,7 @@ const getSongsFromAlbum = async (
       id: song.id,
       duration: song.duration?.text,
       album: {
+        id: id,
         name: album.header.title.text,
         url: album.url,
         thumbnails: album.header.thumbnails,

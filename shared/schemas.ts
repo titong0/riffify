@@ -12,6 +12,7 @@ const ThumbnailSchema = z.object({
 
 const AlbumShortSchema = z.object({
   name: z.string(),
+  id: z.string(),
   url: z.string().url(),
   thumbnails: ThumbnailSchema.array(),
 });
