@@ -8,46 +8,82 @@ import SingleColumnBrowseResults from "youtubei.js/dist/src/parser/classes/Singl
 import Tab from "youtubei.js/dist/src/parser/classes/Tab";
 import { ObservedArray } from "youtubei.js/dist/src/parser/helpers";
 import Artist from "youtubei.js/dist/src/parser/ytmusic/Artist";
-import { z } from "zod";
 import {
-  YT_SongSchema,
+  db,
   YT_AlbumSchema,
-  Song,
   YT_ArtistHeaderSchema,
-  TodaySongResponseSchema,
-} from "../shared/schemas";
+  YT_SongSchema,
+} from "../shared/libSchemas";
+import { Album, Song, TodaySongResponse } from "../shared/schemas";
 import { youtube } from "./search";
-import { calculateStart, selectToday } from "./songChoosingUtils";
+import { calculateStart, randomIdsSequence } from "./songChoosingUtils";
 import { bigFilter } from "./songDuplicationUtils";
 
 const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY || "";
-const supabase = createClient(SUPABASE_URL, supabaseKey);
+const supabase = createClient<db>(SUPABASE_URL, supabaseKey);
+
 export const getToday = async (
   artistId: string,
   noLive: boolean
-): Promise<z.infer<typeof TodaySongResponseSchema>> => {
+): Promise<TodaySongResponse> => {
+  const dbHeardle = await getHeardleFromDb(artistId);
+  if (dbHeardle !== null) {
+    //not implemented
+  }
+  const heardle = await createHeardle(artistId);
+  const startTime = calculateStart(heardle.song.duration);
+
+  return {
+    artist: heardle.artist,
+    validSongs: heardle.allSongs,
+    removed: heardle.removed,
+    song: { startAt: startTime, ...heardle.song },
+  };
+};
+
+async function getHeardleFromDb(artistId: string) {
+  const heardle = await supabase
+    .from("Heardles")
+    .select("*")
+    .eq("artist_id", artistId);
+  return heardle.data;
+}
+
+async function createHeardle(artistId: string) {
   const client = await youtube;
   const artist = await client.music.getArtist(artistId);
 
   const allSongs = await getAllSongs(artist.sections);
-  const { songs, removed } = bigFilter(noLive, allSongs);
-  // el punto es q el codigo tiene q hacer lo siguiente para q stremeeo el navegador ahora
+  const { songs, removed } = bigFilter(true, allSongs);
+
   const artistInfo = getArtistInfo(artist);
 
-  const todayIdx = selectToday(songs.length, new Date());
-  const todaySong = songs[todayIdx.today];
-
-  const startTime = calculateStart(todaySong.duration);
-
+  const pushHeardle = supabase.from("Heardles").insert({
+    artist_id: artistId,
+    ids_sequence: randomIdsSequence(songs.map((s) => s.id)),
+    valid_song_names: songs.map((i) => i.title),
+  });
+  exctractUniqueAlbums(songs).forEach((album) => console.log(album.name));
   return {
-    song: { startAt: startTime, ...todaySong },
+    // song: todaySong,
     removed,
     allSongs: songs.map((i) => i.title),
     artist: { id: artistId, ...artistInfo },
   };
-};
+}
 
+function exctractUniqueAlbums(songs: Song[]) {
+  const albumIdsSet = new Set<string>();
+  const albumSet = new Set<Album>();
+  songs.forEach((song) => {
+    const { album } = song;
+    if (albumIdsSet.has(album.id)) return;
+    albumIdsSet.add(album.id);
+    albumSet.add(album);
+  });
+  return Array.from(albumSet);
+}
 const getAllSongs = async (
   sections: (MusicCarouselShelf | MusicShelf)[]
 ): Promise<Array<Song>> => {
@@ -142,19 +178,18 @@ const getSongsFromAlbum = async (
         id: id,
         name: album.header.title.text,
         url: album.url,
-        thumbnails: album.header.thumbnails,
+        thumbnail: album.header.thumbnails[0].url,
       },
     };
   });
 };
 
 const getArtistInfo = (artist: Artist) => {
-  // console.log(artist.header?.as(MusicImmersiveHeader).title.);
   const parsed = YT_ArtistHeaderSchema.parse(artist.header);
 
   return {
     name: parsed.title.text,
     description: parsed.description.text,
-    thumbnails: parsed.thumbnail.contents,
+    thumbnail: parsed.thumbnail.contents[0].url,
   };
 };

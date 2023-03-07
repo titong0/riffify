@@ -4,9 +4,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import GameWrapper from "../../components/Game-thingies/GameWrapper";
 import { isToday } from "../../utils";
-import { ArtistIdSchema, Page_ArtistGameProps } from "../../shared/schemas";
+import { Page_ArtistGameProps } from "../../shared/schemas";
 import { getToday } from "../../server/getTodaySong";
 import { host } from "../../config";
+import { ArtistIdSchema } from "../../shared/libSchemas";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 

@@ -1,16 +1,7 @@
-export const selectToday = (length: number, today: Date) => {
-  const startDate = new Date("1/1/2000");
-
-  let todaysIdx = Math.abs(dayDiff(startDate, today));
-
-  // have a different order once you run out of songs
-  if (todaysIdx / length > 1) {
-    todaysIdx = todaysIdx % length;
-    todaysIdx = randomSecuence(length)[todaysIdx];
-  }
-  const allDays = randomSecuence(length);
-  return { today: allDays[todaysIdx], fullSecuence: allDays };
-};
+export function randomIdsSequence(ids: string[]) {
+  const sequence = randomSecuence(ids.length);
+  return sequence.map((index) => ids[index]);
+}
 
 const randomSecuence = (length: number) => {
   const nums = Array.from({ length: length }, (_, idx) => idx);

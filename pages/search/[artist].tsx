@@ -4,7 +4,6 @@ import React from "react";
 import { z } from "zod";
 import ChannelItem from "../../components/ChannelItem";
 import { ArtistSearch } from "../../server/search";
-import { SearchQuerySchema } from "../../shared/schemas";
 
 type pageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -29,7 +28,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
                 key={channel.id}
                 name={channel.name}
                 id={channel.id}
-                thumbnails={channel.thumbnails}
+                thumbnail={channel.thumbnail}
               />
             ))}
           </div>
