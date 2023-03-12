@@ -8,7 +8,7 @@ import FailsDisplay from "./FailsDisplay";
 
 type FormProps = {
   artistId: string;
-  allSongs: string[];
+  validSongs: string[];
   correctSong: string;
   gameState: GameState;
   attempts: Attempt[];
@@ -17,7 +17,7 @@ type FormProps = {
 
 const GameForm = ({
   artistId,
-  allSongs,
+  validSongs,
   correctSong,
   gameState,
   attempts,
@@ -41,7 +41,7 @@ const GameForm = ({
   };
   return (
     <form onSubmit={submit}>
-      <Combobox allSongs={allSongs} setValidInput={setValidInput} />
+      <Combobox validSongs={validSongs} setValidInput={setValidInput} />
 
       <div className="flex justify-between w-full p-2">
         <button

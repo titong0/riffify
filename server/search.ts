@@ -9,10 +9,10 @@ export const ArtistSearch = async (artistName: string) => {
     type: "artist",
   });
 
-  if (!search.results)
+  if (!search.artists)
     throw new Error("No results for search of " + artistName);
 
-  const data = search.results.map((channel) => {
+  const data = search.artists.contents.map((channel) => {
     const parsed = YT_ArtistSearchSchema.parse(channel);
     return {
       name: parsed.name,

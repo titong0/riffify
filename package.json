@@ -27,7 +27,7 @@
     "react-player": "^2.10.1",
     "tailwind-merge": "^1.9.1",
     "tailwindcss-radix": "^2.5.0",
-    "youtubei.js": "^2.9.0",
+    "youtubei.js": "^3.3.0",
     "zod": "^3.0.0"
   },
   "devDependencies": {

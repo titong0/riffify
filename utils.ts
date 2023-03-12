@@ -1,3 +1,8 @@
+import {
+  PostgrestFilterBuilder,
+  PostgrestSingleResponse,
+} from "@supabase/postgrest-js";
+import dayjs from "dayjs";
 import { Attempt, GameState } from "./types";
 
 export const analyzeTry = (attempt: string, correct: string): Attempt => {
@@ -36,4 +41,21 @@ export const getGameState = (attempts: Attempt[]): GameState => {
 
 export const randomWithMax = (max: number) => {
   return Math.floor(Math.random() * max);
+};
+
+export const getDayDifference = (beforeDate: string, afterDate: Date) => {
+  return dayjs(beforeDate).diff(afterDate, "days");
+};
+
+export const throwOnError = <T extends any>(
+  postgreReq: PostgrestSingleResponse<T>,
+  name: string
+) => {
+  if (postgreReq.error) {
+    throw new Error(
+      `Error happened at ${name}: 
+      ${JSON.stringify(postgreReq.error, null, 2)}`
+    );
+  }
+  return postgreReq.data;
 };

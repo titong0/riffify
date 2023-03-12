@@ -3,11 +3,11 @@ import React, { memo, useState } from "react";
 import { StateSetter } from "../../types";
 
 type ComboProps = {
-  allSongs: string[];
+  validSongs: string[];
   setValidInput: StateSetter<boolean>;
 };
-const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
-  const [songs, setSongs] = useState(allSongs);
+const Combobox: React.FC<ComboProps> = ({ validSongs, setValidInput }) => {
+  const [songs, setSongs] = useState(validSongs);
 
   const getSongsFilter = (inputValue: string | undefined) => {
     return function songsFilter(song: string) {
@@ -29,7 +29,7 @@ const Combobox: React.FC<ComboProps> = ({ allSongs, setValidInput }) => {
     isOpen,
   } = useCombobox<string>({
     onInputValueChange({ inputValue }) {
-      setSongs(allSongs.filter(getSongsFilter(inputValue)));
+      setSongs(validSongs.filter(getSongsFilter(inputValue)));
       setValidInput(false);
     },
 

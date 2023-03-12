@@ -1,27 +1,13 @@
 import { createClient } from "@supabase/supabase-js";
-import Grid from "youtubei.js/dist/src/parser/classes/Grid";
-import MusicCarouselShelf from "youtubei.js/dist/src/parser/classes/MusicCarouselShelf";
-import MusicShelf from "youtubei.js/dist/src/parser/classes/MusicShelf";
-import MusicTwoRowItem from "youtubei.js/dist/src/parser/classes/MusicTwoRowItem";
-import SectionList from "youtubei.js/dist/src/parser/classes/SectionList";
-import SingleColumnBrowseResults from "youtubei.js/dist/src/parser/classes/SingleColumnBrowseResults";
-import Tab from "youtubei.js/dist/src/parser/classes/Tab";
-import { ObservedArray } from "youtubei.js/dist/src/parser/helpers";
-import Artist from "youtubei.js/dist/src/parser/ytmusic/Artist";
-import {
-  db,
-  YT_AlbumSchema,
-  YT_ArtistHeaderSchema,
-  YT_SongSchema,
-} from "../shared/libSchemas";
-import { Album, Song, TodaySongResponse } from "../shared/schemas";
-import { youtube } from "./search";
-import { calculateStart, randomIdsSequence } from "./songChoosingUtils";
-import { bigFilter } from "./songDuplicationUtils";
+import { db } from "../shared/libSchemas";
+import { TodaySongResponse } from "../shared/schemas";
+import { getDayDifference, throwOnError } from "../utils";
+import { createHeardle } from "./heardleCreate";
+import { calculateStart } from "./songChoosingUtils";
 
 const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY || "";
-const supabase = createClient<db>(SUPABASE_URL, supabaseKey);
+export const supabase = createClient<db>(SUPABASE_URL, supabaseKey);
 
 export const getToday = async (
   artistId: string,
@@ -29,167 +15,84 @@ export const getToday = async (
 ): Promise<TodaySongResponse> => {
   const dbHeardle = await getHeardleFromDb(artistId);
   if (dbHeardle !== null) {
-    //not implemented
+    console.log(`used existing heardle for artist ${dbHeardle.artist.name}`);
+    return dbHeardle;
   }
-  const heardle = await createHeardle(artistId);
-  const startTime = calculateStart(heardle.song.duration);
-
-  return {
-    artist: heardle.artist,
-    validSongs: heardle.allSongs,
-    removed: heardle.removed,
-    song: { startAt: startTime, ...heardle.song },
-  };
+  await createHeardle(artistId);
+  const secondTry = await getHeardleFromDb(artistId);
+  if (secondTry === null)
+    throw new Error("created heardle but still couldnt use newly created one");
+  return secondTry;
 };
 
-async function getHeardleFromDb(artistId: string) {
-  const heardle = await supabase
+async function getHeardleFromDb(
+  artistId: string
+): Promise<TodaySongResponse | null> {
+  const res = await supabase
     .from("Heardles")
     .select("*")
-    .eq("artist_id", artistId);
-  return heardle.data;
-}
+    .eq("artist_id", artistId)
+    .limit(1)
+    .single();
+  if (!res.data) return null;
+  const heardle = res.data;
+  const todayIndex = getDayDifference(heardle.created_at, new Date());
+  const todaySongId = heardle.ids_sequence[todayIndex];
+  const song = await supabase
+    .from("Songs")
+    .select("*")
+    .eq("song_id", todaySongId)
+    .limit(1)
+    .single()
+    .then((i) => throwOnError(i, "songs"));
 
-async function createHeardle(artistId: string) {
-  const client = await youtube;
-  const artist = await client.music.getArtist(artistId);
+  const album = await supabase
+    .from("Albums")
+    .select("*")
+    .eq("album_id", song?.album_id)
+    .limit(1)
+    .single()
+    .then((i) => throwOnError(i, "albums"));
+  const artistRes = supabase
+    .from("Artists")
+    .select("*")
+    .eq("id", artistId)
+    .limit(1)
+    .single()
+    .then((i) => throwOnError(i, "artists"));
+  const removedRes = supabase
+    .from("removed_songs")
+    .select("*")
+    .eq("removed_from_heardle_id", artistId)
+    .then((i) => throwOnError(i, "removed_songs"));
 
-  const allSongs = await getAllSongs(artist.sections);
-  const { songs, removed } = bigFilter(true, allSongs);
+  const [artist, removed] = await Promise.all([artistRes, removedRes]);
 
-  const artistInfo = getArtistInfo(artist);
+  const startTime = calculateStart(song.duration);
 
-  const pushHeardle = supabase.from("Heardles").insert({
-    artist_id: artistId,
-    ids_sequence: randomIdsSequence(songs.map((s) => s.id)),
-    valid_song_names: songs.map((i) => i.title),
-  });
-  exctractUniqueAlbums(songs).forEach((album) => console.log(album.name));
   return {
-    // song: todaySong,
-    removed,
-    allSongs: songs.map((i) => i.title),
-    artist: { id: artistId, ...artistInfo },
-  };
-}
-
-function exctractUniqueAlbums(songs: Song[]) {
-  const albumIdsSet = new Set<string>();
-  const albumSet = new Set<Album>();
-  songs.forEach((song) => {
-    const { album } = song;
-    if (albumIdsSet.has(album.id)) return;
-    albumIdsSet.add(album.id);
-    albumSet.add(album);
-  });
-  return Array.from(albumSet);
-}
-const getAllSongs = async (
-  sections: (MusicCarouselShelf | MusicShelf)[]
-): Promise<Array<Song>> => {
-  const { albumsSection, singlesSection } = removeUnnecesarySections(sections);
-
-  const albumsFetch = getFullSection(albumsSection).then((albums) => {
-    if (!albums) return null;
-    return Promise.all(albums.map((album) => getSongsFromAlbum(album)));
-  });
-
-  const singlesFetch = getFullSection(singlesSection).then((singles) => {
-    if (!singles) return null;
-    return Promise.all(singles.map((single) => getSongsFromAlbum(single)));
-  });
-
-  const [albums, singles] = await Promise.all([albumsFetch, singlesFetch]);
-  const allSongs: Array<Song> = [];
-
-  if (albums) {
-    allSongs.push(...albums[0].flat(1));
-  }
-  if (singles) {
-    allSongs.push(...singles[1].flat(1));
-  }
-
-  return allSongs;
-};
-
-const removeUnnecesarySections = (
-  sections: (MusicCarouselShelf | MusicShelf)[]
-) => {
-  const albumsSection = sections
-    .find((section) => {
-      if (section.is(MusicCarouselShelf))
-        return section.header?.title.text === "Albums";
-    })
-    ?.as(MusicCarouselShelf);
-  const singlesSection = sections
-    .find((section) => {
-      if (section.is(MusicCarouselShelf))
-        return section.header?.title.text === "Singles";
-    })
-    ?.as(MusicCarouselShelf);
-
-  return { albumsSection, singlesSection };
-};
-
-const getFullSection = async (section: MusicCarouselShelf | undefined) => {
-  if (!section) return null;
-
-  const client = await youtube;
-  const button = section.header?.more_content;
-  if (!button) {
-    if (section.contents[0] instanceof MusicTwoRowItem) {
-      return section.contents as ObservedArray<MusicTwoRowItem>;
-    }
-    throw new Error("no button nor album.contents");
-  }
-  const page = await button.endpoint.call(client.actions, {
-    parse: true,
-    client: "YTMUSIC",
-  });
-
-  if (!page) throw new Error("No page");
-
-  const single_col = page.contents.item().as(SingleColumnBrowseResults);
-
-  const grid = single_col.tabs
-    .firstOfType(Tab)
-    ?.content?.as(SectionList)
-    .contents.find((a) => a.is(Grid)) as Grid;
-
-  if (!grid?.items) throw new Error("No grid for this section");
-  const items = grid?.items.as(MusicTwoRowItem);
-  return items;
-};
-
-const getSongsFromAlbum = async (
-  sectionItem: MusicTwoRowItem
-): Promise<Array<Song>> => {
-  const id = sectionItem.endpoint.payload.browseId;
-  const client = await youtube;
-  const albumRes = await client.music.getAlbum(id);
-  return albumRes.contents.map((albumSong) => {
-    const song = YT_SongSchema.parse(albumSong);
-    const album = YT_AlbumSchema.parse(albumRes);
-    return {
+    song: {
       title: song.title,
-      id: song.id,
-      duration: song.duration?.text,
+      id: song.song_id,
+      duration: song.duration,
+      startAt: startTime,
       album: {
-        id: id,
-        name: album.header.title.text,
-        url: album.url,
-        thumbnail: album.header.thumbnails[0].url,
+        id: album.album_id,
+        name: album.name,
+        thumbnail: album.thumb_url,
       },
-    };
-  });
-};
-
-const getArtistInfo = (artist: Artist) => {
-  const parsed = YT_ArtistHeaderSchema.parse(artist.header);
-
-  return {
-    name: parsed.title.text,
-    description: parsed.description.text,
-    thumbnail: parsed.thumbnail.contents[0].url,
+    },
+    validSongs: heardle.valid_song_names,
+    artist: {
+      id: artistId,
+      description: artist.description,
+      name: artist.name,
+      thumbnail: artist.avatar_url,
+    },
+    removed: removed.map((removedS) => ({
+      id: removedS.song_id,
+      reason: removedS.reason,
+      title: removedS.title,
+    })),
   };
-};
+}

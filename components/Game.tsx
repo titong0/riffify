@@ -8,7 +8,7 @@ import Player from "./Game-thingies/Player";
 
 type GameProps = {
   song: Game_Song;
-  allSongs: string[];
+  validSongs: string[];
   artistId: string;
   gameState: GameState;
   attempts: Attempt[];
@@ -17,7 +17,7 @@ type GameProps = {
 
 const Game = ({
   song,
-  allSongs,
+  validSongs,
   artistId,
   gameState,
   attempts,
@@ -39,7 +39,7 @@ const Game = ({
             attempts={attempts}
           />
           <GameForm
-            allSongs={allSongs}
+            validSongs={validSongs}
             correctSong={song.title}
             artistId={artistId}
             gameState={gameState}

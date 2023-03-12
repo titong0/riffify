@@ -1,6 +1,4 @@
-import { ObservedArray } from "youtubei.js/dist/src/parser/helpers";
 import { YTNodes } from "youtubei.js";
-import Artist from "youtubei.js/dist/src/parser/ytmusic/Artist";
 import {
   YT_AlbumSchema,
   YT_ArtistHeaderSchema,
@@ -11,6 +9,9 @@ import { youtube } from "./search";
 import { randomIdsSequence } from "./songChoosingUtils";
 import { bigFilter } from "./songDuplicationUtils";
 import { supabase } from "./getTodaySong";
+import { ObservedArray } from "youtubei.js/dist/src/parser/helpers";
+import { Artist } from "youtubei.js/dist/src/parser/ytmusic";
+import { throwOnError } from "../utils";
 
 export async function createHeardle(artistId: string) {
   const client = await youtube;
@@ -20,25 +21,86 @@ export async function createHeardle(artistId: string) {
   const { songs, removed } = bigFilter(true, allSongs);
   const artistInfo = getArtistInfo(artist);
 
-  const pushHeardle = supabase
+  await supabase
     .from("Heardles")
     .insert({
       artist_id: artistId,
       ids_sequence: randomIdsSequence(songs.map((s) => s.id)),
       valid_song_names: songs.map((i) => i.title),
     })
-    .then((i) => console.log(i));
+    .throwOnError()
+    .then((insertPromise) => {
+      console.log(`inserted heardle for ${artistInfo.name}`);
+      return insertPromise;
+    });
 
-  const albums = exctractUniqueAlbums(songs).forEach((album) =>
-    console.log(album.name)
-  );
+  const albumsIns = Promise.all(
+    exctractUniqueAlbums(songs).map((album) =>
+      supabase
+        .from("Albums")
+        .insert({
+          album_id: album.id,
+          name: album.name,
+          thumb_url: album.thumbnail,
+        })
+        .throwOnError()
+    )
+  ).then((insertPromise) => {
+    console.log(`inserted albums for ${artistInfo.name}`);
+    return insertPromise;
+  });
 
-  return {
-    // song: todaySong,
-    removed,
-    allSongs: songs.map((i) => i.title),
-    artist: { id: artistId, ...artistInfo },
-  };
+  const removedIns = Promise.all(
+    removed.map((removedSong) =>
+      supabase
+        .from("removed_songs")
+        .insert({
+          reason: removedSong.reason,
+          removed_from_heardle_id: artistId,
+          song_id: removedSong.id,
+          title: removedSong.title,
+        })
+        .throwOnError()
+    )
+  ).then((insertPromise) => {
+    console.log(`inserted removed songs for ${artistInfo.name}`);
+    return insertPromise;
+  });
+
+  const artistIns = supabase
+    .from("Artists")
+    .insert({
+      id: artistId,
+      avatar_url: artistInfo.thumbnail,
+      name: artistInfo.name,
+      description: artistInfo.description,
+    })
+    .then((i) => throwOnError(i, `insert song ${artistInfo.name}`))
+    .then((insertPromise) => {
+      console.log(`inserted artist info for ${artistInfo.name}`);
+      return insertPromise;
+    });
+
+  const songsIns = Promise.all(
+    songs.map((song) =>
+      supabase
+        .from("Songs")
+        .insert({
+          album_id: song.album.id,
+          duration: song.duration,
+          for_heardle: artistId,
+          song_id: song.id,
+          title: song.title,
+        })
+        .then((i) => throwOnError(i, `insert song ${song.title}`))
+    )
+  ).then((insertPromise) => {
+    console.log(`inserted songs for ${artistInfo.name}`);
+    console.log(insertPromise);
+    return insertPromise;
+  });
+
+  return Promise.all([artistIns, albumsIns, removedIns, songsIns]);
 }
 
 function exctractUniqueAlbums(songs: Song[]) {
@@ -124,7 +186,7 @@ const getFullSection = async (section: YTNodes.MusicCarouselShelf | null) => {
   const grid = single_col.tabs
     .firstOfType(YTNodes.Tab)
     ?.content?.as(YTNodes.SectionList)
-    .contents.find((a) => a.is(YTNodes.Grid)) as YTNodes.Grid;
+    .contents.find((a: any) => a.is(YTNodes.Grid)) as YTNodes.Grid;
 
   if (!grid?.items)
     throw new Error("No grid for this section", { cause: "no-grid" });

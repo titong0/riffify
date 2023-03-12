@@ -13,7 +13,7 @@ type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
 const Artist: React.FC<ArtistProps> = ({
   song,
-  allSongs,
+  validSongs,
   artist,
   generatedAt,
 }) => {
@@ -36,7 +36,7 @@ const Artist: React.FC<ArtistProps> = ({
 
       <h1 className="text-2xl text-center py-7">{artist.name} heardle</h1>
       {/* <BgImage url={artist.avatar[0].url} /> */}
-      <GameWrapper allSongs={allSongs} artist={artist} song={song} />
+      <GameWrapper validSongs={validSongs} artist={artist} song={song} />
       {/* Might use this in the future */}
       {/* <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
         <pre className="p-2 whitespace-pre-wrap max-w-prose">
@@ -71,19 +71,24 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
     return {
       props: {
         song: today.song,
-        allSongs: today.allSongs,
+        validSongs: today.validSongs,
         artist: today.artist,
         removed: today.removed,
         generatedAt: new Date().toString(),
       },
     };
   } catch (error) {
-    return {
-      redirect: {
-        destination: `/no-grid?from=${id}`,
-        statusCode: 301,
-      },
-    };
+    if (error instanceof Error && error.cause === "no-grid") {
+      return {
+        redirect: {
+          destination: `/no-grid?from=${id}`,
+          statusCode: 301,
+        },
+      };
+    } else {
+      console.error(error);
+      return { notFound: true };
+    }
   }
 };
 

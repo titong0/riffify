@@ -10,9 +10,9 @@ import WinningScreen from "../WinningScreen";
 type GameWrapProps = {
   artist: Artist;
   song: Game_Song;
-  allSongs: string[];
+  validSongs: string[];
 };
-const GameWrapper = ({ song, allSongs, artist }: GameWrapProps) => {
+const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
   const [gameState, setGameState] = useState<GameState>("Playing");
   const [attempts, setAttempts] = useState<Attempt[]>([]);
 
@@ -36,7 +36,7 @@ const GameWrapper = ({ song, allSongs, artist }: GameWrapProps) => {
     <>
       <Game
         song={song}
-        allSongs={allSongs}
+        validSongs={validSongs}
         artistId={artist.id}
         gameState={gameState}
         attempts={attempts}
