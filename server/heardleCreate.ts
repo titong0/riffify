@@ -28,7 +28,7 @@ export async function createHeardle(artistId: string) {
       ids_sequence: randomIdsSequence(songs.map((s) => s.id)),
       valid_song_names: songs.map((i) => i.title),
     })
-    .throwOnError()
+    .then((i) => throwOnError(i, `insert heardle ${artistId}`))
     .then((insertPromise) => {
       console.log(`inserted heardle for ${artistInfo.name}`);
       return insertPromise;
@@ -43,7 +43,7 @@ export async function createHeardle(artistId: string) {
           name: album.name,
           thumb_url: album.thumbnail,
         })
-        .throwOnError()
+        .then((i) => throwOnError(i, `insert album ${album.name}`))
     )
   ).then((insertPromise) => {
     console.log(`inserted albums for ${artistInfo.name}`);
@@ -60,7 +60,7 @@ export async function createHeardle(artistId: string) {
           song_id: removedSong.id,
           title: removedSong.title,
         })
-        .throwOnError()
+        .then((i) => throwOnError(i, `remove_song ${removedSong.title}`))
     )
   ).then((insertPromise) => {
     console.log(`inserted removed songs for ${artistInfo.name}`);
@@ -75,7 +75,7 @@ export async function createHeardle(artistId: string) {
       name: artistInfo.name,
       description: artistInfo.description,
     })
-    .then((i) => throwOnError(i, `insert song ${artistInfo.name}`))
+    .then((i) => throwOnError(i, `insert artist info ${artistInfo.name}`))
     .then((insertPromise) => {
       console.log(`inserted artist info for ${artistInfo.name}`);
       return insertPromise;
