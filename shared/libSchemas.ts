@@ -1,6 +1,7 @@
 import { Database } from "../supabase";
 
 import { z } from "zod";
+import Innertube from "youtubei.js/agnostic";
 
 export const ArtistIdSchema = z.string().length(24);
 const headerTitle = z.object({ text: z.string() });
@@ -39,4 +40,7 @@ export const YT_ArtistHeaderSchema = z.object({
 
 export type SongResult = z.infer<typeof YT_SongSchema>;
 export type AlbumResult = z.infer<typeof YT_AlbumSchema>;
+export type Artist = Awaited<
+  ReturnType<Awaited<ReturnType<typeof Innertube.create>>["music"]["getArtist"]>
+>;
 export type db = Database;
