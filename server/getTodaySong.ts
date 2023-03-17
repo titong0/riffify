@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import { db } from "../shared/libSchemas";
 import { TodaySongResponse } from "../shared/schemas";
-import { getDayDifference, throwOnError } from "../utils";
-import { createHeardle } from "./heardleCreate";
+import { getDayDifference, checkIntegrity } from "../utils";
+import { createHeardle } from "./createHeardle";
 import { calculateStart } from "./songChoosingUtils";
 
 const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
@@ -14,6 +14,7 @@ export const getToday = async (
   noLive: boolean
 ): Promise<TodaySongResponse> => {
   const dbHeardle = await getHeardleFromDb(artistId);
+
   if (dbHeardle !== null) {
     console.log(`used existing heardle for artist ${dbHeardle.artist.name}`);
     return dbHeardle;
@@ -29,7 +30,7 @@ async function getHeardleFromDb(
   artistId: string
 ): Promise<TodaySongResponse | null> {
   const res = await supabase
-    .from("Heardles")
+    .from("heardles")
     .select("*")
     .eq("artist_id", artistId)
     .limit(1)
@@ -39,32 +40,33 @@ async function getHeardleFromDb(
   const todayIndex = getDayDifference(heardle.created_at, new Date());
   const todaySongId = heardle.ids_sequence[todayIndex];
   const song = await supabase
-    .from("Songs")
+    .from("songs")
     .select("*")
     .eq("song_id", todaySongId)
     .limit(1)
     .single()
-    .then((i) => throwOnError(i, "songs"));
+    .then((i) => checkIntegrity(i, "songs").data);
 
   const album = await supabase
-    .from("Albums")
+    .from("albums")
     .select("*")
     .eq("album_id", song?.album_id)
     .limit(1)
     .single()
-    .then((i) => throwOnError(i, "albums"));
+    .then((i) => checkIntegrity(i, "albums").data);
   const artistRes = supabase
-    .from("Artists")
+    .from("artists")
     .select("*")
     .eq("id", artistId)
     .limit(1)
     .single()
-    .then((i) => throwOnError(i, "artists"));
+    .then((i) => checkIntegrity(i, "artists").data);
+
   const removedRes = supabase
     .from("removed_songs")
     .select("*")
     .eq("removed_from_heardle_id", artistId)
-    .then((i) => throwOnError(i, "removed_songs"));
+    .then((i) => checkIntegrity(i, "removed_songs").data);
 
   const [artist, removed] = await Promise.all([artistRes, removedRes]);
 

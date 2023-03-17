@@ -164,11 +164,15 @@ export const bigFilter = (noLives: boolean, songs: Song[]) => {
     ...noLive.removed,
     ...parenthesis.removed,
   ];
-  // console.log(JSON.stringify(parenthesis, null, 2));
-
+  const removedIdsSet = new Set<string>();
+  const filteredRemoved = removed.filter((r) => {
+    if (removedIdsSet.has(r.id)) return false;
+    removedIdsSet.add(r.id);
+    return true;
+  });
   return {
     songs: parenthesis.songs,
-    removed: removed,
+    removed: filteredRemoved,
   };
 };
 

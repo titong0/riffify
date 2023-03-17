@@ -40,7 +40,7 @@ export const YT_ArtistHeaderSchema = z.object({
 
 export type SongResult = z.infer<typeof YT_SongSchema>;
 export type AlbumResult = z.infer<typeof YT_AlbumSchema>;
-export type Artist = Awaited<
+export type YTArtist = Awaited<
   ReturnType<Awaited<ReturnType<typeof Innertube.create>>["music"]["getArtist"]>
 >;
 export type db = Database;

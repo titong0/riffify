@@ -47,15 +47,20 @@ export const getDayDifference = (beforeDate: string, afterDate: Date) => {
   return dayjs(beforeDate).diff(afterDate, "days");
 };
 
-export const throwOnError = <T extends any>(
+export const checkIntegrity = <T extends any>(
   postgreReq: PostgrestSingleResponse<T>,
   name: string
 ) => {
   if (postgreReq.error) {
     throw new Error(
-      `Error happened at ${name}: 
+      `Error happened at ${name}. Status ${postgreReq.status} ${
+        postgreReq.statusText
+      }: 
       ${JSON.stringify(postgreReq.error, null, 2)}`
     );
   }
-  return postgreReq.data;
+  const timestamp = `[${new Date().toLocaleString()}.${new Date().getMilliseconds()}]`;
+
+  console.log(`${timestamp} successfully executed ${name}`);
+  return postgreReq;
 };
