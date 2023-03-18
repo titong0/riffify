@@ -3,11 +3,15 @@ import { deleteHeardle } from "../../server/createHeardle";
 import { ArtistIdSchema } from "../../shared/libSchemas";
 
 async function handleDelete(req: NextApiRequest, res: NextApiResponse) {
-  const parse = ArtistIdSchema.safeParse(req.query.id);
-  if (!parse.success) {
+  const idParse = ArtistIdSchema.safeParse(req.query.id);
+  const isKeyValid = req.query.key === process.env.DELETE_HEARDLE_KEY;
+  if (!idParse.success) {
     return res.status(401).json({ message: "Invalid id" });
   }
-  const id = parse.data;
+  if (!isKeyValid) {
+    return res.status(401).json({ message: "Invalid key" });
+  }
+  const id = idParse.data;
 
   try {
     await deleteHeardle(id);
