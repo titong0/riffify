@@ -31,7 +31,8 @@ const Fail = ({ attempt }: { attempt: Attempt | undefined }) => {
   if (attemptType === "Fail") {
     return (
       <FailLayout
-        className="bg-red-300"
+        // className="bg-[#861414]"
+        className="bg-red-900 bg-opacity-30"
         icon={<MdClear size={30} color="#fff" />}
         text={
           <span className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
