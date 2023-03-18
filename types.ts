@@ -12,6 +12,6 @@ export type StorageFails = {
 export type ArtistStats = {
   daysFailed: number;
   daysSucceded: number;
-  attemptsNeeded: number[];
+  attemptsNeeded: [number, number, number, number, number];
   lastUpdated: Date;
 };

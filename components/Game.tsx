@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Game_Song, Song } from "../shared/schemas";
 import { Attempt, GameState, StateSetter } from "../types";
 import { getGameState } from "../utils";
+import Stats, { ArtistStats } from "./ArtistStats";
 import FailsDisplay from "./Game-thingies/FailsDisplay";
 import GameForm from "./Game-thingies/GameForm";
 import Player from "./Game-thingies/Player";
@@ -26,6 +27,7 @@ const Game = ({
   return (
     <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
+        <ArtistStats artistId={artistId} />
         <FailsDisplay attempts={attempts} />
         <section className="py-2s">
           <Player
