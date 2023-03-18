@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { Game_Song, Song } from "../shared/schemas";
 import { Attempt, GameState, StateSetter } from "../types";
 import { getGameState } from "../utils";
-import Stats, { ArtistStats } from "./ArtistStats";
+import Stats, { ArtistStats } from "./modals/ArtistStats";
 import FailsDisplay from "./Game-thingies/FailsDisplay";
 import GameForm from "./Game-thingies/GameForm";
 import Player from "./Game-thingies/Player";
+import { Instructions } from "./modals/Instructions";
 
 type GameProps = {
   song: Game_Song;
@@ -28,7 +29,7 @@ const Game = ({
     <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
         <div className="flex justify-between">
-          ?
+          <Instructions />
           <ArtistStats artistId={artistId} />
         </div>
         <FailsDisplay attempts={attempts} />

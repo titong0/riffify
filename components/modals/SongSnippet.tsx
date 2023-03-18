@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { Game_Song } from "../shared/schemas";
+import { Game_Song } from "../../shared/schemas";
 
 export default function SongSnippet({
   song,

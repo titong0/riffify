@@ -2,8 +2,8 @@ import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import React, { useState } from "react";
 import { Game_Song } from "../shared/schemas";
 import CTA from "./common/CTA";
-import SongSnippet from "./SongSnippet";
-import Stats from "./ArtistStats";
+import SongSnippet from "./modals/SongSnippet";
+import Stats from "./modals/ArtistStats";
 import AlertDialogWrapper from "./common/AlertDialogWrapper";
 
 type WinningScreenProps = {

@@ -1,10 +1,10 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import React, { useState, useEffect } from "react";
-import { getArtistStats } from "../storageUtils";
-import { ArtistStats as Stats } from "../types";
+import { getArtistStats } from "../../storageUtils";
+import { ArtistStats as Stats } from "../../types";
 import { BsBarChart } from "react-icons/bs";
-import AlertDialogWrapper from "./common/AlertDialogWrapper";
-import CTA from "./common/CTA";
+import AlertDialogWrapper from "../common/AlertDialogWrapper";
+import CTA from "../common/CTA";
 export const ArtistStats = ({ artistId }: { artistId: string }) => {
   return (
     <AlertDialog.Root>
@@ -78,23 +78,3 @@ const Stats = ({ artistId }: { artistId: string }) => {
 };
 
 export default Stats;
-
-// const width = (attempts * 100) / totalAttempts!;
-
-// return (
-//   <div className="flex items-center w-full px-2" key={width}>
-//     {idx === 5 ? (
-//       <span className="w-1/12 h-full text-red-400">Fails</span>
-//     ) : (
-//       <span className="w-1/12 h-full">{idx + 1}</span>
-//     )}
-//     <div className="w-10/12">
-//       <div
-//         style={{ width: `${width}%` }}
-//         className="h-5 mx-4 bg-green-300"
-//         key={width + attempts}
-//       ></div>
-//       <span> {attempts}</span>
-//     </div>
-//   </div>
-// );
