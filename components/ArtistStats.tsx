@@ -9,7 +9,7 @@ export const ArtistStats = ({ artistId }: { artistId: string }) => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
-        <BsBarChart />
+        <BsBarChart size={20} />
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="bg-black bg-opacity-80 animate-[fade-in_300ms] fixed inset-0 z-40" />

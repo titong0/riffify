@@ -27,7 +27,10 @@ const Game = ({
   return (
     <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
-        <ArtistStats artistId={artistId} />
+        <div className="flex justify-between">
+          ?
+          <ArtistStats artistId={artistId} />
+        </div>
         <FailsDisplay attempts={attempts} />
         <section className="py-2s">
           <Player

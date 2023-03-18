@@ -4,6 +4,7 @@ import React from "react";
 import { z } from "zod";
 import ChannelItem from "../../components/ChannelItem";
 import { ArtistSearch } from "../../server/search";
+import { SearchResults } from "../../shared/schemas";
 
 type pageProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -29,6 +30,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
                 name={channel.name}
                 id={channel.id}
                 thumbnail={channel.thumbnail}
+                suscribers={channel.suscribers}
               />
             ))}
           </div>
@@ -41,7 +43,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
 export default SearchResults;
 
 export const getStaticProps: GetStaticProps<{
-  results: Awaited<ReturnType<typeof ArtistSearch> | string>;
+  results: SearchResults;
   artist: string;
 }> = async (ctx) => {
   const notEmptyQuery = z.string().min(1).safeParse(ctx.params!.artist);
@@ -56,7 +58,6 @@ export const getStaticProps: GetStaticProps<{
     console.log(error);
     return {
       redirect: { destination: "/server-down", permanent: false },
-      // props: {},
     };
   }
 };

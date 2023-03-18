@@ -1,5 +1,6 @@
 import { type } from "os";
 import { string, z } from "zod";
+import { ArtistSearch } from "../server/search";
 import { ArtistIdSchema } from "./libSchemas";
 
 const AlbumSchema = z.object({
@@ -47,3 +48,4 @@ export type Song = z.infer<typeof SongSchema>;
 export type Album = z.infer<typeof AlbumSchema>;
 export type Game_Song = z.infer<typeof Game_SongSchema>;
 export type TodaySongResponse = z.infer<typeof TodaySongResponseSchema>;
+export type SearchResults = Awaited<ReturnType<typeof ArtistSearch>>;

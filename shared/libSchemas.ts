@@ -30,6 +30,7 @@ export const YT_ArtistSearchSchema = z.object({
   name: z.string(),
   id: ArtistIdSchema,
   thumbnails: ThumbnailSchema.array(),
+  subscribers: z.string().optional(),
 });
 
 export const YT_ArtistHeaderSchema = z.object({
