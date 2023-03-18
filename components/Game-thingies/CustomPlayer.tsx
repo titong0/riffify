@@ -6,14 +6,16 @@ type VideoPlayerProps = YouTubePlayerProps & {
 
 const VideoPlayer = ({ playerRef, ...props }: VideoPlayerProps) => {
   return (
-    <ReactPlayer
-      ref={playerRef}
-      {...props}
-      width="0"
-      height="0"
-      controls={false}
-      config={{ embedOptions: { "": "" } }}
-    />
+    <div className="fixed">
+      <ReactPlayer
+        ref={playerRef}
+        {...props}
+        width="0"
+        height="0"
+        controls={false}
+        config={{ embedOptions: { "": "" } }}
+      />
+    </div>
   );
 };
 export default VideoPlayer;

@@ -6,6 +6,7 @@ import { MdPause } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
 import { Attempt, GameState } from "../../types";
+import { VolumeSlider } from "./VolumeSlider";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
@@ -28,12 +29,11 @@ const Player = ({
   const [playing, setPlaying] = useState(false);
   const [startedPlaying, setPlaysStart] = useState(0);
   const [ready, setReady] = useState(false);
-
+  const [volume, setVolume] = useState(0.5);
   const url = `https://www.youtube.com/watch?v=${id}`;
   const playerRef = useRef<BaseReactPlayer<BaseReactPlayerProps>>(null);
 
   useEffect(() => {
-    console.log({ secondsLimit });
     const id = setInterval(() => {
       if (Date.now() - startedPlaying > secondsLimit * 1000) {
         playerRef.current?.seekTo(startsAt);
@@ -53,32 +53,33 @@ const Player = ({
   };
 
   return (
-    <div className="grid w-full grid-cols-10 px-2 justify-items-center sm:flex-row">
+    <div className="grid items-center w-full grid-cols-10 grid-rows-2 px-2 justify-items-center sm:flex-row">
       <PlaytimeBar
         gameState={gameState}
         playing={playing}
         failAmount={attempts.length}
       />
-      <div className="fixed">
-        <VideoPlayer
-          volume={0.5}
-          playerRef={playerRef}
-          url={url}
-          playing={playing}
-          onPlay={() => setPlaysStart(Date.now())}
-          onPause={() => setPlaysStart(0)}
-          onReady={handleReady}
-        />
-      </div>
+      <VideoPlayer
+        volume={volume}
+        playerRef={playerRef}
+        url={url}
+        playing={playing}
+        onPlay={() => setPlaysStart(Date.now())}
+        onPause={() => setPlaysStart(0)}
+        onReady={handleReady}
+      />
       {ready ? (
-        <button className="w-6 h-6" onClick={() => setPlaying(!playing)}>
-          {!playing ? <BsFillPlayFill size="25" /> : <MdPause size="30" />}
-        </button>
+        <>
+          <button className="w-6 h-6" onClick={() => setPlaying(!playing)}>
+            {!playing ? <BsFillPlayFill size="25" /> : <MdPause size="30" />}
+          </button>
+        </>
       ) : (
         <span className="w-12 h-12 p-2 border-2">
           <AiOutlineLoading size="30" className="animate-spin" />
         </span>
       )}
+      <VolumeSlider volume={volume} setVolume={setVolume} />
     </div>
   );
 };
