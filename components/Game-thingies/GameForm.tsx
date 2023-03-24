@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { saveTries } from "../../storageUtils";
-import { Attempt, GameState, StateSetter } from "../../types";
+import { Attempt } from "../../shared/schemas";
+import { saveAttempts } from "../../storageUtils";
+import { GameState, StateSetter } from "../../types";
 import { analyzeTry } from "../../utils";
 import CTA from "../common/CTA";
 import Combobox from "./Combobox";
@@ -28,9 +29,10 @@ const GameForm = ({
   const pushTry = (fail: Attempt) => {
     const attsCopy = [...attempts, fail];
     setAttempts(attsCopy);
-    saveTries(artistId, attsCopy);
+    saveAttempts(artistId, attsCopy);
   };
 
+  // Allows submition with 'Enter' in combobox
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as any;
@@ -55,12 +57,13 @@ const GameForm = ({
             : `Skip (+${Math.pow(2, attempts.length + 1)}s)`}
         </button>
         <CTA
+          onClick={() => {}}
           className="p-2 px-6 w-fit"
           disabled={
             attempts.length === 5 || !validInput || gameState !== "Playing"
           }
         >
-          Submit
+          Guess
         </CTA>
         {/* <button className="p-2 px-4 transition rounded-md bg-emerald-400 hover:outline outline-offset-2 active:bg-emerald-600 disabled:bg-emerald-200 disabled:hover:outline-none"></button> */}
       </div>

@@ -17,17 +17,6 @@ const Artist: React.FC<ArtistProps> = ({
   artist,
   generatedAt,
 }) => {
-  useEffect(() => {
-    const serializedArtist = JSON.stringify(artist);
-    fetch(`${host}/api/trackArtist`, {
-      method: "POST",
-      body: serializedArtist,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }, [artist]);
-
   return (
     <>
       <Head>
@@ -37,12 +26,6 @@ const Artist: React.FC<ArtistProps> = ({
       <h1 className="text-2xl text-center py-7">{artist.name} heardle</h1>
       {/* <BgImage url={artist.avatar[0].url} /> */}
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
-      {/* Might use this in the future */}
-      {/* <section className="flex justify-center bg-zinc-100 dark:bg-gray-900">
-        <pre className="p-2 whitespace-pre-wrap max-w-prose">
-          {artist.description || null}
-        </pre>
-      </section> */}
     </>
   );
 };

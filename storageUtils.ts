@@ -1,82 +1,141 @@
-import { ArtistStats, Attempt, StorageFails } from "./types";
+import { SafeParseReturnType, z } from "zod";
+import {
+  Attempt,
+  LocStorage_ArtistAttemptsSchema,
+  LocStorage_ArtistStats,
+  LocStorage_ArtistStatsSchema,
+} from "./shared/schemas";
 import { isToday } from "./utils";
 
-const readTries = (artistId: string) => {
-  const storageName = `tries-${artistId}`;
-  const storedFails: StorageFails | null = JSON.parse(
-    localStorage.getItem(storageName) || "null"
-  );
-  return storedFails;
+const STORAGE = {
+  attempts: {
+    key: (id: string) => `attempts-${id}` as const,
+    value: LocStorage_ArtistAttemptsSchema,
+  },
+  stats: {
+    key: (id: string) => `stats-${id}` as const,
+    value: LocStorage_ArtistStatsSchema,
+  },
+  favorites: {
+    key: () => "favorite-heardles" as const,
+    value: z.string().array(),
+  },
+};
+type StorageType = typeof STORAGE;
+
+const localGetItem = <
+  TName extends keyof StorageType,
+  Schema extends StorageType[TName]["value"]
+>(
+  storageItem: TName,
+  key: ReturnType<StorageType[TName]["key"]>
+) => {
+  const schema = STORAGE[storageItem].value;
+  const result = JSON.parse(localStorage.getItem(key) || "{}");
+  const parse = schema.safeParse(result);
+  return parse as SafeParseReturnType<any, z.infer<Schema>>;
+};
+
+const localSetItem = <TName extends keyof StorageType>(
+  storageItem: TName,
+  key: ReturnType<StorageType[TName]["key"]>,
+  value: z.infer<StorageType[TName]["value"]>
+) => {
+  try {
+    const parse = STORAGE[storageItem].value.safeParse(value);
+    if (parse.success) {
+      const stringified = JSON.stringify(value);
+      localStorage.setItem(key, stringified);
+    }
+  } catch (error) {
+    throw new Error(`Error parsing the following string to JSON: ${error}`);
+  }
+};
+
+const readAttempts = (artistId: string) => {
+  const storageName = STORAGE.attempts.key(artistId);
+  const attempts = localGetItem("attempts", storageName);
+
+  if (attempts.success) {
+    return attempts.data;
+  }
+
+  return null;
+};
+
+const readStats = (artistId: string) => {
+  const storageName = STORAGE.stats.key(artistId);
+  const storedStats = localGetItem("stats", storageName);
+  if (storedStats.success) {
+    return storedStats.data;
+  }
+  return null;
 };
 
 export const getAttempts = (artistId: string) => {
-  const tries = readTries(artistId);
-
-  // if the "tries" object is not in localStorage OR if the object is old
-  if (tries === null || !isToday(new Date(tries.date))) {
+  const storedTries = readAttempts(artistId);
+  if (storedTries === null || !isToday(storedTries.date)) {
     return [];
   }
-  return tries.tries;
+  return storedTries.attempts;
 };
 
-export const saveTries = (artistId: string, newTryArray: Attempt[]) => {
-  const tries = readTries(artistId);
+export const saveAttempts = (artistId: string, newAttemptArr: Attempt[]) => {
+  const storedAttempts = readAttempts(artistId);
+  const attemptsDate =
+    storedAttempts && isToday(storedAttempts.date)
+      ? storedAttempts.date
+      : new Date().toString();
 
-  if (tries === null || !isToday(new Date(tries.date))) {
-    localStorage.setItem(
-      `tries-${artistId}`,
-      JSON.stringify({ date: new Date(), tries: newTryArray })
-    );
-    return;
-  }
+  const storageName = STORAGE.attempts.key(artistId);
 
-  const newTryObj = {
-    date: tries.date,
-    tries: newTryArray,
-  };
-  localStorage.setItem(`tries-${artistId}`, JSON.stringify(newTryObj));
+  localSetItem("attempts", storageName, {
+    date: attemptsDate,
+    attempts: newAttemptArr,
+  });
+
+  return readAttempts(artistId);
 };
 
-const readArtistStats = (artistId: string) => {
-  const storageName = `stats-${artistId}`;
-  const stats: ArtistStats | null = JSON.parse(
-    localStorage.getItem(storageName) || "null"
-  );
-  return stats;
-};
 export const getArtistStats = (artistId: string) => {
-  const storageName = `stats-${artistId}`;
-  const stats: ArtistStats = JSON.parse(
-    localStorage.getItem(storageName) || "null"
-  );
-  return stats;
-};
-
-export const writeStats = (
-  artistId: string,
-  hasWon: boolean,
-  failCount: number
-) => {
-  failCount = hasWon ? failCount : 5;
-  const artistStats = readArtistStats(artistId);
-
-  if (artistStats === null) {
-    const attemptsNeededArr = [0, 0, 0, 0, 0];
-    attemptsNeededArr[failCount] = 1;
-    const newStatsObj = {
-      attemptsNeeded: attemptsNeededArr,
-      daysFailed: hasWon ? 0 : 1,
-      daysSucceded: hasWon ? 1 : 0,
-      lastUpdated: new Date(),
-    };
-    localStorage.setItem(`stats-${artistId}`, JSON.stringify(newStatsObj));
-    console.log("SAVED STATS, CREATED BRAND NEW");
-  } else {
-    if (isToday(new Date(artistStats.lastUpdated))) return;
-
-    artistStats.attemptsNeeded[failCount] += 1;
-    hasWon ? (artistStats.daysSucceded += 1) : (artistStats.daysFailed += 1);
-    localStorage.setItem(`stats-${artistId}`, JSON.stringify(artistStats));
-    console.log("SAVED STATS, UPDATED PREVIOUS");
+  const storageName = STORAGE.stats.key(artistId);
+  const parsed = localGetItem("stats", storageName);
+  if (parsed.success) {
+    return parsed.data;
   }
+
+  return null;
 };
+
+export function writeStats(artistId: string, attemptCount: number) {
+  type LengthFiveArr = [number, number, number, number, number];
+  const hasWon = attemptCount < 5;
+  const attemptsNeededArr = [0, 0, 0, 0, 0];
+  attemptsNeededArr[attemptCount] = 1;
+
+  const newStatsObj = {
+    attemptsNeeded: attemptsNeededArr as LengthFiveArr,
+    daysFailed: hasWon ? 0 : 1,
+    daysSucceded: hasWon ? 1 : 0,
+    lastUpdated: new Date().toString(),
+  };
+  localSetItem("stats", STORAGE.stats.key(artistId), newStatsObj);
+  return readStats(artistId);
+}
+
+export function updateStats(artistId: string, attemptCount: number) {
+  const artistStats = getArtistStats(artistId);
+  if (!artistStats) {
+    throw new Error(
+      "Cant update non-existing artist stats, call writeStats() instead"
+    );
+  }
+  if (isToday(artistStats.lastUpdated)) return;
+
+  const hasWon = attemptCount < 5;
+
+  artistStats.attemptsNeeded[attemptCount] += 1;
+  hasWon ? (artistStats.daysSucceded += 1) : (artistStats.daysFailed += 1);
+  localSetItem("stats", STORAGE.stats.key(artistId), artistStats);
+  return getArtistStats(artistId);
+}

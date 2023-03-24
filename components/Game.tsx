@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Game_Song, Song } from "../shared/schemas";
-import { Attempt, GameState, StateSetter } from "../types";
+import { Attempt, Game_Song, Song } from "../shared/schemas";
+import { GameState, StateSetter } from "../types";
 import { getGameState } from "../utils";
 import Stats, { ArtistStats } from "./modals/ArtistStats";
 import FailsDisplay from "./Game-thingies/FailsDisplay";

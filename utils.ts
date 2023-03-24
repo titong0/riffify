@@ -3,27 +3,29 @@ import {
   PostgrestSingleResponse,
 } from "@supabase/postgrest-js";
 import dayjs from "dayjs";
-import { Attempt, GameState } from "./types";
+import { Attempt } from "./shared/schemas";
+import { GameState } from "./types";
 
 export const analyzeTry = (attempt: string, correct: string): Attempt => {
   if (attempt === "RESERVED-SKIP") {
     return {
-      content: "Skipped",
+      songName: "Skipped",
       type: "Skip",
     };
   }
   if (attempt === correct)
     return {
-      content: attempt,
+      songName: attempt,
       type: "Success",
     };
   return {
-    content: attempt,
+    songName: attempt,
     type: "Fail",
   };
 };
 
-export const isToday = (date1: Date) => {
+export const isToday = (date1: Date | string) => {
+  date1 = date1 instanceof Date ? date1 : new Date(date1);
   const today = new Date();
   return (
     date1.getFullYear() === today.getFullYear() &&
@@ -33,8 +35,7 @@ export const isToday = (date1: Date) => {
 };
 
 export const getGameState = (attempts: Attempt[]): GameState => {
-  if (!attempts.length) return "Playing";
-  if (attempts[attempts.length - 1].type === "Success") return "Succeded";
+  if (attempts.find((a) => a.type === "Success")) return "Succeded";
   if (attempts.length === 5) return "Failed";
   return "Playing";
 };
