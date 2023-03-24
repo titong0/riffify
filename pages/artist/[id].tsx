@@ -1,22 +1,14 @@
 import React, { useEffect } from "react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import GameWrapper from "../../components/Game-thingies/GameWrapper";
-import { isToday } from "../../utils";
 import { Page_ArtistGameProps } from "../../shared/schemas";
 import { getToday } from "../../server/getTodaySong";
-import { host } from "../../config";
 import { ArtistIdSchema } from "../../shared/libSchemas";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Artist: React.FC<ArtistProps> = ({
-  song,
-  validSongs,
-  artist,
-  generatedAt,
-}) => {
+const Artist: React.FC<ArtistProps> = ({ song, validSongs, artist }) => {
   return (
     <>
       <Head>

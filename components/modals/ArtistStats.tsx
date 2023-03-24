@@ -18,7 +18,8 @@ export const ArtistStatsDisplay = ({ artistId }: { artistId: string }) => {
             <AlertDialog.Title className="text-2xl font-bold text-center">
               Stats for this artist
             </AlertDialog.Title>
-            <Stats artistId={artistId} /> <AlertDialog.Cancel />
+            <Stats artistId={artistId} />
+            <AlertDialog.Cancel />
             <AlertDialog.Action asChild>
               <CTA className="w-full p-1">Cool</CTA>
             </AlertDialog.Action>
@@ -37,9 +38,14 @@ const Stats = ({ artistId }: { artistId: string }) => {
     stats && setStats(stats);
   }, [artistId]);
 
-  if (stats === null) return null;
+  if (stats === null)
+    return (
+      <div className="h-full flex items-center">
+        There are no stats for this Artist, Finish a game first!
+      </div>
+    );
 
-  const totalAttempts = stats?.attemptsNeeded.reduce((a, b) => a + b);
+  const totalAttempts = stats.attemptsNeeded.reduce((a, b) => a + b);
   return (
     <>
       <div className="z-20 grid w-full grid-cols-2 gap-8 px-8 h-96">
