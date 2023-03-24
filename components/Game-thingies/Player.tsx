@@ -5,8 +5,9 @@ import { BsFillPlayFill } from "react-icons/bs";
 import { MdPause } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
-import { Attempt, GameState } from "../../types";
+import { GameState } from "../../types";
 import { VolumeSlider } from "./VolumeSlider";
+import { Attempt } from "../../shared/schemas";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 

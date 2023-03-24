@@ -1,11 +1,11 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import React, { useState, useEffect } from "react";
 import { getArtistStats } from "../../storageUtils";
-import { ArtistStats as Stats } from "../../types";
 import { BsBarChart } from "react-icons/bs";
 import AlertDialogWrapper from "../common/AlertDialogWrapper";
 import CTA from "../common/CTA";
-export const ArtistStats = ({ artistId }: { artistId: string }) => {
+import { ArtistStats } from "../../shared/schemas";
+export const ArtistStatsDisplay = ({ artistId }: { artistId: string }) => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
@@ -30,13 +30,14 @@ export const ArtistStats = ({ artistId }: { artistId: string }) => {
 };
 
 const Stats = ({ artistId }: { artistId: string }) => {
-  const [stats, setStats] = useState<Stats>();
+  const [stats, setStats] = useState<ArtistStats | null>(null);
 
   useEffect(() => {
-    setStats(getArtistStats(artistId));
+    const stats = getArtistStats(artistId);
+    stats && setStats(stats);
   }, [artistId]);
 
-  if (stats === undefined || stats === null) return null;
+  if (stats === null) return null;
 
   const totalAttempts = stats?.attemptsNeeded.reduce((a, b) => a + b);
   return (

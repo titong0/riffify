@@ -1,12 +1,10 @@
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import React, { useState, useEffect } from "react";
-import { ArtistStats as Stats } from "../../types";
 import AlertDialogWrapper from "../common/AlertDialogWrapper";
 import CTA from "../common/CTA";
 import { AiOutlineQuestion } from "react-icons/ai";
 import { BsHeadphones, BsMusicNote, BsMusicNoteBeamed } from "react-icons/bs";
 import { GiMusicalNotes } from "react-icons/gi";
-import { IoEar } from "react-icons/io5";
 
 const InstructionsWrapper = () => {
   return (

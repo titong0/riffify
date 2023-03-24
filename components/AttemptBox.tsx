@@ -1,8 +1,8 @@
 import React from "react";
 import { MdBlock, MdCheck, MdClear } from "react-icons/md";
-import { Attempt } from "../types";
+import { Attempt } from "../shared/schemas";
 
-const Fail = ({ attempt }: { attempt: Attempt | undefined }) => {
+const AttemptBox = ({ attempt }: { attempt: Attempt | undefined }) => {
   if (!attempt)
     return (
       <div className="flex items-center w-full p-2 py-4 border border-current h-11"></div>
@@ -12,34 +12,34 @@ const Fail = ({ attempt }: { attempt: Attempt | undefined }) => {
 
   if (attemptType === "Skip") {
     return (
-      <FailLayout
+      <AttemptLayout
         className="italic"
         icon={<MdBlock size={25} />}
         text="Skipped"
-      ></FailLayout>
+      ></AttemptLayout>
     );
   }
   if (attemptType === "Success") {
     return (
-      <FailLayout
+      <AttemptLayout
         className="bg-emerald-400 bg-opacity-80"
         icon={<MdCheck size={30} color="#00000" />}
-        text={attempt.content}
-      ></FailLayout>
+        text={attempt.songName}
+      ></AttemptLayout>
     );
   }
   if (attemptType === "Fail") {
     return (
-      <FailLayout
+      <AttemptLayout
         // className="bg-[#861414]"
         className="bg-red-900 bg-opacity-30"
         icon={<MdClear size={30} color="#fff" />}
         text={
           <span className="max-w-full overflow-hidden whitespace-nowrap text-ellipsis">
-            {attempt.content}
+            {attempt.songName}
           </span>
         }
-      ></FailLayout>
+      ></AttemptLayout>
       // <div
       //   key={attempt.content}
       //   className="flex items-center w-full border p-2 h-10 border-black
@@ -58,7 +58,11 @@ type FailLayoutProps = {
   text: React.ReactNode | string;
   className: string;
 };
-const FailLayout: React.FC<FailLayoutProps> = ({ icon, text, className }) => {
+const AttemptLayout: React.FC<FailLayoutProps> = ({
+  icon,
+  text,
+  className,
+}) => {
   return (
     <div
       className={
@@ -72,4 +76,4 @@ const FailLayout: React.FC<FailLayoutProps> = ({ icon, text, className }) => {
     </div>
   );
 };
-export default Fail;
+export default AttemptBox;

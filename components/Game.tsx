@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Attempt, Game_Song, Song } from "../shared/schemas";
 import { GameState, StateSetter } from "../types";
 import { getGameState } from "../utils";
-import Stats, { ArtistStats } from "./modals/ArtistStats";
+import Stats, { ArtistStatsDisplay } from "./modals/ArtistStats";
 import FailsDisplay from "./Game-thingies/FailsDisplay";
 import GameForm from "./Game-thingies/GameForm";
 import Player from "./Game-thingies/Player";
@@ -30,7 +30,7 @@ const Game = ({
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
         <div className="flex justify-between">
           <Instructions />
-          <ArtistStats artistId={artistId} />
+          <ArtistStatsDisplay artistId={artistId} />
         </div>
         <FailsDisplay attempts={attempts} />
         <section className="py-2s">
