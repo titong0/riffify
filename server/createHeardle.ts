@@ -12,12 +12,12 @@ export async function createHeardle(artistId: string) {
   const allSongs = await getAllSongs(artist.sections);
   const { songs, removed } = bigFilter(true, allSongs);
   const artistInfo = getArtistInfo(artist);
-
+  const idSequence = randomIdsSequence(songs.map((s) => s.id));
   await supabase
     .from("heardles")
     .insert({
       artist_id: artistId,
-      ids_sequence: randomIdsSequence(songs.map((s) => s.id)),
+      ids_sequence: idSequence,
       valid_song_names: songs.map((i) => i.title),
     })
     .then((i) => checkIntegrity(i, `insert heardle ${artistId}`));
@@ -84,8 +84,10 @@ export async function createHeardle(artistId: string) {
     .then((i) =>
       checkIntegrity(i, `insert songs, count should be ${songs.length}`)
     );
-
-  return Promise.all([artistIns, albumsIns, removedIns, songsIns]);
+  await Promise.all([artistIns, albumsIns, removedIns, songsIns]);
+  const validation = await validateHeardle(artistId, idSequence);
+  if (!validation.isValid) addMissingSongs(artistId, validation.missing);
+  return;
 }
 
 async function validateHeardle(
@@ -96,12 +98,18 @@ async function validateHeardle(
     .from("songs")
     .select("*")
     .eq("for_heardle", artistId)
-    .then((i) => checkIntegrity(i, "validateHeardle req songs"));
+    .then((i) => checkIntegrity(i, "req songs for heardle validation"));
 
-  const missingIds = idSequence.filter((id) =>
-    allSongs.data.find((song) => song.song_id === id)
+  const missingIds = idSequence.filter(
+    (id) => !allSongs.data.find((song) => song.song_id === id)
   );
-  if (!missingIds.length) return { isValid: true };
+  if (missingIds.length === 0) {
+    console.log(`Successfully validated heardle for artist ${artistId}`);
+    return { isValid: true };
+  }
+  console.error(
+    `could not find ${missingIds.length} ids for artist ${artistId}`
+  );
   return { isValid: false, missing: missingIds };
 }
 
@@ -124,4 +132,27 @@ export async function deleteHeardle(artistId: string) {
     .throwOnError();
 }
 
-function addMissingSongs(artistId: string, missingIds: string[]) {}
+async function addMissingSongs(artistId: string, missingIds: string[]) {
+  const artist = await youtube.then((y) => y.music.getArtist(artistId));
+  const allSongs = await getAllSongs(artist.sections);
+  const songsToAdd = allSongs.filter((song) =>
+    missingIds.find((id) => song.id === id)
+  );
+  await supabase
+    .from("songs")
+    .insert(
+      songsToAdd.map((song) => {
+        return {
+          album_id: song.album.id,
+          duration: song.duration,
+          for_heardle: artistId,
+          song_id: song.id,
+          title: song.title,
+        };
+      }),
+      { count: "exact" }
+    )
+    .then((i) =>
+      checkIntegrity(i, `insert songs, count should be ${songsToAdd.length}`)
+    );
+}
