@@ -113,25 +113,6 @@ async function validateHeardle(
   return { isValid: false, missing: missingIds };
 }
 
-export async function deleteHeardle(artistId: string) {
-  const deletions = [
-    supabase.from("songs").delete().eq("for_heardle", artistId).throwOnError(),
-    supabase
-      .from("removed_songs")
-      .delete()
-      .eq("removed_from_heardle_id", artistId)
-      .throwOnError(),
-    supabase.from("artists").delete().eq("id", artistId).throwOnError(),
-    supabase.from("albums").delete().eq("for_heardle", artistId).throwOnError(),
-  ];
-  await Promise.all(deletions);
-  await supabase
-    .from("heardles")
-    .delete()
-    .eq("artist_id", artistId)
-    .throwOnError();
-}
-
 async function addMissingSongs(artistId: string, missingIds: string[]) {
   const artist = await youtube.then((y) => y.music.getArtist(artistId));
   const allSongs = await getAllSongs(artist.sections);

@@ -5,10 +5,20 @@ import GameWrapper from "../../components/Game-thingies/GameWrapper";
 import { Page_ArtistGameProps } from "../../shared/schemas";
 import { getToday } from "../../server/getTodaySong";
 import { ArtistIdSchema } from "../../shared/libSchemas";
+import { isToday } from "../../utils";
+import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
-const Artist: React.FC<ArtistProps> = ({ song, validSongs, artist }) => {
+const Artist: React.FC<ArtistProps> = ({
+  song,
+  validSongs,
+  artist,
+  generatedAt,
+}) => {
+  if (!isToday(new Date(generatedAt))) {
+    return <HeardleBeingUpdated artistId={artist.id} />;
+  }
   return (
     <>
       <Head>
@@ -49,7 +59,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
         validSongs: today.validSongs,
         artist: today.artist,
         removed: today.removed,
-        generatedAt: new Date().toString(),
+        generatedAt: new Date("2/2/2222").toString(),
       },
     };
   } catch (error) {
@@ -61,7 +71,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
         },
       };
     } else {
-      console.error(error);
+      console.error(`Error generating page at /artist/${id}:` + error);
       return { notFound: true };
     }
   }

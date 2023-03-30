@@ -45,7 +45,7 @@ export const randomWithMax = (max: number) => {
 };
 
 export const getDayDifference = (beforeDate: string, afterDate: Date) => {
-  return dayjs(beforeDate).diff(afterDate, "days");
+  return dayjs(afterDate).diff(beforeDate, "days");
 };
 
 export const checkIntegrity = <T extends any>(
