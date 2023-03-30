@@ -9,24 +9,27 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      Albums: {
+      albums: {
         Row: {
           album_id: string
+          for_heardle: string
           name: string
           thumb_url: string
         }
         Insert: {
           album_id: string
+          for_heardle: string
           name: string
           thumb_url: string
         }
         Update: {
           album_id?: string
+          for_heardle?: string
           name?: string
           thumb_url?: string
         }
       }
-      Artists: {
+      artists: {
         Row: {
           avatar_url: string
           description: string
@@ -46,7 +49,7 @@ export interface Database {
           name?: string
         }
       }
-      Heardles: {
+      heardles: {
         Row: {
           artist_id: string
           created_at: string
@@ -86,7 +89,7 @@ export interface Database {
           title?: string
         }
       }
-      Songs: {
+      songs: {
         Row: {
           album_id: string
           duration: string
@@ -107,6 +110,17 @@ export interface Database {
           for_heardle?: string
           song_id?: string
           title?: string
+        }
+      }
+      updated_today: {
+        Row: {
+          id: string
+        }
+        Insert: {
+          id: string
+        }
+        Update: {
+          id?: string
         }
       }
     }
