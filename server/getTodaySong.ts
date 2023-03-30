@@ -7,6 +7,7 @@ import { calculateStart } from "./songChoosingUtils";
 
 const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY || "";
+console.log(`SUPABASE KEY: ${supabaseKey}`);
 export const supabase = createClient<db>(SUPABASE_URL, supabaseKey);
 
 export const getToday = async (
