@@ -16,7 +16,7 @@ type FormProps = {
   setAttempts: StateSetter<Attempt[]>;
 };
 
-const GameForm = ({
+const GameControls = ({
   artistId,
   validSongs,
   correctSong,
@@ -47,9 +47,9 @@ const GameForm = ({
 
       <div className="flex justify-between w-full p-2">
         <button
-          className="p-2 border border-current rounded-sm enabled:hover:bg-gray-300"
+          className="p-2 border border-current rounded-sm cursor-default enabled:hover:bg-gray-700"
           disabled={attempts.length >= 3 || gameState !== "Playing"}
-          type={"reset"}
+          type={"button"}
           onClick={() => pushTry(analyzeTry("RESERVED-SKIP", correctSong))}
         >
           {attempts.length >= 3
@@ -71,4 +71,4 @@ const GameForm = ({
   );
 };
 
-export default GameForm;
+export default GameControls;
