@@ -57,7 +57,7 @@ const GameControls = ({
             : `Skip (+${Math.pow(2, attempts.length + 1)}s)`}
         </button>
         <CTA
-          onClick={() => {}}
+          type="submit"
           className="p-2 px-6 w-fit"
           disabled={
             attempts.length === 5 || !validInput || gameState !== "Playing"
