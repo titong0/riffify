@@ -23,7 +23,7 @@ const PlaytimeBar = ({ failAmount, playing, gameState }: PlaytimeBarProps) => {
         <div
           className="absolute w-full h-full overflow-hidden bg-black opacity-20 -left-full"
           style={{
-            transform: playing ? barRightTranslate : "",
+            transform: playing ? barRightTranslate : "translate(0)",
             transitionDuration: playing ? `${secondsAvailable}s` : "0.5s",
             transitionTimingFunction: "linear",
           }}

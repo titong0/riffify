@@ -1,24 +1,14 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useTransition from "./useTransition";
 const Spinner = () => {
   const Router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const { isLoading } = useTransition();
 
-  useEffect(() => {
-    const startLoad = () => setLoading(true);
-    const endLoad = () => setLoading(false);
-    Router.events.on("routeChangeStart", startLoad);
-    Router.events.on("routeChangeComplete", endLoad);
-    return () => {
-      Router.events.off("routeChangeStart", startLoad);
-      Router.events.off("routeChangeComplete", endLoad);
-    };
-  }, []);
-
-  return loading ? (
+  return isLoading ? (
     <div role="status" className="fixed right-4 bottom-4">
       <svg
-        className="inline mr-2 w-16 h-16 animate-spin text-gray-600 fill-emerald-400"
+        className="inline w-16 h-16 mr-2 text-gray-600 animate-spin fill-emerald-400"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

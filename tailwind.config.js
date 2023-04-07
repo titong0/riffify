@@ -18,7 +18,11 @@ module.exports = {
         5: "2.5rem",
         32: "16rem",
       },
+      animation: {
+        weigthen: "weigthen 700ms ease-out forwards",
+      },
       keyframes: {
+        weigthen: { "0%": { width: "0" }, "100%": { width: "100%" } },
         "fade-in": {
           "0%": { opacity: 0 },
           "100%": { opacity: "1" },

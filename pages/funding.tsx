@@ -3,9 +3,9 @@ import React from "react";
 
 const Funding = () => {
   return (
-    <div className="flex w-full justify-center mt-12 p-2">
-      <div className="w-full max-w-lg p-2 h-auto bg-gray-200 text-black rounded-md">
-        <h2 className="text-center text-4xl m-1 my-3 font-bold text-green-500">
+    <div className="flex justify-center w-full p-2 mt-12">
+      <div className="w-full h-auto max-w-lg p-2 text-black bg-gray-200 rounded-md">
+        <h2 className="m-1 my-3 text-4xl font-bold text-center text-green-500">
           Give me money.
         </h2>
         <p>
@@ -14,7 +14,7 @@ const Funding = () => {
           would I give money to a random web developer who, putting his heart
           and soul, made this amazing website (which I enjoy)?
         </p>
-        <h3 className="text-center my-2 text-2xl italic animate-bounce">
+        <h3 className="my-2 text-2xl italic text-center animate-bounce">
           I have no money
         </h3>
         <p>
@@ -28,7 +28,7 @@ const Funding = () => {
             alt="pleading face emoji"
           />
         </p>
-        <h3 className="text-center my-2 text-2xl italic text-green-600">
+        <h3 className="my-2 text-2xl italic text-center text-green-600">
           Ok. give me the link
         </h3>
         <p className="mb-2">Click the image below to go paypal</p>

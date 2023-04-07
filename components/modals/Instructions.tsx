@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import AlertDialogWrapper from "../common/AlertDialogWrapper";
 import CTA from "../common/CTA";
 import { AiOutlineQuestion } from "react-icons/ai";
-import { BsHeadphones, BsMusicNote, BsMusicNoteBeamed } from "react-icons/bs";
+import { BsHeadphones, BsMusicNote } from "react-icons/bs";
 import { GiMusicalNotes } from "react-icons/gi";
 
 const InstructionsWrapper = () => {

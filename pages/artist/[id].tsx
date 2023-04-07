@@ -7,6 +7,8 @@ import { getToday } from "../../server/getTodaySong";
 import { ArtistIdSchema } from "../../shared/libSchemas";
 import { isToday } from "../../utils";
 import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
+import { BsSearch } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -25,14 +27,49 @@ const Artist: React.FC<ArtistProps> = ({
         <title>{`${artist.name} heardle`}</title>
       </Head>
 
-      <h1 className="text-2xl text-center py-7">{artist.name} heardle</h1>
+      <Title artistName={artist.name} />
       {/* <BgImage url={artist.avatar[0].url} /> */}
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
     </>
   );
 };
 
-export default Artist;
+const Title = ({ artistName }: { artistName: string }) => {
+  const [showInput, setShowInput] = React.useState(false);
+  const Router = useRouter();
+  const navigate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const artist = new FormData(e.target as HTMLFormElement).get("searchValue");
+    console.log(Router.route);
+    Router.push(`/search/${artist!}`);
+  };
+  return (
+    <h1 className="text-2xl text-center py-7">
+      {showInput ? (
+        <form className="inline-flex w-64 ml-auto" onSubmit={navigate}>
+          <input
+            autoFocus
+            name="searchValue"
+            className="p-1 my-2 mr-2 transition rounded-sm bg-opacity-10 bg-slate-300 dark:bg-slate-900 focus:border dark:text-gray-300 animate-weigthen"
+            type="text"
+          />
+        </form>
+      ) : (
+        <button
+          onClick={() => setShowInput((prevShowInput) => !prevShowInput)}
+          className="inline-flex items-center justify-between px-2 py-1 mr-2 border-2 bg-opacity-60 bg-slate-900"
+        >
+          {artistName}
+          <BsSearch className="ml-2" size={15} />
+        </button>
+      )}
+      {/* <button onClick={() => setShowInput((prevShowInput) => !prevShowInput)}>
+        heardle
+      </button> */}
+      heardle
+    </h1>
+  );
+};
 
 export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   ctx
@@ -80,3 +117,5 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
 export const getStaticPaths: GetStaticPaths = () => {
   return { paths: [], fallback: "blocking" };
 };
+
+export default Artist;

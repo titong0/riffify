@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Artist, Attempt, Game_Song } from "../../shared/schemas";
-import {
-  getArtistStats,
-  getAttempts,
-  updateStats,
-  writeStats,
-} from "../../storageUtils";
+import { getArtistStats, getAttempts, updateStats } from "../../storageUtils";
 import { GameState } from "../../types";
 import { getGameState } from "../../utils";
 import FailScreen from "../FailScreen";
@@ -23,10 +18,7 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
 
   useEffect(() => {
     if (gameState !== "Playing") {
-      const stats = getArtistStats(artist.id);
-      if (!stats) {
-        writeStats(artist.id, attempts.length);
-      } else updateStats(artist.id, attempts.length);
+      updateStats(artist.id, attempts.length, gameState === "Succeded");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState]);

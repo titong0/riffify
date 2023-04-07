@@ -58,10 +58,11 @@ const InputBar = () => {
       >
         <form
           className="flex flex-col gap-2"
-          onSubmit={(e: any) => {
-            console.log("suybmit");
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            const artist = new FormData(e.target).get("artist");
+            const artist = new FormData(e.target as HTMLFormElement).get(
+              "artist"
+            );
             Router.push(`search/${artist!}`);
           }}
         >
