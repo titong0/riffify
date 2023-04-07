@@ -59,7 +59,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
         validSongs: today.validSongs,
         artist: today.artist,
         removed: today.removed,
-        generatedAt: new Date("2/2/2222").toString(),
+        generatedAt: new Date().toString(),
       },
     };
   } catch (error) {

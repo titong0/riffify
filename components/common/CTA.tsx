@@ -8,6 +8,7 @@ const CTA = React.forwardRef<HTMLButtonElement, CTAProps>(
   (props, forwardedRef) => {
     return (
       <button
+        type="button"
         ref={forwardedRef}
         {...props}
         className={twMerge(

@@ -4,7 +4,7 @@ import { GameState, StateSetter } from "../types";
 import { getGameState } from "../utils";
 import Stats, { ArtistStatsDisplay } from "./modals/ArtistStats";
 import FailsDisplay from "./Game-thingies/FailsDisplay";
-import GameForm from "./Game-thingies/GameForm";
+import GameControls from "./Game-thingies/GameControls";
 import Player from "./Game-thingies/Player";
 import { Instructions } from "./modals/Instructions";
 
@@ -28,7 +28,7 @@ const Game = ({
   return (
     <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
-        <div className="flex justify-between">
+        <div className="flex justify-between px-2">
           <Instructions />
           <ArtistStatsDisplay artistId={artistId} />
         </div>
@@ -44,7 +44,7 @@ const Game = ({
             id={song.id}
             attempts={attempts}
           />
-          <GameForm
+          <GameControls
             validSongs={validSongs}
             correctSong={song.title}
             artistId={artistId}

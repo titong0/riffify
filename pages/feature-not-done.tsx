@@ -46,7 +46,7 @@ const NoFeature = () => {
             <li>Many more things I can&apos;t think of right now</li>
           </ul>
           <Link href="/funding" passHref>
-            <CTA>Alright... you convinced me..</CTA>
+            <CTA className="w-full py-2">Alright... you convinced me..</CTA>
           </Link>
         </div>
       </div>
