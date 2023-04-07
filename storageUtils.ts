@@ -46,6 +46,10 @@ const localSetItem = <TName extends keyof StorageType>(
     if (parse.success) {
       const stringified = JSON.stringify(value);
       localStorage.setItem(key, stringified);
+    } else {
+      console.error(
+        `failed with parsing object to localStorage schema for ${storageItem}`
+      );
     }
   } catch (error) {
     throw new Error(`Error parsing the following string to JSON: ${error}`);
@@ -85,7 +89,7 @@ export const saveAttempts = (artistId: string, newAttemptArr: Attempt[]) => {
   const attemptsDate =
     storedAttempts && isToday(storedAttempts.date)
       ? storedAttempts.date
-      : new Date().toString();
+      : new Date().toISOString();
 
   const storageName = STORAGE.attempts.key(artistId);
 
@@ -107,34 +111,37 @@ export const getArtistStats = (artistId: string) => {
   return null;
 };
 
-export function writeStats(artistId: string, attemptCount: number) {
+function writeStats(artistId: string, attemptCount: number) {
   type LengthFiveArr = [number, number, number, number, number];
   const hasWon = attemptCount < 5;
   const attemptsNeededArr = [0, 0, 0, 0, 0];
-  attemptsNeededArr[attemptCount] = 1;
+  attemptsNeededArr[attemptCount - 1] = 1;
 
   const newStatsObj = {
     attemptsNeeded: attemptsNeededArr as LengthFiveArr,
     daysFailed: hasWon ? 0 : 1,
     daysSucceded: hasWon ? 1 : 0,
-    lastUpdated: new Date().toString(),
+    lastUpdated: new Date().toISOString(),
   };
   localSetItem("stats", STORAGE.stats.key(artistId), newStatsObj);
-  return readStats(artistId);
+  return readStats(artistId)!;
 }
 
-export function updateStats(artistId: string, attemptCount: number) {
-  const artistStats = getArtistStats(artistId);
-  if (!artistStats) {
-    throw new Error(
-      "Cant update non-existing artist stats, call writeStats() instead"
-    );
-  }
-  if (isToday(artistStats.lastUpdated)) return;
-
-  const hasWon = attemptCount < 5;
-
-  artistStats.attemptsNeeded[attemptCount] += 1;
+/**
+ *
+ * @param attemptCount number of attempts used.
+ * @returns
+ */
+export function updateStats(
+  artistId: string,
+  attemptCount: number,
+  hasWon: boolean
+) {
+  const artistStats =
+    getArtistStats(artistId) || writeStats(artistId, attemptCount);
+  if (isToday(artistStats.lastUpdated))
+    return console.error("duplicated call to updateStats");
+  artistStats.attemptsNeeded[attemptCount - 1] += 1;
   hasWon ? (artistStats.daysSucceded += 1) : (artistStats.daysFailed += 1);
   localSetItem("stats", STORAGE.stats.key(artistId), artistStats);
   return getArtistStats(artistId);
