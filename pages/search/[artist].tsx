@@ -50,14 +50,19 @@ export const getStaticProps: GetStaticProps<{
 
   if (!notEmptyQuery.success) return { notFound: true };
   const artist = notEmptyQuery.data;
-
   try {
     const results = await ArtistSearch(artist);
     return { props: { results, artist } };
   } catch (error) {
     console.log(error);
+    const encoded = JSON.stringify(error);
+    // lets pray this isnt dangerous
+    const encodedErr = encodeURIComponent(encoded);
     return {
-      redirect: { destination: "/server-down", permanent: false },
+      redirect: {
+        destination: `/server-error?error=${encodedErr}`,
+        permanent: false,
+      },
     };
   }
 };
