@@ -96,7 +96,7 @@ async function validateHeardle(
 ): Promise<{ isValid: true } | { isValid: false; missing: string[] }> {
   const allSongs = await supabase
     .from("songs")
-    .select("*")
+    .select("song_id")
     .eq("for_heardle", artistId)
     .then((i) => checkIntegrity(i, "req songs for heardle validation"));
 
