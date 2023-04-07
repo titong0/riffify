@@ -1,15 +1,7 @@
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  InferGetServerSidePropsType,
-} from "next";
 import Head from "next/head";
 import React from "react";
 import Search from "../components/Search";
-import TrendingHeardle from "../components/TrendingHeardle";
-import { Artist } from "../shared/schemas";
-
-// type LandingProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+import Logo from "../components/common/Logo";
 
 const Index: React.FC = ({}) => {
   return (
@@ -19,7 +11,9 @@ const Index: React.FC = ({}) => {
       </Head>
       <div>
         <header className="my-8 text-center">
-          <h1 className="text-2xl font-medium">Auto heardle</h1>
+          <h1 className="flex items-center justify-center w-full gap-4 text-2xl font-medium">
+            Auto heardle <Logo />{" "}
+          </h1>
           <h2>
             Play heardle for <span className="underline">any</span> artist you
             want!
