@@ -4,17 +4,20 @@ import { GameState } from "../../types";
 type PlaytimeBarProps = {
   failAmount: number;
   playing: boolean;
-  gameState: GameState;
+  disableLimit: boolean;
 };
 
 const BAR_POINTS = ["12%", "25%", "50%", "100%"];
 const BAR_WIDTHS = ["w-2/12", "w-2/12", "w-4/12", "w-8/12"];
 const BAR_SECONDS = [2, 4, 8, 16];
 
-const PlaytimeBar = ({ failAmount, playing, gameState }: PlaytimeBarProps) => {
-  const hasWon = gameState === "Succeded";
-  const secondsAvailable = hasWon ? 16 : Math.pow(2, failAmount + 1);
-  const barRightTranslate = hasWon
+const PlaytimeBar = ({
+  failAmount,
+  playing,
+  disableLimit,
+}: PlaytimeBarProps) => {
+  const secondsAvailable = disableLimit ? 16 : Math.pow(2, failAmount + 1);
+  const barRightTranslate = disableLimit
     ? `translateX(100%)`
     : `translateX(${BAR_POINTS[failAmount]})`;
   return (
@@ -31,7 +34,7 @@ const PlaytimeBar = ({ failAmount, playing, gameState }: PlaytimeBarProps) => {
         {BAR_SECONDS.map((second, idx) => {
           return (
             <Bar
-              disabled={!hasWon && failAmount < idx}
+              disabled={!disableLimit && failAmount < idx}
               width={BAR_WIDTHS[idx]}
               idx={idx}
               key={`${second}-${idx}${BAR_POINTS[idx]}`}
@@ -42,7 +45,9 @@ const PlaytimeBar = ({ failAmount, playing, gameState }: PlaytimeBarProps) => {
       <div className="flex">
         {BAR_SECONDS.map((i, idx) => {
           const text =
-            !hasWon && failAmount < idx ? "text-gray-400" : "text-gray-100";
+            !disableLimit && failAmount < idx
+              ? "text-gray-400"
+              : "text-gray-100";
           return (
             <span key={i} className={`${BAR_WIDTHS[idx]} text-center ${text}`}>
               {i}s

@@ -25,7 +25,16 @@ const WinningScreen = ({ song, failAmount }: WinningScreenProps) => {
               You won!
             </AlertDialog.Title>
             {/* <ArtistStats artistId={artistId} /> */}
-            <SongSnippet failAmount={failAmount} song={song} />
+            <SongSnippet
+              title={
+                <>
+                  You guessed the song in
+                  <span className="font-bold">{failAmount} </span>
+                  {failAmount === 1 ? "attempt" : "attempts"}
+                </>
+              }
+              song={song}
+            />
 
             <AlertDialog.Cancel asChild className="w-full">
               <CTA className="w-full">Cool</CTA>

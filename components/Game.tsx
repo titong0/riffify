@@ -35,14 +35,13 @@ const Game = ({
         <FailsDisplay attempts={attempts} />
         <section className="py-2s">
           <Player
-            gameState={gameState}
+            disableLimit={gameState !== "Playing"}
             startsAt={song.startAt}
-            name={song.title}
             secondsLimit={
               gameState === "Playing" ? Math.pow(2, attempts.length + 1) : 16
             }
             id={song.id}
-            attempts={attempts}
+            attemptCount={attempts.length}
           />
           <GameControls
             validSongs={validSongs}

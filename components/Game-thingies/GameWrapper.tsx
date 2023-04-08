@@ -44,12 +44,14 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
       />
       {gameState === "Succeded" && (
         <WinningScreen
+          artistId={artist.id}
           failAmount={attempts.length}
           song={song}
-          artistId={artist.id}
         />
       )}
-      {gameState === "Failed" && <FailScreen />}
+      {gameState === "Failed" && (
+        <FailScreen artistId={artist.id} song={song} />
+      )}
     </>
   );
   return null;

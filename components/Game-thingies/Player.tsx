@@ -15,17 +15,16 @@ type PlayerProps = {
   id: string;
   startsAt: number;
   secondsLimit: number;
-  name: string;
-  attempts: Attempt[];
-  gameState: GameState;
+  attemptCount: number;
+  disableLimit: boolean;
 };
 
 const Player = ({
   id,
   startsAt,
   secondsLimit,
-  attempts,
-  gameState,
+  attemptCount,
+  disableLimit,
 }: PlayerProps) => {
   const [playing, setPlaying] = useState(false);
   const [startedPlaying, setPlaysStart] = useState(0);
@@ -56,9 +55,9 @@ const Player = ({
   return (
     <div className="grid items-center w-full grid-cols-10 grid-rows-2 px-2 justify-items-center sm:flex-row">
       <PlaytimeBar
-        gameState={gameState}
+        disableLimit={disableLimit}
         playing={playing}
-        failAmount={attempts.length}
+        failAmount={attemptCount}
       />
       <VideoPlayer
         volume={volume}
