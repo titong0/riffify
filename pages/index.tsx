@@ -7,12 +7,16 @@ const Index: React.FC = ({}) => {
   return (
     <>
       <Head>
-        <title>Auto heardle</title>
+        <title>Riffify</title>
+        <meta
+          name="description"
+          content="Riffify - Play heardle for any artist you want"
+        />
       </Head>
       <div>
         <header className="my-8 text-center">
           <h1 className="flex items-center justify-center w-full gap-4 text-2xl font-medium">
-            Auto heardle <Logo />{" "}
+            Riffify <Logo />{" "}
           </h1>
           <h2>
             Play heardle for <span className="underline">any</span> artist you
@@ -21,12 +25,6 @@ const Index: React.FC = ({}) => {
         </header>
         <div className="flex justify-center">
           <div className="w-full max-w-2xl m-2">
-            {/* <div className="flex items-center w-full gap-2">
-              {artists &&
-                artists.map((artist) => (
-                  <TrendingHeardle key={artist.id} {...artist} />
-                ))}
-            </div> */}
             <Search />
           </div>
         </div>

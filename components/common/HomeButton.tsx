@@ -10,7 +10,7 @@ const HomeButton = () => {
   return (
     <Link href={"/"}>
       <div
-        className={`md:fixed w-fit top-0 left-0 bg-slate-100 px-2 rounded-br-lg`}
+        className={`md:fixed w-fit top-0 left-0 bg-transparent px-2 border-r border-b rounded-br-lg`}
       >
         <Logo width={60} height={60} />
       </div>

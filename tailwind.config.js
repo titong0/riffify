@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -19,7 +21,7 @@ module.exports = {
         32: "16rem",
       },
       animation: {
-        weigthen: "weigthen 700ms ease-out forwards",
+        weigthen: "weigthen 600ms cubic-bezier(.33,.54,.65,.61) forwards",
       },
       keyframes: {
         weigthen: { "0%": { width: "0" }, "100%": { width: "100%" } },
@@ -32,6 +34,10 @@ module.exports = {
           "100%": { "background-color": "" },
         },
       },
+    },
+    screens: {
+      xs: "475px",
+      ...defaultTheme.screens,
     },
   },
   safelist: [

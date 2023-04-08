@@ -15,6 +15,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
     <>
       <Head>
         <title>{`Search results for ${artist}`}</title>
+        <meta name="description" content={`Search results for ${artist}`} />
       </Head>
 
       <div className="flex justify-center w-full">

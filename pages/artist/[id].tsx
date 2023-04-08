@@ -25,6 +25,7 @@ const Artist: React.FC<ArtistProps> = ({
     <>
       <Head>
         <title>{`${artist.name} heardle`}</title>
+        <meta name="description" content={`Play heardle for ${artist.name}`} />
       </Head>
 
       <Title artistName={artist.name} />
@@ -53,6 +54,12 @@ const Title = ({ artistName }: { artistName: string }) => {
             className="p-1 my-2 mr-2 transition rounded-sm bg-opacity-10 bg-slate-300 dark:bg-slate-900 focus:border dark:text-gray-300 animate-weigthen"
             type="text"
           />
+          {/* <button
+            className="mr-2"
+            onClick={() => setShowInput((prevShowInput) => !prevShowInput)}
+          >
+            coso
+          </button> */}
         </form>
       ) : (
         <button
@@ -63,9 +70,6 @@ const Title = ({ artistName }: { artistName: string }) => {
           <BsSearch className="ml-2" size={15} />
         </button>
       )}
-      {/* <button onClick={() => setShowInput((prevShowInput) => !prevShowInput)}>
-        heardle
-      </button> */}
       heardle
     </h1>
   );
