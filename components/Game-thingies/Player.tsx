@@ -71,10 +71,12 @@ const Player = ({
         onReady={handleReady}
         onProgress={(e) => console.log(e)}
         onDuration={(duration) => {
+          // This is needed as sometimes, a yt music id may belong to a
+          // song with a duration different to the web yt id. Example
+          // https://music.youtube.com/playlist?list=OLAK5uy_lUlpor68rM1s9pkNM-8fNJRstJI5AsPWo (see track 9)
+          // https://youtube.com/watch?v=Bm5iA4Zupek
           if (duration > startsAt) return;
-          console.log(`duration : ${duration}. StartAt: ${startsAt}`);
           const newStartsAt = calculateStart(duration);
-          console.log({ newStartsAt });
           setCorrectedStartsAt(newStartsAt);
         }}
       />
