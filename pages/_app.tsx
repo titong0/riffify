@@ -2,12 +2,12 @@ import { AppProps } from "next/app";
 import React from "react";
 import Spinner from "../components/common/Spinner";
 import "../globals.css";
-import HomeButton from "../components/common/HomeButton";
+import Nav from "../components/common/Nav";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
     <>
-      <HomeButton />
+      <Nav />
       <Component {...pageProps} />
       <Spinner />
     </>

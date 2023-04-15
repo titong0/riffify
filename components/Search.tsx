@@ -15,7 +15,11 @@ const Search = () => {
           <Tabs.Trigger
             key={mode}
             value={mode}
-            className="w-full p-2 transition bg-gray-200 border-b border-black dark:bg-slate-700 dark:text-gray-200 rdx-state-active:underline rdx-h rdx-state-active:border-b-2 rdx-state-inactive:text-gray-300 rdx-state-inactive:bg-slate-500"
+            className={`w-full p-2 transition bg-gray-200 border-b 
+            border-black dark:bg-slate-700 dark:text-gray-200 
+            rdx-state-active:underline rdx-h rdx-state-active:border-b-2 
+            rdx-state-inactive:text-gray-300 rdx-state-inactive:bg-slate-500
+            dark:rdx-state-inactive:hover:bg-slate-600 rdx-state-active:cursor-default`}
           >
             {mode}
           </Tabs.Trigger>
@@ -75,7 +79,7 @@ const InputBar = () => {
                 ]
               }
               name="artist"
-              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 dark:bg-gray-600 focus:border dark:text-gray-300"
+              className="w-full p-3 my-2 border border-transparent rounded-sm bg-slate-300 dark:bg-gray-600 focus:border-black dark:text-gray-300"
               minLength={1}
               required
               type="text"
@@ -91,13 +95,15 @@ const InputBar = () => {
         className="p-1 m-2 rdx-state-inactive:hidden"
       >
         <form className="flex flex-col gap-2" onSubmit={() => null}>
-          <label htmlFor="playlist">Type your playlist&apos;s url</label>
-          <input
-            name="playlist"
-            className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 dark:bg-gray-600 focus:border dark:text-gray-300"
-            type="text"
-            placeholder="https://www.youtube.com/watch?v=BPPQ1dLD1XQ&list=PL2C9E5715E925ADC9"
-          />
+          <div>
+            <label htmlFor="playlist">Type your playlist&apos;s url</label>
+            <input
+              name="playlist"
+              className="w-full p-3 my-2 border-black rounded-sm bg-slate-300 dark:bg-gray-600 focus:border dark:text-gray-300"
+              type="text"
+              placeholder="https://www.youtube.com/watch?v=BPPQ1dLD1XQ&list=PL2C9E5715E925ADC9"
+            />
+          </div>
           <Link href="/feature-not-done" passHref>
             <CTA className="p-2 px-6">Go to playlist</CTA>
           </Link>

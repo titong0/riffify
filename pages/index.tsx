@@ -16,7 +16,7 @@ const Index: React.FC = ({}) => {
       <div>
         <header className="my-8 text-center">
           <h1 className="flex items-center justify-center w-full gap-4 text-2xl font-medium">
-            Riffify <Logo />{" "}
+            Riffify <Logo width={50} height={50} />{" "}
           </h1>
           <h2>
             Play heardle for <span className="underline">any</span> artist you
