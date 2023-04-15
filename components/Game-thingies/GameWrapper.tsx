@@ -3,9 +3,9 @@ import { Artist, Attempt, Game_Song } from "../../shared/schemas";
 import { getArtistStats, getAttempts, updateStats } from "../../storageUtils";
 import { GameState } from "../../types";
 import { getGameState } from "../../utils";
-import FailScreen from "../FailScreen";
+import FailScreen from "../modals/FailScreen";
 import Game from "../Game";
-import WinningScreen from "../WinningScreen";
+import WinningScreen from "../modals/WinningScreen";
 
 type GameWrapProps = {
   artist: Artist;
@@ -32,9 +32,18 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
     setAttempts(getAttempts(artist.id));
   }, [artist.id]);
 
+  const shareableScreen = React.useMemo(() => {
+    if (gameState === "Playing") return null;
+    if (gameState === "Succeded") {
+      return <WinningScreen artist={artist} attempts={attempts} song={song} />;
+    }
+    return <FailScreen artistId={artist.id} song={song} />;
+  }, [artist, attempts, gameState, song]);
+
   return (
     <>
       <Game
+        shareableScreen={shareableScreen}
         song={song}
         validSongs={validSongs}
         artistId={artist.id}
@@ -42,19 +51,8 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
         attempts={attempts}
         setAttempts={setAttempts}
       />
-      {gameState === "Succeded" && (
-        <WinningScreen
-          artistId={artist.id}
-          failAmount={attempts.length}
-          song={song}
-        />
-      )}
-      {gameState === "Failed" && (
-        <FailScreen artistId={artist.id} song={song} />
-      )}
     </>
   );
-  return null;
 };
 
 export default GameWrapper;

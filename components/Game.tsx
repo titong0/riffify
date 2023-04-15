@@ -15,6 +15,7 @@ type GameProps = {
   gameState: GameState;
   attempts: Attempt[];
   setAttempts: StateSetter<Attempt[]>;
+  shareableScreen: React.ReactNode;
 };
 
 const Game = ({
@@ -24,12 +25,14 @@ const Game = ({
   gameState,
   attempts,
   setAttempts,
+  shareableScreen,
 }: GameProps) => {
   return (
     <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
         <div className="flex justify-between px-2">
           <Instructions />
+          {shareableScreen}
           <ArtistStatsDisplay artistId={artistId} />
         </div>
         <FailsDisplay attempts={attempts} />
