@@ -8,7 +8,7 @@ const Search = () => {
   return (
     <Tabs.Root
       defaultValue="Artist"
-      className="text-gray-900 bg-gray-900 border border-black dark:text-gray-100 "
+      className="text-gray-900 bg-gray-900 border-black shadow-sm dark:text-gray-100 "
     >
       <Tabs.List className="flex justify-around border-blue">
         {["Artist", "Playlist"].map((mode, idx) => (
