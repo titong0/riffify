@@ -35,18 +35,21 @@ const dayDiff = (startDate: Date, secondDate: Date) => {
 
 // duration is a string like
 // 12:21 4:12 0:17 12:21:56
-export const calculateStart = (duration: string) => {
+export const calculateStart = (duration: string | number) => {
   let secondsLong = 0;
-  if (duration.length < 6) {
-    const [minutes, seconds] = duration.split(":");
-    secondsLong = parseInt(minutes) * 60 + parseInt(seconds);
+  if (typeof duration === "number") {
+    secondsLong = duration;
   } else {
-    const [hours, minutes, seconds] = duration.split(":");
-    secondsLong = +hours * 60 * 60 + +minutes * 60 + +seconds;
+    if (duration.length < 6) {
+      const [minutes, seconds] = duration.split(":");
+      secondsLong = parseInt(minutes) * 60 + parseInt(seconds);
+    } else {
+      const [hours, minutes, seconds] = duration.split(":");
+      secondsLong = +hours * 60 * 60 + +minutes * 60 + +seconds;
+    }
   }
-  const allowedRange = secondsLong - 16;
-  if (allowedRange < 0) {
-    return 0;
-  }
-  return Math.floor(random(secondsLong) * allowedRange);
+  const minimumStart = Math.max(secondsLong - 16, 0);
+  if (minimumStart === 0) return 0;
+
+  return Math.floor(random(secondsLong) * minimumStart);
 };

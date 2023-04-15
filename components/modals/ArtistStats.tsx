@@ -57,7 +57,7 @@ const Stats = ({ artistId }: { artistId: string }) => {
           <h4 className="w-full text-center">Attempts you needed</h4>
           <div className="grid items-end w-full h-full grid-cols-5 gap-1 py-3">
             {stats.attemptsNeeded.map((attempts, idx) => {
-              const height = (100 * attempts) / totalAttempts;
+              const height = (100 * attempts) / totalAttempts + 10;
               return (
                 <div
                   className="flex flex-col items-center justify-end h-full"
@@ -65,7 +65,7 @@ const Stats = ({ artistId }: { artistId: string }) => {
                 >
                   <div
                     style={{ height: `${height}%` }}
-                    className={`w-4 min-h-[1.5rem] text-center bg-emerald-600 mb-2`}
+                    className={`w-8 min-h-[1.5rem] h-full text-center bg-emerald-600 mb-1`}
                   >
                     {attempts}
                   </div>
