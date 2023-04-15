@@ -7,7 +7,8 @@ import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
 import { GameState } from "../../types";
 import { VolumeSlider } from "./VolumeSlider";
-import { Attempt } from "../../shared/schemas";
+
+import { calculateStart } from "../../server/songChoosingUtils";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
@@ -32,11 +33,12 @@ const Player = ({
   const [volume, setVolume] = useState(0.5);
   const url = `https://www.youtube.com/watch?v=${id}`;
   const playerRef = useRef<BaseReactPlayer<BaseReactPlayerProps>>(null);
+  const [correctedStartsAt, setCorrectedStartsAt] = useState(startsAt);
 
   useEffect(() => {
     const id = setInterval(() => {
       if (Date.now() - startedPlaying > secondsLimit * 1000) {
-        playerRef.current?.seekTo(startsAt);
+        playerRef.current?.seekTo(correctedStartsAt);
         setPlaying(false);
         setPlaysStart(0);
         clearInterval(id);
@@ -45,11 +47,11 @@ const Player = ({
     return () => {
       clearInterval(id);
     };
-  }, [startedPlaying, playing, startsAt, secondsLimit]);
+  }, [startedPlaying, playing, correctedStartsAt, secondsLimit]);
 
   const handleReady = () => {
     setReady(true);
-    playerRef.current?.seekTo(startsAt);
+    playerRef.current?.seekTo(correctedStartsAt);
   };
 
   return (
@@ -67,6 +69,14 @@ const Player = ({
         onPlay={() => setPlaysStart(Date.now())}
         onPause={() => setPlaysStart(0)}
         onReady={handleReady}
+        onProgress={(e) => console.log(e)}
+        onDuration={(duration) => {
+          if (duration > startsAt) return;
+          console.log(`duration : ${duration}. StartAt: ${startsAt}`);
+          const newStartsAt = calculateStart(duration);
+          console.log({ newStartsAt });
+          setCorrectedStartsAt(newStartsAt);
+        }}
       />
       {ready ? (
         <>
