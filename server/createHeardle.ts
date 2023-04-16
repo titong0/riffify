@@ -12,7 +12,10 @@ export async function createHeardle(artistId: string) {
   const allSongs = await getAllSongs(artist.sections);
   const { songs, removed } = bigFilter(true, allSongs);
   const artistInfo = getArtistInfo(artist);
-  const idSequence = randomIdsSequence(songs.map((s) => s.id));
+  const idSequence = randomIdsSequence(
+    songs.map((s) => s.id),
+    0
+  );
   await supabase
     .from("heardles")
     .insert({
