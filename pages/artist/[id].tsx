@@ -113,7 +113,15 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
       };
     } else {
       console.error(`Error generating page at /artist/${id}:` + error);
-      return { notFound: true };
+      const encoded = JSON.stringify(error);
+      // lets pray this isnt dangerous
+      const encodedErr = encodeURIComponent(encoded);
+      return {
+        redirect: {
+          destination: `/server-error?error=${encodedErr}`,
+          permanent: false,
+        },
+      };
     }
   }
 };

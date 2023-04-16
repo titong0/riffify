@@ -1,4 +1,10 @@
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from "next";
 import Head from "next/head";
 import React from "react";
 import { z } from "zod";
@@ -6,7 +12,7 @@ import ChannelItem from "../../components/ChannelItem";
 import { ArtistSearch } from "../../server/search";
 import { SearchResults } from "../../shared/schemas";
 
-type pageProps = InferGetStaticPropsType<typeof getStaticProps>;
+type pageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const SearchResults = ({ results, artist }: pageProps) => {
   if (results === null) return <div>No results for that artist</div>;
@@ -43,7 +49,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
 
 export default SearchResults;
 
-export const getStaticProps: GetStaticProps<{
+export const getServerSideProps: GetServerSideProps<{
   results: SearchResults;
   artist: string;
 }> = async (ctx) => {
@@ -54,8 +60,16 @@ export const getStaticProps: GetStaticProps<{
   try {
     const results = await ArtistSearch(artist);
     return { props: { results, artist } };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    if (error.code === "ERR_INVALID_URL") {
+      console.log(error);
+      return {
+        redirect: {
+          destination: `/server-error?error="This is a really weird error... sorry I have no clue`,
+          permanent: false,
+        },
+      };
+    }
     const encoded = JSON.stringify(error);
     // lets pray this isnt dangerous
     const encodedErr = encodeURIComponent(encoded);
@@ -68,6 +82,6 @@ export const getStaticProps: GetStaticProps<{
   }
 };
 
-export const getStaticPaths: GetStaticPaths = () => {
-  return { paths: [], fallback: "blocking" };
-};
+// export const getStaticPaths: GetStaticPaths = () => {
+//   return { paths: [], fallback: "blocking" };
+// };

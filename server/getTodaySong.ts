@@ -3,7 +3,7 @@ import { db } from "../shared/libSchemas";
 import { TodaySongResponse } from "../shared/schemas";
 import { getDayDifference, checkIntegrity } from "../utils";
 import { createHeardle } from "./createHeardle";
-import { calculateStart } from "./songChoosingUtils";
+import { calculateStart, randomIdsSequence } from "./songChoosingUtils";
 
 const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY || "";
@@ -36,9 +36,17 @@ async function getHeardleFromDb(
     .limit(1)
     .single();
   if (!res.data) return null;
+
   const heardle = res.data;
-  const todayIndex = getDayDifference(heardle.created_at, new Date());
-  const todaySongId = heardle.ids_sequence[todayIndex];
+  const idSequence = heardle.ids_sequence;
+  const daysSinceCreation = getDayDifference(heardle.created_at, new Date());
+  let todaySongId = heardle.ids_sequence[daysSinceCreation];
+  if (!todaySongId) {
+    const iteration = Math.floor(daysSinceCreation / idSequence.length);
+    const ids = randomIdsSequence(idSequence, iteration);
+    const newIdx = daysSinceCreation % idSequence.length;
+    todaySongId = ids[newIdx];
+  }
   const song = await supabase
     .from("songs")
     .select("*")
@@ -46,7 +54,6 @@ async function getHeardleFromDb(
     .limit(1)
     .single()
     .then((i) => checkIntegrity(i, "songs").data);
-
   const album = await supabase
     .from("albums")
     .select("*")

@@ -1,11 +1,11 @@
-export function randomIdsSequence(ids: string[]) {
-  const sequence = randomSecuence(ids.length);
+export function randomIdsSequence(ids: string[], iteration: number) {
+  const sequence = randomSecuence(ids.length, iteration);
   return sequence.map((index) => ids[index]);
 }
 
-const randomSecuence = (length: number) => {
+const randomSecuence = (length: number, seed?: number) => {
   const nums = Array.from({ length: length }, (_, idx) => idx);
-  let seed = length;
+  seed ||= length;
   let m = nums.length,
     t,
     i;
@@ -26,11 +26,6 @@ const randomSecuence = (length: number) => {
 const random = (seed: number) => {
   const x = Math.sin(seed++) * 100000;
   return x - Math.floor(x);
-};
-const dayDiff = (startDate: Date, secondDate: Date) => {
-  const difference = startDate.getTime() - secondDate.getTime();
-  const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-  return TotalDays;
 };
 
 // duration is a string like
