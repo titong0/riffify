@@ -13,7 +13,7 @@ class Document extends NextDocument {
             crossOrigin={"anonymous"}
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700;500&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;700&display=swap"
             rel="stylesheet"
           />
           {/* generated with https://realfavicongenerator.net  */}
