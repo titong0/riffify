@@ -10,8 +10,7 @@ export const ArtistSearch = async (artistName: string) => {
     type: "artist",
   });
 
-  if (!search.artists)
-    throw new Error("No results for search of " + artistName);
+  if (!search.artists) return null;
 
   const data = search.artists.contents.map((channel) => {
     const parsed = YT_ArtistSearchSchema.parse(channel);
