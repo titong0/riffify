@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Artist, SearchResults } from "../shared/schemas";
+import { SearchResults } from "../shared/schemas";
 
 type ChannelItemProps = SearchResults[number] & {
   shouldPrefetch: undefined | false;

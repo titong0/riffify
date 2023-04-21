@@ -84,4 +84,5 @@ export type Song = z.infer<typeof SongSchema>;
 export type Album = z.infer<typeof AlbumSchema>;
 export type Game_Song = z.infer<typeof Game_SongSchema>;
 export type TodaySongResponse = z.infer<typeof TodaySongResponseSchema>;
-export type SearchResults = Awaited<ReturnType<typeof ArtistSearch>>;
+export type ArtistSearchReturn = Awaited<ReturnType<typeof ArtistSearch>>;
+export type SearchResults = NonNullable<ArtistSearchReturn>;
