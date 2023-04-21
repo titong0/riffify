@@ -10,12 +10,24 @@ import React from "react";
 import { z } from "zod";
 import ChannelItem from "../../components/ChannelItem";
 import { ArtistSearch } from "../../server/search";
-import { SearchResults } from "../../shared/schemas";
+import { ArtistSearchReturn } from "../../shared/schemas";
+import BackButton from "../../components/common/BackButton";
 
 type pageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const SearchResults = ({ results, artist }: pageProps) => {
-  if (results === null) return <div>No results for that artist</div>;
+  if (results === null)
+    return (
+      <div className="flex justify-center w-full">
+        <div className="flex flex-col items-center w-full max-w-2xl">
+          <h2 className="my-8 font-sans font-bold text-center textl-xl">
+            <span className="text-red-500">No results</span> for {artist}
+          </h2>
+          <BackButton />
+        </div>
+      </div>
+    );
+
   if (typeof results === "string") return <pre>{results}</pre>;
   return (
     <>
@@ -50,7 +62,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
 export default SearchResults;
 
 export const getServerSideProps: GetServerSideProps<{
-  results: SearchResults;
+  results: ArtistSearchReturn;
   artist: string;
 }> = async (ctx) => {
   const notEmptyQuery = z.string().min(1).safeParse(ctx.params!.artist);
@@ -59,10 +71,11 @@ export const getServerSideProps: GetServerSideProps<{
   const artist = notEmptyQuery.data;
   try {
     const results = await ArtistSearch(artist);
+
     return { props: { results, artist } };
   } catch (error: any) {
     if (error.code === "ERR_INVALID_URL") {
-      console.log(error);
+      console.log(JSON.stringify(error, null, 2));
       return {
         redirect: {
           destination: `/server-error?error="This is a really weird error... sorry I have no clue`,
