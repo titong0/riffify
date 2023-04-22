@@ -12,7 +12,7 @@ const SearchBar = ({ artistName }: { artistName: string }) => {
     Router.push(`/search/${artist!}`);
   };
   return (
-    <div className="inline font-mono text-2xl text-center py-7">
+    <div className="inline font-mono text-center py-7">
       {showInput ? (
         <form className="flex ml-auto itew-64" onSubmit={navigate}>
           <input

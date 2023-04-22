@@ -29,7 +29,9 @@ const Artist: React.FC<ArtistProps> = ({
         <title>{`${artist.name} heardle`}</title>
         <meta name="description" content={`Play heardle for ${artist.name}`} />
       </Head>
-      <SearchBar artistName={artist.name} /> heardle
+      <div className="flex items-center justify-center w-full text-2xl">
+        <SearchBar artistName={artist.name} /> heardle
+      </div>
       {/* <BgImage url={artist.avatar[0].url} /> */}
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
     </>
