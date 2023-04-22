@@ -5,54 +5,27 @@ import { BsFillPlayFill } from "react-icons/bs";
 import { MdPause } from "react-icons/md";
 import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
-import { GameState } from "../../types";
+import { GameState, StateSetter } from "../../types";
 import { VolumeSlider } from "./VolumeSlider";
-
-import { calculateStart } from "../../server/songChoosingUtils";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
 type PlayerProps = {
-  id: string;
-  startsAt: number;
+  song: { id: string; startsAt: number };
   secondsLimit: number;
   attemptCount: number;
   disableLimit: boolean;
 };
 
 const Player = ({
-  id,
-  startsAt,
+  song,
   secondsLimit,
   attemptCount,
   disableLimit,
 }: PlayerProps) => {
   const [playing, setPlaying] = useState(false);
-  const [startedPlaying, setPlaysStart] = useState(0);
   const [ready, setReady] = useState(false);
   const [volume, setVolume] = useState(0.5);
-  const url = `https://www.youtube.com/watch?v=${id}`;
-  const playerRef = useRef<BaseReactPlayer<BaseReactPlayerProps>>(null);
-  const [correctedStartsAt, setCorrectedStartsAt] = useState(startsAt);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      if (Date.now() - startedPlaying > secondsLimit * 1000) {
-        playerRef.current?.seekTo(correctedStartsAt);
-        setPlaying(false);
-        setPlaysStart(0);
-        clearInterval(id);
-      }
-    }, 100);
-    return () => {
-      clearInterval(id);
-    };
-  }, [startedPlaying, playing, correctedStartsAt, secondsLimit]);
-
-  const handleReady = () => {
-    setReady(true);
-    playerRef.current?.seekTo(correctedStartsAt);
-  };
 
   return (
     <div className="grid items-center w-full grid-cols-10 grid-rows-2 px-2 justify-items-center sm:flex-row">
@@ -62,38 +35,44 @@ const Player = ({
         failAmount={attemptCount}
       />
       <VideoPlayer
+        setPlaying={setPlaying}
+        setReady={setReady}
         volume={volume}
-        playerRef={playerRef}
-        url={url}
         playing={playing}
-        onPlay={() => setPlaysStart(Date.now())}
-        onPause={() => setPlaysStart(0)}
-        onReady={handleReady}
-        onProgress={(e) => console.log(e)}
-        onDuration={(duration) => {
-          // This is needed as sometimes, a yt music id may belong to a
-          // song with a duration different to the web yt id. Example
-          // https://music.youtube.com/playlist?list=OLAK5uy_lUlpor68rM1s9pkNM-8fNJRstJI5AsPWo (see track 9)
-          // https://youtube.com/watch?v=Bm5iA4Zupek
-          if (duration > startsAt) return;
-          const newStartsAt = calculateStart(duration);
-          setCorrectedStartsAt(newStartsAt);
-        }}
+        secondsLimit={secondsLimit}
+        song={song}
       />
-      {ready ? (
-        <>
-          <button className="w-6 h-6" onClick={() => setPlaying(!playing)}>
-            {!playing ? <BsFillPlayFill size="25" /> : <MdPause size="30" />}
-          </button>
-        </>
-      ) : (
-        <span className="w-12 h-12 p-2 border-2">
-          <AiOutlineLoading size="30" className="animate-spin" />
-        </span>
-      )}
+      <PauseResumeButton
+        playing={playing}
+        ready={ready}
+        setPlaying={setPlaying}
+      />
       <VolumeSlider volume={volume} setVolume={setVolume} />
     </div>
   );
 };
+
+function PauseResumeButton({
+  playing,
+  ready,
+  setPlaying,
+}: {
+  ready: boolean;
+  playing: boolean;
+  setPlaying: StateSetter<boolean>;
+}) {
+  if (!ready)
+    return (
+      <span className="w-12 h-12 p-2 border-2">
+        <AiOutlineLoading size="30" className="animate-spin" />
+      </span>
+    );
+
+  return (
+    <button className="w-6 h-6" onClick={() => setPlaying(!playing)}>
+      {!playing ? <BsFillPlayFill size="25" /> : <MdPause size="30" />}
+    </button>
+  );
+}
 
 export default Player;

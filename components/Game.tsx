@@ -39,11 +39,10 @@ const Game = ({
         <section className="py-2s">
           <Player
             disableLimit={gameState !== "Playing"}
-            startsAt={song.startAt}
+            song={{ id: song.id, startsAt: song.startAt }}
             secondsLimit={
               gameState === "Playing" ? Math.pow(2, attempts.length + 1) : 16
             }
-            id={song.id}
             attemptCount={attempts.length}
           />
           <GameControls
