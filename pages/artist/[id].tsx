@@ -7,9 +7,6 @@ import { getToday } from "../../server/getTodaySong";
 import { ArtistIdSchema } from "../../shared/libSchemas";
 import { isToday } from "../../utils";
 import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
-import { BsSearch } from "react-icons/bs";
-import { useRouter } from "next/router";
-import { timeToSeconds } from "youtubei.js/dist/src/utils/Utils";
 import SearchBar from "../../components/common/SearchBar";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
