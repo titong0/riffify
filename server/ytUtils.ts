@@ -25,7 +25,6 @@ export async function getAllSongs(
   sections: (YTNodes.MusicCarouselShelf | YTNodes.MusicShelf)[]
 ): Promise<Array<Song>> {
   const { albumsSection, singlesSection } = removeUnnecesarySections(sections);
-
   const albumsFetch = getFullSection(albumsSection).then((albums) => {
     if (!albums) return null;
     return Promise.all(albums.map((album) => getSongsFromAlbum(album)));
@@ -35,7 +34,7 @@ export async function getAllSongs(
     if (!singles) return null;
     return Promise.all(singles.map((single) => getSongsFromAlbum(single)));
   });
-
+  console.log("beforeawait");
   const [albums, singles] = await Promise.all([albumsFetch, singlesFetch]);
   const allSongs: Array<Song> = [];
   if (albums) {
@@ -107,22 +106,26 @@ async function getSongsFromAlbum(
   const client = await youtube;
   const albumRes = await client.music.getAlbum(albumId);
 
-  return albumRes.contents.map((albumSong) => {
-    const song = YT_SongSchema.parse(albumSong);
-    const album = YT_AlbumSchema.parse(albumRes);
-
-    return {
-      title: song.title,
-      id: song.id,
-      duration: song.duration?.text,
-      album: {
-        id: albumId,
-        name: album.header.title.text,
-        url: album.url,
-        thumbnail: album.header.thumbnails[0].url,
-      },
-    };
-  });
+  console.log(`beforealbumparse: ${albumId}`);
+  const album = YT_AlbumSchema.parse(albumRes);
+  return albumRes.contents
+    .map((albumSong) => {
+      const parsedSong = YT_SongSchema.safeParse(albumSong);
+      if (!parsedSong.success) return undefined;
+      const song = parsedSong.data;
+      return {
+        title: song.title,
+        id: song.id,
+        duration: song.duration?.text,
+        album: {
+          id: albumId,
+          name: album.header.title.text,
+          url: album.url,
+          thumbnail: album.header.thumbnails[0].url,
+        },
+      };
+    })
+    .filter(Boolean) as Array<Song>;
 }
 
 export function getArtistInfo(artist: YTArtist) {

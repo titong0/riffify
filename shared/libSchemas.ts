@@ -23,7 +23,7 @@ export const YT_SongSchema = z.object({
 export const YT_AlbumSchema = z.object({
   header: z.object({ title: headerTitle, thumbnails: ThumbnailSchema.array() }),
   url: z.string().url(),
-  contents: YT_SongSchema.array(),
+  contents: YT_SongSchema.partial().array(),
 });
 
 export const YT_ArtistSearchSchema = z.object({

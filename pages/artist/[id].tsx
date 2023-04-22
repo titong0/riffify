@@ -78,7 +78,7 @@ const Title = ({ artistName }: { artistName: string }) => {
 export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   ctx
 ) => {
-  const parsed = ArtistIdSchema.safeParse(ctx.params!.id);
+  const parsed = ArtistIdSchema.safeParse(ctx.params?.id);
   if (!parsed.success) return { notFound: true };
   const id = parsed.data;
 
