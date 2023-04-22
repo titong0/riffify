@@ -15,9 +15,9 @@ const ActualSlider = ({
       onValueChange={(values) => {
         setVolume(values[0]);
       }}
-      min={0.1}
+      min={0}
       max={1}
-      step={0.1}
+      step={0.05}
       value={[volume]}
     >
       <Slider.Track className="relative flex items-center w-full h-1 bg-slate-200">
