@@ -7,14 +7,15 @@ import CTA from "../components/common/CTA";
 const ServerDown = () => {
   const Router = useRouter();
   const error = Router.query.error;
-  const from = Router.query.comingFrom;
+  const from = Router.query.from;
+  console.log(from);
   return (
     <>
       <Head>
         <title>Oops... </title>
       </Head>
       <div className="flex flex-col items-center justify-center h-screen bg-red-400 dark:bg-red-900 dark:text-gray-200">
-        <div className="h-48 p-3 sm:p-10">
+        <div className="p-3 sm:px-5">
           <h2 className="mb-1 text-xl font-bold">
             Seems like the server had an error when executing your request.
           </h2>

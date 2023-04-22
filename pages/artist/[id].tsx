@@ -63,7 +63,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
       },
     };
   } catch (error) {
-    const comingFrom = encodeURIComponent(`artist/${id}`);
+    const comingFrom = encodeURIComponent(`/artist/${id}`);
 
     if (error instanceof Error && error.cause === "no-grid") {
       return {
