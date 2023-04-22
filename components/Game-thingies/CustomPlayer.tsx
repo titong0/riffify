@@ -23,7 +23,6 @@ const VideoPlayer = ({
   const url = `https://www.youtube.com/watch?v=${song.id}`;
   const playerRef = useRef<BaseReactPlayer<BaseReactPlayerProps>>(null);
   const [correctedStartsAt, setCorrectedStartsAt] = useState(song.startsAt);
-  const [startedPlaying, setStartedPlaying] = useState(0);
 
   useEffect(() => {
     console.log("run effect");
@@ -41,18 +40,19 @@ const VideoPlayer = ({
     playerRef.current?.seekTo(correctedStartsAt);
   };
 
+  const reset = () => playerRef.current?.seekTo(correctedStartsAt);
+
   return (
     <div className={"fixed"}>
       <ReactPlayer
         ref={playerRef}
         {...props}
-        // width="0"
-        // height="0"
+        width="0"
+        height="0"
         playing={playing}
         controls={false}
         url={url}
-        onPlay={() => setStartedPlaying(Date.now())}
-        onPause={() => setStartedPlaying(0)}
+        onPause={reset}
         onReady={handleReady}
         onDuration={(duration) => {
           // This is needed as sometimes, a yt music id may belong to a
