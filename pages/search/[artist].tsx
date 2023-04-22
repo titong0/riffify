@@ -75,7 +75,7 @@ export const getServerSideProps: GetServerSideProps<{
     return { props: { results, artist } };
   } catch (error: any) {
     const encoded = JSON.stringify(error);
-    const comingFrom = `search/${parsedQuery.data}`;
+    const comingFrom = encodeURIComponent(`search/${parsedQuery.data}`);
     const encodedErr = encodeURIComponent(encoded);
     return {
       redirect: {
