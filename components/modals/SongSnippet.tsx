@@ -41,8 +41,7 @@ export default function SongSnippet({
       <Player
         attemptCount={5}
         disableLimit={true}
-        id={song.id}
-        startsAt={song.startAt}
+        song={song}
         secondsLimit={16}
       />
     </div>

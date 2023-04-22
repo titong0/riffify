@@ -7,11 +7,12 @@ import { AiOutlineLoading } from "react-icons/ai";
 import PlaytimeBar from "./PlaytimeBar";
 import { GameState, StateSetter } from "../../types";
 import { VolumeSlider } from "./VolumeSlider";
+import { Game_Song } from "../../shared/schemas";
 
 const VideoPlayer = dynamic(() => import("./CustomPlayer"), { ssr: false });
 
 type PlayerProps = {
-  song: { id: string; startsAt: number };
+  song: Game_Song;
   secondsLimit: number;
   attemptCount: number;
   disableLimit: boolean;
