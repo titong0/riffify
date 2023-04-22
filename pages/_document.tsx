@@ -6,6 +6,7 @@ class Document extends NextDocument {
     return (
       <Html className="dark">
         <Head>
+          <meta property="og:image" content="/riffify.png" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
