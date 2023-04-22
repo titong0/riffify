@@ -21,10 +21,10 @@ const FailScreen = ({ song }: FailScreenProps) => {
           <AlertDialogWrapper>
             <AlertDialog.Title className="my-2 text-2xl font-bold text-center">
               {" "}
-              You won!
+              You lost..
             </AlertDialog.Title>
             {/* <ArtistStats artistId={artistId} /> */}
-            <SongSnippet song={song} title={"You failed miserably"} />
+            <SongSnippet song={song} title={"You failed miserably."} />
 
             <AlertDialog.Cancel asChild className="w-full">
               <CTA className="w-full">Cool</CTA>

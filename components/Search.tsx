@@ -104,7 +104,7 @@ const InputBar = () => {
               placeholder="https://www.youtube.com/watch?v=BPPQ1dLD1XQ&list=PL2C9E5715E925ADC9"
             />
           </div>
-          <Link href="/feature-not-done" passHref>
+          <Link href="/feature-not-done" className="ml-auto" passHref>
             <CTA className="p-2 px-6">Go to playlist</CTA>
           </Link>
         </form>

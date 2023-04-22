@@ -87,7 +87,7 @@ function twitterIntent(
   url.searchParams.append("hashtags", capitalizedName);
   url.searchParams.append("hashtags", "heardle");
   url.searchParams.append("hashtags", "riffify");
-  url.searchParams.append("url", `https://${host}/artist/${artistId}`);
+  url.searchParams.append("url", `${host}/artist/${artistId}`);
   return url.toString();
 }
 
