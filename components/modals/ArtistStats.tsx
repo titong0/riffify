@@ -5,11 +5,12 @@ import { BsBarChart } from "react-icons/bs";
 import AlertDialogWrapper from "../common/AlertDialogWrapper";
 import CTA from "../common/CTA";
 import { ArtistStats } from "../../shared/schemas";
+
 export const ArtistStatsDisplay = ({ artistId }: { artistId: string }) => {
   return (
     <AlertDialog.Root>
-      <AlertDialog.Trigger>
-        <BsBarChart size={20} />
+      <AlertDialog.Trigger className="text-red-700">
+        <BsBarChart className="" size={20} />
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="bg-black bg-opacity-80 animate-[fade-in_300ms] fixed inset-0 z-40" />
@@ -97,4 +98,4 @@ const Stats = ({ artistId }: { artistId: string }) => {
   );
 };
 
-export default Stats;
+export default ArtistStatsDisplay;

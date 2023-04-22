@@ -2,6 +2,7 @@ import Head from "next/head";
 import React from "react";
 import Search from "../components/Search";
 import Logo from "../components/common/Logo";
+import { HeardleExplanationDisplay } from "../components/modals/HeardleExplanation";
 
 const Index: React.FC = ({}) => {
   return (
@@ -19,8 +20,12 @@ const Index: React.FC = ({}) => {
             Riffify <Logo width={50} height={50} />{" "}
           </h1>
           <h2>
-            Play heardle for <span className="underline">any</span> artist you
-            want!
+            Play{" "}
+            <span className="relative">
+              heardle
+              <HeardleExplanationDisplay />{" "}
+            </span>{" "}
+            for <span className="underline">any</span> artist you want!
           </h2>
         </header>
         <div className="flex justify-center">
