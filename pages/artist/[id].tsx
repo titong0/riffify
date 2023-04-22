@@ -9,6 +9,8 @@ import { isToday } from "../../utils";
 import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
 import { BsSearch } from "react-icons/bs";
 import { useRouter } from "next/router";
+import { timeToSeconds } from "youtubei.js/dist/src/utils/Utils";
+import SearchBar from "../../components/common/SearchBar";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -27,51 +29,10 @@ const Artist: React.FC<ArtistProps> = ({
         <title>{`${artist.name} heardle`}</title>
         <meta name="description" content={`Play heardle for ${artist.name}`} />
       </Head>
-
-      <Title artistName={artist.name} />
+      <SearchBar artistName={artist.name} /> heardle
       {/* <BgImage url={artist.avatar[0].url} /> */}
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
     </>
-  );
-};
-
-const Title = ({ artistName }: { artistName: string }) => {
-  const [showInput, setShowInput] = React.useState(false);
-  const Router = useRouter();
-  const navigate = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const artist = new FormData(e.target as HTMLFormElement).get("searchValue");
-    console.log(Router.route);
-    Router.push(`/search/${artist!}`);
-  };
-  return (
-    <h1 className="text-2xl text-center py-7">
-      {showInput ? (
-        <form className="inline-flex w-64 ml-auto" onSubmit={navigate}>
-          <input
-            autoFocus
-            name="searchValue"
-            className="p-1 my-2 mr-2 transition rounded-sm bg-opacity-10 bg-slate-300 dark:bg-slate-900 focus:border dark:text-gray-300 animate-weigthen"
-            type="text"
-          />
-          {/* <button
-            className="mr-2"
-            onClick={() => setShowInput((prevShowInput) => !prevShowInput)}
-          >
-            coso
-          </button> */}
-        </form>
-      ) : (
-        <button
-          onClick={() => setShowInput((prevShowInput) => !prevShowInput)}
-          className="inline-flex items-center justify-between px-2 py-1 mr-2 border-2 bg-opacity-60 bg-slate-900"
-        >
-          {artistName}
-          <BsSearch className="ml-2" size={15} />
-        </button>
-      )}
-      heardle
-    </h1>
   );
 };
 
@@ -84,15 +45,11 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
 
   try {
     const now = new Date();
-    console.log(`---------------------------
-    FETCHING ARTIST:....`);
+    console.log("---------------------\nFETCHING ARTIST:....");
     const today = await getToday(id, true);
 
-    console.log(
-      `FINISHED FETCHING FETCHING ARTIST:.... ${
-        new Date().getMilliseconds() - now.getMilliseconds()
-      }ms`
-    );
+    const timeItTook = new Date().getMilliseconds() - now.getMilliseconds();
+    console.log(`finished FETCHING ARTIST: ${timeItTook}ms `);
 
     return {
       props: {
@@ -104,6 +61,8 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
       },
     };
   } catch (error) {
+    const comingFrom = `artist/${id}`;
+
     if (error instanceof Error && error.cause === "no-grid") {
       return {
         redirect: {
@@ -111,18 +70,17 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
           statusCode: 301,
         },
       };
-    } else {
-      console.error(`Error generating page at /artist/${id}:` + error);
-      const encoded = JSON.stringify(error);
-      // lets pray this isnt dangerous
-      const encodedErr = encodeURIComponent(encoded);
-      return {
-        redirect: {
-          destination: `/server-error?error=${encodedErr}`,
-          permanent: false,
-        },
-      };
     }
+
+    console.error(`Error generating page at /artist/${id}:` + error);
+    const encoded = JSON.stringify(error);
+    const encodedErr = encodeURIComponent(encoded);
+    return {
+      redirect: {
+        destination: `/server-error?error=${encodedErr}&from=${comingFrom}`,
+        permanent: false,
+      },
+    };
   }
 };
 

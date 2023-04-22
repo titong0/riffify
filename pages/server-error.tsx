@@ -7,6 +7,7 @@ import CTA from "../components/common/CTA";
 const ServerDown = () => {
   const Router = useRouter();
   const error = Router.query.error;
+  const from = Router.query.comingFrom;
   return (
     <>
       <Head>
@@ -17,9 +18,13 @@ const ServerDown = () => {
           <h2 className="mb-1 text-xl font-bold">
             Seems like the server had an error when executing your request.
           </h2>
-          <pre className="p-4 my-2 overflow-x-scroll bg-gray-800">
-            {JSON.stringify(error, null, 2)}
-          </pre>
+          {error ? (
+            <pre className="p-4 my-2 overflow-x-scroll bg-gray-800">
+              {JSON.stringify(error, null, 2)}
+            </pre>
+          ) : (
+            "No error message available"
+          )}
           <p>
             If you are seeing this, please contact me at{" "}
             <span className="underline dark:text-red-300">
@@ -27,7 +32,14 @@ const ServerDown = () => {
             </span>
           </p>
         </div>
-        {/* <CTA className="w-1/4 p-2 px-6 mx-auto my-1 ">Try again</CTA> */}
+        {typeof from === "string" && (
+          <CTA
+            onClick={() => Router.replace(from)}
+            className="w-1/4 p-2 px-6 mx-auto my-1"
+          >
+            Try again
+          </CTA>
+        )}
         <BackButton className="w-1/4" />
       </div>
     </>
