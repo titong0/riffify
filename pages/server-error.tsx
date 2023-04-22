@@ -1,7 +1,8 @@
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import BackButton from "../components/common/BackButton";
+import CTA from "../components/common/CTA";
 
 const ServerDown = () => {
   const Router = useRouter();
@@ -16,7 +17,7 @@ const ServerDown = () => {
           <h2 className="mb-1 text-xl font-bold">
             Seems like the server had an error when executing your request.
           </h2>
-          <pre className="p-4 overflow-x-scroll bg-gray-800">
+          <pre className="p-4 my-2 overflow-x-scroll bg-gray-800">
             {JSON.stringify(error, null, 2)}
           </pre>
           <p>
@@ -26,7 +27,8 @@ const ServerDown = () => {
             </span>
           </p>
         </div>
-        <Link href="/">Go back</Link>
+        {/* <CTA className="w-1/4 p-2 px-6 mx-auto my-1 ">Try again</CTA> */}
+        <BackButton className="w-1/4" />
       </div>
     </>
   );

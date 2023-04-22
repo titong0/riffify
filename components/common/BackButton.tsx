@@ -3,7 +3,13 @@ import React from "react";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
 
-type BackButtonProps = Omit<LinkProps, "href"> & {
+type BackButtonProps = Omit<
+  React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >,
+  "onClick"
+> & {
   className?: string;
   children?: React.ReactNode;
 };
@@ -11,7 +17,7 @@ type BackButtonProps = Omit<LinkProps, "href"> & {
 const BackButton: React.FC<BackButtonProps> = (props) => {
   const router = useRouter();
   return (
-    <div
+    <button
       onClick={router.back}
       className={twMerge(
         `px-6 py-2 border rounded-md border-current w-fit`,
@@ -19,7 +25,7 @@ const BackButton: React.FC<BackButtonProps> = (props) => {
       )}
     >
       {props.children || "Go back"}
-    </div>
+    </button>
   );
 };
 
