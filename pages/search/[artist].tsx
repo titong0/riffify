@@ -74,6 +74,7 @@ export const getServerSideProps: GetServerSideProps<{
     const results = await ArtistSearch(artist);
     return { props: { results, artist } };
   } catch (error: any) {
+    console.error(error);
     const encoded = JSON.stringify(error);
     const comingFrom = encodeURIComponent(`/search/${parsedQuery.data}`);
     const encodedErr = encodeURIComponent(encoded);
