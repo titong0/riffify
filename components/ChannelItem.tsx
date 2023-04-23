@@ -18,7 +18,11 @@ const ChannelItem: React.FC<ChannelItemProps> = ({
     // prefetch only first 3 results to save bandwidth
     // comparison could be undefined instead of true to prevent this behavior
     // https://github.com/vercel/next.js/issues/9522
-    <Link href={`/artist/${id}`} passHref prefetch={shouldPrefetch}>
+    <Link
+      href={`/artist/${encodeURIComponent(id)}`}
+      passHref
+      prefetch={shouldPrefetch}
+    >
       <div className="flex items-center p-2 border-b border-current hover:bg-gray-200 dark:hover:bg-gray-800">
         <Image
           unoptimized

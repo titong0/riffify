@@ -66,6 +66,7 @@ export const getServerSideProps: GetServerSideProps<{
   results: ArtistSearchReturn;
   artist: string;
 }> = async (ctx) => {
+  console.log("ctx.req", JSON.stringify(ctx.req, null, 2));
   const parsedQuery = z.string().min(1).safeParse(ctx.params!.artist);
   if (!parsedQuery.success) return { notFound: true };
 
