@@ -50,6 +50,8 @@ const PLACEHOLDER_POSSIBILITIES = [
   "Almendra",
   "Sodastereo",
   "Andre 3000",
+  "Invisible",
+  "Serú Girán",
 ];
 const InputBar = () => {
   const Router = useRouter();
@@ -67,7 +69,7 @@ const InputBar = () => {
             const artist = new FormData(e.target as HTMLFormElement).get(
               "artist"
             );
-            Router.push(`search/${artist!}`);
+            Router.push(`search/${encodeURIComponent(artist as string)}`);
           }}
         >
           <div>
