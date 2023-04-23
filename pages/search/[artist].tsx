@@ -68,13 +68,13 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   const parsedQuery = z.string().min(1).safeParse(ctx.params!.artist);
   if (!parsedQuery.success) return { notFound: true };
-
+  console.log({ parsedQuery });
   const artist = parsedQuery.data;
   try {
     const results = await ArtistSearch(artist);
     return { props: { results, artist } };
   } catch (error: any) {
-    console.error(error.input);
+    console.error(JSON.stringify(error.input));
     const encoded = JSON.stringify(error);
     const comingFrom = encodeURIComponent(`/search/${parsedQuery.data}`);
     const encodedErr = encodeURIComponent(encoded);
