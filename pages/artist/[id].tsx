@@ -8,6 +8,7 @@ import { ArtistIdSchema } from "../../shared/libSchemas";
 import { isToday } from "../../utils";
 import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
 import SearchBar from "../../components/common/SearchBar";
+import { addToUpdatedToday } from "../api/revalidate";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -50,6 +51,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
     const timeItTook = new Date().getMilliseconds() - now.getMilliseconds();
     console.log(`finished FETCHING ARTIST: ${timeItTook}ms `);
 
+    addToUpdatedToday(id);
     return {
       props: {
         song: today.song,

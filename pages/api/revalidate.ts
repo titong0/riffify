@@ -15,11 +15,11 @@ export default async function handler(
   }
   const id = parse.data;
   const hasBeenUpdated = await getUpdatedToday(id);
-
+  console.log({ hasBeenUpdated });
   try {
-    if (hasBeenUpdated.data) return res.json("No update needed");
+    if (hasBeenUpdated.data.length) return res.json("No update needed");
 
-    await res.revalidate(`/artist/${id}`);
+    await res.revalidate(`/artist/${id}`).then((i) => console.log("first"));
     await addToUpdatedToday(id);
     return res.json({ revalidated: true });
   } catch (err) {
@@ -29,12 +29,19 @@ export default async function handler(
   }
 }
 
-function addToUpdatedToday(artistId: string) {
+/**
+ *
+ * after generating the page for a heardle or revalidating its route
+ * it must be added to the DB in order to prevent unnecessary revalidating
+ * which could be caused by manual navigations to /api/revalidate
+ */
+export function addToUpdatedToday(artistId: string) {
   return supabase
     .from("updated_today")
     .insert({ id: artistId })
     .then((r) => checkIntegrity(r, `insert ${artistId} to updated_today`));
 }
+
 function getUpdatedToday(artistId: string) {
   return supabase
     .from("updated_today")
