@@ -4,9 +4,8 @@ import { YT_ArtistSearchSchema } from "../shared/libSchemas";
 export const youtube = Innertube.create();
 
 export const ArtistSearch = async (artistName: string) => {
-  console.log("before youtube await");
   const client = await youtube;
-  console.log("before client search");
+  console.log({ artistName });
   const search = await client.music.search(artistName, {
     type: "artist",
   });
