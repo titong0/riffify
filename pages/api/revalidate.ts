@@ -15,7 +15,7 @@ export default async function handler(
   }
   const id = parse.data;
   const hasBeenUpdated = await getUpdatedToday(id);
-  console.log({ hasBeenUpdated });
+  console.log(hasBeenUpdated.data);
   try {
     if (hasBeenUpdated.data.length) return res.json("No update needed");
 
@@ -40,7 +40,9 @@ export function addToUpdatedToday(artistId: string) {
     .from("updated_today")
     .insert({ id: artistId })
     .then((i) => {
-      if (i.error) return console.error(i.error);
+      if (i.error?.code === "23505") {
+        return console.log(`${artistId} already updated`);
+      }
       console.log(`added ${artistId} to updatedToday`);
     });
 }
