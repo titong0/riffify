@@ -9,7 +9,7 @@ import { ArtistStats } from "../../shared/schemas";
 export const ArtistStatsDisplay = ({ artistId }: { artistId: string }) => {
   return (
     <AlertDialog.Root>
-      <AlertDialog.Trigger className="text-red-700">
+      <AlertDialog.Trigger>
         <BsBarChart className="" size={20} />
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
