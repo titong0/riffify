@@ -51,7 +51,11 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
     const timeItTook = new Date().getMilliseconds() - now.getMilliseconds();
     console.log(`finished FETCHING ARTIST: ${timeItTook}ms `);
 
-    addToUpdatedToday(id);
+    try {
+      addToUpdatedToday(id);
+    } catch (error) {
+      console.log("didnt insert to updated_today");
+    }
     return {
       props: {
         song: today.song,
