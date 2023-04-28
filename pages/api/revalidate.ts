@@ -39,7 +39,10 @@ export function addToUpdatedToday(artistId: string) {
   return supabase
     .from("updated_today")
     .insert({ id: artistId })
-    .then((r) => checkIntegrity(r, `insert ${artistId} to updated_today`));
+    .then((i) => {
+      if (i.error) return console.error(i.error);
+      console.log(`added ${artistId} to updatedToday`);
+    });
 }
 
 function getUpdatedToday(artistId: string) {
