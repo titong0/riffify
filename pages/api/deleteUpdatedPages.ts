@@ -9,7 +9,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const parse = z.string().safeParse(req.query.key);
-  if (!parse.success || parse.data === process.env.ADMIN_KEY) {
+  if (!parse.success || parse.data !== process.env.ADMIN_KEY) {
     return res.json("Key is not valid");
   }
 
