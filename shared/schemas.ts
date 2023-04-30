@@ -31,7 +31,7 @@ const Game_SongSchema = z.object({ startAt: z.number() }).and(SongSchema);
 export const TodaySongResponseSchema = z.object({
   artist: ArtistSchema,
   song: Game_SongSchema,
-  removed: RemovedSongSchema.array(),
+  // removed: RemovedSongSchema.array(),
   validSongs: z.string().array(),
 });
 export const Page_GamePropsSchema = TodaySongResponseSchema.and(

@@ -15,11 +15,15 @@ export default async function handler(
   }
   const id = parse.data;
   const hasBeenUpdated = await getUpdatedToday(id);
-  console.log(hasBeenUpdated.data);
   try {
-    if (hasBeenUpdated.data.length) return res.json("No update needed");
+    if (hasBeenUpdated.data.length) {
+      console.log(`didnt revalidate ${id}`);
+      return res.json("No update needed");
+    }
 
-    await res.revalidate(`/artist/${id}`).then((i) => console.log("first"));
+    await res
+      .revalidate(`/artist/${id}`)
+      .then((i) => console.log(`Successfully revalidated ${id}`));
     await addToUpdatedToday(id);
     return res.json({ revalidated: true });
   } catch (err) {
