@@ -69,13 +69,7 @@ async function getHeardleFromDb(
     .single()
     .then((i) => checkIntegrity(i, "artists").data);
 
-  const removedRes = supabase
-    .from("removed_songs")
-    .select("*")
-    .eq("removed_from_heardle_id", artistId)
-    .then((i) => checkIntegrity(i, "removed_songs").data);
-
-  const [artist, removed] = await Promise.all([artistRes, removedRes]);
+  const artist = await artistRes;
 
   const startTime = calculateStart(song.duration);
 
@@ -98,10 +92,5 @@ async function getHeardleFromDb(
       name: artist.name,
       thumbnail: artist.avatar_url,
     },
-    removed: removed.map((removedS) => ({
-      id: removedS.song_id,
-      reason: removedS.reason,
-      title: removedS.title,
-    })),
   };
 }
