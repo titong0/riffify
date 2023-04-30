@@ -17,6 +17,7 @@ export default async function handler(
     await deleteAllUpdatedToday();
     return res.status(200).json("Successfully deleted from updated_today");
   } catch (err) {
+    console.error(err);
     return res
       .status(500)
       .send({ message: "Error deleting updated_today:", error: err });
@@ -24,8 +25,12 @@ export default async function handler(
 }
 
 function deleteAllUpdatedToday() {
-  return supabase
-    .from("updated_today")
-    .delete()
-    .then((r) => checkIntegrity(r, `delete all from updated_today`));
+  return (
+    supabase
+      .from("updated_today")
+      .delete()
+      // no id equals one, I just want to delete everything
+      .neq("id", 1)
+      .then((r) => checkIntegrity(r, `delete all from updated_today`))
+  );
 }
