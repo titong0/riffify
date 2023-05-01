@@ -152,7 +152,7 @@ function RecentForm({ recentlyPlayed }: { recentlyPlayed: Artist[] }) {
       </div>
     );
   return (
-    <div className="flex flex-col h-40 pt-2 overflow-y-scroll">
+    <div className="flex flex-col pt-2 overflow-y-scroll min-h-40 max-h-64">
       {recentlyPlayed.map((artist) => {
         return (
           <Link
