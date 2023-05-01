@@ -137,12 +137,18 @@ export function updateStats(
   attemptCount: number,
   hasWon: boolean
 ) {
-  const artistStats =
-    getArtistStats(artistId) || writeStats(artistId, attemptCount);
-  if (isToday(artistStats.lastUpdated))
-    return console.error("duplicated call to updateStats");
-  artistStats.attemptsNeeded[attemptCount - 1] += 1;
-  hasWon ? (artistStats.daysSucceded += 1) : (artistStats.daysFailed += 1);
+  const localArtistStats = getArtistStats(artistId);
+  const artistStats = localArtistStats || writeStats(artistId, attemptCount);
+
+  if (isToday(artistStats.lastUpdated)) {
+    return console.warn("duplicated call to updateStats");
+  }
+  if (hasWon) {
+    artistStats.attemptsNeeded[attemptCount - 1] += 1;
+    artistStats.daysSucceded += 1;
+  } else {
+    artistStats.daysFailed += 1;
+  }
   localSetItem("stats", STORAGE.stats.key(artistId), artistStats);
   return getArtistStats(artistId);
 }
