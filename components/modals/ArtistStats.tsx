@@ -65,7 +65,7 @@ const Stats = ({ artistId }: { artistId: string }) => {
                   key={height + idx}
                 >
                   <div
-                    style={{ height: `${height}%` }}
+                    style={{ height: `${height.toPrecision(3)}%` }}
                     className={`w-8 min-h-[1.5rem] h-full text-center bg-emerald-600 mb-1`}
                   >
                     {attempts}
@@ -78,14 +78,14 @@ const Stats = ({ artistId }: { artistId: string }) => {
         </div>
 
         <div className="flex justify-around w-full pt-2 mt-4 border-t-4 sm:justify-start sm:flex-col">
-          <div className="flex flex-col sm:flex-row">
-            Days won: <span> {stats.daysSucceded}</span>
+          <div className="flex flex-col sm:flex-row sm:gap-1">
+            Days won: <span>{stats.daysSucceded}</span>
           </div>
-          <div className="flex flex-col sm:flex-row">
-            Days lost: <span> {stats.daysFailed}</span>
+          <div className="flex flex-col sm:flex-row sm:gap-1">
+            Days lost: <span>{stats.daysFailed}</span>
           </div>
-          <div className="flex flex-col sm:flex-row">
-            Win-rate:{" "}
+          <div className="flex flex-col sm:flex-row sm:gap-1">
+            Win-rate:
             <span>
               {(stats.daysSucceded * 100) /
                 (stats.daysSucceded + stats.daysFailed)}
