@@ -45,7 +45,7 @@ const SearchResults = ({ results, artist }: pageProps) => {
           <div className="animate-[fade-in_1s_ease-in]">
             {results.map((channel, idx) => (
               <ChannelItem
-                shouldPrefetch={idx < 3 ? undefined : false}
+                shouldPrefetchThumbnail={idx < 3 ? undefined : false}
                 key={channel.id}
                 name={channel.name}
                 id={channel.id}
@@ -68,7 +68,6 @@ export const getServerSideProps: GetServerSideProps<{
 }> = async (ctx) => {
   const parsedQuery = z.string().min(1).safeParse(ctx.params!.artist);
   if (!parsedQuery.success) return { notFound: true };
-  console.log({ parsedQuery });
   const artist = parsedQuery.data;
   try {
     const results = await ArtistSearch(artist);

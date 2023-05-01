@@ -34,7 +34,6 @@ export async function getAllSongs(
     if (!singles) return null;
     return Promise.all(singles.map((single) => getSongsFromAlbum(single)));
   });
-  console.log("beforeawait");
   const [albums, singles] = await Promise.all([albumsFetch, singlesFetch]);
   const allSongs: Array<Song> = [];
   if (albums) {
@@ -106,7 +105,6 @@ async function getSongsFromAlbum(
   const client = await youtube;
   const albumRes = await client.music.getAlbum(albumId);
 
-  console.log(`beforealbumparse: ${albumId}`);
   const album = YT_AlbumSchema.parse(albumRes);
   return albumRes.contents
     .map((albumSong) => {

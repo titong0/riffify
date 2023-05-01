@@ -12,7 +12,6 @@ export const ArtistSearch = async (artistName: string) => {
 
   if (!search.artists) return null;
 
-  console.log("before data map");
   const data = search.artists.contents.map((channel) => {
     const parsed = YT_ArtistSearchSchema.parse(channel);
     return {
