@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Artist, Attempt, Game_Song } from "../../shared/schemas";
-import { getArtistStats, getAttempts, updateStats } from "../../storageUtils";
+import {
+  getAttempts,
+  saveToRecentlyPlayed,
+  updateStats,
+} from "../../storageUtils";
 import { GameState } from "../../types";
 import { getGameState } from "../../utils";
 import FailScreen from "../modals/FailScreen";
@@ -30,7 +34,8 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
 
   useEffect(() => {
     setAttempts(getAttempts(artist.id));
-  }, [artist.id]);
+    saveToRecentlyPlayed(artist);
+  }, [artist.id, artist]);
 
   const shareableScreen = React.useMemo(() => {
     if (gameState === "Playing") return null;

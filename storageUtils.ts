@@ -2,10 +2,11 @@ import { SafeParseReturnType, z } from "zod";
 import {
   Attempt,
   LocStorage_ArtistAttemptsSchema,
-  LocStorage_ArtistStats,
   LocStorage_ArtistStatsSchema,
 } from "./shared/schemas";
 import { isToday } from "./utils";
+import { ArtistSchema } from "./shared/schemas";
+import { Artist } from "./shared/schemas";
 
 const STORAGE = {
   attempts: {
@@ -19,6 +20,10 @@ const STORAGE = {
   favorites: {
     key: () => "favorite-heardles" as const,
     value: z.string().array(),
+  },
+  recentlyPlayed: {
+    key: () => "recently-played" as const,
+    value: ArtistSchema.array(),
   },
 };
 type StorageType = typeof STORAGE;
@@ -48,7 +53,7 @@ const localSetItem = <TName extends keyof StorageType>(
       localStorage.setItem(key, stringified);
     } else {
       console.error(
-        `failed with parsing object to localStorage schema for ${storageItem}`
+        `failed with parsing object to localStorage schema for ${storageItem}: ${parse.error.toString()}`
       );
     }
   } catch (error) {
@@ -151,4 +156,21 @@ export function updateStats(
   }
   localSetItem("stats", STORAGE.stats.key(artistId), artistStats);
   return getArtistStats(artistId);
+}
+
+export function getRecentlyPlayed() {
+  const read = localGetItem("recentlyPlayed", "recently-played");
+  if (read.success) return read.data;
+  return null;
+}
+
+export function saveToRecentlyPlayed(artist: Artist) {
+  const stats = localGetItem("recentlyPlayed", "recently-played");
+  if (!stats.success) {
+    return localSetItem("recentlyPlayed", "recently-played", [artist]);
+  }
+  const copy = [...stats.data];
+  const artistIdx = copy.findIndex((i) => i.id === artist.id);
+  artistIdx === -1 && copy.splice(artistIdx, 1);
+  localSetItem("recentlyPlayed", "recently-played", [...stats.data, artist]);
 }

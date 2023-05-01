@@ -4,14 +4,14 @@ import React from "react";
 import { SearchResults } from "../shared/schemas";
 
 type ChannelItemProps = SearchResults[number] & {
-  shouldPrefetch: undefined | false;
+  shouldPrefetchThumbnail: undefined | false;
 };
 
 const ChannelItem: React.FC<ChannelItemProps> = ({
   id,
   name,
   thumbnail,
-  shouldPrefetch,
+  shouldPrefetchThumbnail,
   suscribers,
 }) => {
   return (
@@ -21,7 +21,7 @@ const ChannelItem: React.FC<ChannelItemProps> = ({
     <Link
       href={`/artist/${encodeURIComponent(id)}`}
       passHref
-      prefetch={shouldPrefetch}
+      prefetch={shouldPrefetchThumbnail}
     >
       <div className="flex items-center p-2 border-b border-current hover:bg-gray-200 dark:hover:bg-gray-800">
         <Image

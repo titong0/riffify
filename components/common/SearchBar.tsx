@@ -8,7 +8,6 @@ const SearchBar = ({ artistName }: { artistName: string }) => {
   const navigate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const artist = new FormData(e.target as HTMLFormElement).get("searchValue");
-    console.log(Router.route);
     Router.push(`/search/${artist!}`);
   };
   return (
