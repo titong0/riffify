@@ -9,6 +9,7 @@ import { isToday } from "../../utils";
 import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
 import SearchBar from "../../components/common/SearchBar";
 import { addToUpdatedToday } from "../api/revalidate";
+import BgImage from "../../components/common/BgImage";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -30,7 +31,7 @@ const Artist: React.FC<ArtistProps> = ({
       <div className="flex items-center justify-center w-full text-2xl">
         <SearchBar artistName={artist.name} /> heardle
       </div>
-      {/* <BgImage url={artist.avatar[0].url} /> */}
+      <BgImage url={artist.thumbnail} />
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
     </>
   );
