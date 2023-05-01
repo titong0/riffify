@@ -9,7 +9,7 @@ const NavLinks = [
     href: "/",
     children: (
       <div className="w-12">
-        <Logo className="h-fit" width={200} layout="responsive" height={200} />
+        <Logo className="h-fit" width={200} height={200} />
       </div>
     ),
   },
@@ -27,7 +27,7 @@ const Nav = () => {
           {NavLinks.map((link) => {
             const adjusted =
               link.href === "/"
-                ? className.toString().replace("-bottom-1", "bottom-2")
+                ? className.replace("before:-bottom-1", "before:bottom-2")
                 : className;
             return (
               <li className="relative h-fit" key={link.href}>
