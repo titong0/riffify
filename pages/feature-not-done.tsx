@@ -18,11 +18,13 @@ const NoFeature = () => {
           <p>
             This feature is not available yet but it <em>likely</em> will in the
             future. If you enjoy the site, please consider checking out{" "}
-            <Link href="/funding" passHref>
-              <a className="text-emerald-500 hover:text-emerald-700">
-                <span className="underline">donating</span>{" "}
-                <AiOutlineHeart className="inline-block" width="20" />
-              </a>
+            <Link
+              href="/funding"
+              passHref
+              className="text-emerald-500 hover:text-emerald-700"
+            >
+              <span className="underline">donating</span>{" "}
+              <AiOutlineHeart className="inline-block" width="20" />
             </Link>
             .
           </p>
@@ -38,7 +40,6 @@ const NoFeature = () => {
           </div>
           Here&apos;s some of the things that are (likely) coming soon
           <ul className="m-2 list-disc list-inside">
-            <li>Site redesign</li>
             <li>Better stats tracking</li>
             <li>Playlist mode</li>
             <li>Favorites system</li>

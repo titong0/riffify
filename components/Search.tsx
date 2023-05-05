@@ -83,7 +83,7 @@ const InputBar = () => {
       >
         <PlaylistForm />
       </Tabs.Content>
-      <Tabs.Content value="Recent">
+      <Tabs.Content value="Recent" className="rdx-state-inactive:hidden">
         <RecentForm recentlyPlayed={recentlyPlayed} />
       </Tabs.Content>
     </>
@@ -152,16 +152,17 @@ function RecentForm({ recentlyPlayed }: { recentlyPlayed: Artist[] }) {
       </div>
     );
   return (
-    <div className="flex flex-col pt-2 overflow-y-scroll min-h-40 max-h-64">
+    <div className="flex flex-col min-h-[10rem] max-h-64 overflow-y-auto">
       {recentlyPlayed.map((artist) => {
         return (
           <Link
+            className="border-b border-current last-of-type:border-b-0"
             key={artist.id}
             href={`/artist/${encodeURIComponent(artist.id)}`}
             passHref
           >
             {" "}
-            <div className="flex items-center p-2 border-b border-current hover:bg-gray-200 dark:hover:bg-gray-800">
+            <div className="flex items-center p-2 hover:bg-gray-200 dark:hover:bg-gray-800">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={artist.thumbnail}

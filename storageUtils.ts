@@ -171,6 +171,6 @@ export function saveToRecentlyPlayed(artist: Artist) {
   }
   const copy = [...stats.data];
   const artistIdx = copy.findIndex((i) => i.id === artist.id);
-  artistIdx === -1 && copy.splice(artistIdx, 1);
+  artistIdx !== -1 && copy.splice(artistIdx, 1);
   localSetItem("recentlyPlayed", "recently-played", [artist, ...copy]);
 }
