@@ -33,7 +33,7 @@ const Artist: React.FC<ArtistProps> = ({
       </Head>
       <div className="flex items-center justify-center w-full text-2xl">
         <SearchBar artistName={artist.name} /> heardle
-        <OgThings artist={artist} />
+        {/* <OgThings artist={artist} /> */}
       </div>
       <BgImage url={artist.thumbnail} />
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
@@ -50,6 +50,14 @@ const OgThings = ({ artist }: { artist: Artist }) => {
   return (
     <>
       <meta property="og:image" content={url.href} />
+      <meta property="og:title" content={`${artist.name} heardle`}></meta>
+      <meta
+        property="og:description"
+        content={`Link to play a heardle for ${artist.name}`}
+      />
+      <meta property="og:url" content={`${host}/artist/${artist.id}`}></meta>
+      <meta property="twitter:image" content={url.href}></meta>
+      <meta property="twitter:card" content={url.href}></meta>
     </>
   );
 };
