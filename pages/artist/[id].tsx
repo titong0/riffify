@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import GameWrapper from "../../components/Game-thingies/GameWrapper";
-import { Page_ArtistGameProps } from "../../shared/schemas";
+import { Artist, Page_ArtistGameProps } from "../../shared/schemas";
 import { getToday } from "../../server/getTodaySong";
 import { ArtistIdSchema } from "../../shared/libSchemas";
 import { isToday } from "../../utils";
@@ -10,6 +10,7 @@ import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
 import SearchBar from "../../components/common/SearchBar";
 import { addToUpdatedToday } from "../api/revalidate";
 import BgImage from "../../components/common/BgImage";
+import { host } from "../../config";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -27,12 +28,28 @@ const Artist: React.FC<ArtistProps> = ({
       <Head>
         <title>{`${artist.name} heardle`}</title>
         <meta name="description" content={`Play heardle for ${artist.name}`} />
+        meta
+        <OgThings artist={artist} />
       </Head>
       <div className="flex items-center justify-center w-full text-2xl">
         <SearchBar artistName={artist.name} /> heardle
+        <OgThings artist={artist} />
       </div>
       <BgImage url={artist.thumbnail} />
       <GameWrapper validSongs={validSongs} artist={artist} song={song} />
+    </>
+  );
+};
+
+const OgThings = ({ artist }: { artist: Artist }) => {
+  const url = new URL(`${host}/api/ogGenerator`);
+  url.searchParams.append("name", artist.name);
+  url.searchParams.append("thumbnail", artist.thumbnail);
+  url.searchParams.append("id", artist.id);
+  console.log(url.href);
+  return (
+    <>
+      <meta property="og:image" content={url.href} />
     </>
   );
 };
