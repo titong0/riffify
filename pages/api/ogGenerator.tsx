@@ -108,7 +108,6 @@ function correctQuery(url: NextRequest["nextUrl"]) {
   // found some sites encode this link as http://.../api/ogGenerator?name=whatever&amp;thumbnail=blabla
   if (url.searchParams.has("thumbnail")) return url.searchParams;
   const formatted = url.search.replaceAll("&amp%3B", "&");
-
   return new URLSearchParams(formatted);
 }
 
