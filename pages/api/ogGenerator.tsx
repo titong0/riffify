@@ -1,6 +1,5 @@
 import { ImageResponse } from "@vercel/og";
 import { NextRequest } from "next/server";
-import { URLSearchParams } from "url";
 import { string, z } from "zod";
 import { host } from "../../config";
 
@@ -15,16 +14,13 @@ const querySchema = z.object({
 });
 
 const Handler = (req: NextRequest) => {
-  const queryData = parseSearchParams(req.nextUrl.searchParams);
+  const correctedQuery = correctQuery(req.nextUrl);
+  const queryData = parseSearchParams(correctedQuery);
+
   if (!queryData.success) {
     return fallbackImg();
   }
-  const dimensions = getDimensionsFromUrl(queryData.data.thumbnail);
-  if (!dimensions) {
-    return fallbackImg();
-  }
 
-  const adjustedHeight = adjustHeight(dimensions, 1200);
   return new ImageResponse(
     (
       <div
@@ -105,32 +101,12 @@ function parseSearchParams(params: URLSearchParams) {
   });
 }
 
-/**
- *
- * @returns null if a string with the shape w1200-h2300 is not found
- */
-function getDimensionsFromUrl(thumbnailUrl: string) {
-  const dimensionsRegex = /w(\d+)-h(\d+)/;
-  const dimensionsMatch = thumbnailUrl.match(dimensionsRegex);
-  if (!dimensionsMatch || !dimensionsMatch[2]) return null;
+function correctQuery(url: NextRequest["nextUrl"]) {
+  // found some sites encode this link as http://.../api/ogGenerator?name=whatever&amp;thumbnail=blabla
+  if (url.searchParams.has("thumbnail")) return url.searchParams;
+  const formatted = url.search.replaceAll("&amp%3B", "&");
 
-  // dimensionsMatch[0] matches both things so not useful
-  const width = dimensionsMatch[1];
-  const height = dimensionsMatch[2];
-
-  return { width: parseInt(width), height: parseInt(height) };
-}
-
-function adjustHeight(
-  dimensions: {
-    width: number;
-    height: number;
-  },
-  MAX_WIDTH: number = 700
-) {
-  const { width, height } = dimensions;
-  const multiplier = MAX_WIDTH / width;
-  return height * multiplier;
+  return new URLSearchParams(formatted);
 }
 
 const fallbackImg = () => {
