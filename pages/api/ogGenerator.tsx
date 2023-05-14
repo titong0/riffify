@@ -18,6 +18,8 @@ const Handler = (req: NextRequest) => {
   const queryData = parseSearchParams(correctedQuery);
 
   if (!queryData.success) {
+    console.log("ERROR!");
+    console.log(queryData.error);
     return fallbackImg();
   }
 
