@@ -42,19 +42,28 @@ const Index: React.FC = ({}) => {
 const OgThings = () => {
   return (
     <>
-      <meta property="og:image" content="/riffify-cover.png" />
       <meta property="og:title" content="Riffify" />
       <meta
         property="og:description"
         content="Riffify - Play heardle for any artist you want"
       />
       <meta property="og:url" content="https://riffify.vercel.app" />
+
+      <meta property="og:image" content="/riffify-cover.png" />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="300" />
+      <meta property="og:image:height" content="150" />
+
       <meta property="twitter:title" content="Riffify" />
       <meta
         property="twitter:description"
         content="Riffify - Play heardle for any artist you want"
       />
-      <meta property="twitter:image" content="/riffify-cover.png" />
+      <meta
+        property="twitter:image"
+        itemProp="image"
+        content="/riffify-cover.png"
+      />
       <meta property="twitter:card" content="/riffify-cover.png" />
     </>
   );
