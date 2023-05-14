@@ -13,6 +13,7 @@ const Index: React.FC = ({}) => {
           name="description"
           content="Riffify - Play heardle for any artist you want"
         />
+        <OgThings />
       </Head>
       <div>
         <header className="my-8 text-center">
@@ -38,11 +39,25 @@ const Index: React.FC = ({}) => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps<{
-//   artists: Artist[] | null;
-// }> = async (ctx: GetServerSidePropsContext) => {
-//   const trendings = getTrendingHeardles() || null;
-//   console.log(trendings);
-//   return { props: { artists: trendings } };
-// };
+const OgThings = () => {
+  return (
+    <>
+      <meta property="og:image" content="/riffify-cover.png" />
+      <meta property="og:title" content="Riffify" />
+      <meta
+        property="og:description"
+        content="Riffify - Play heardle for any artist you want"
+      />
+      <meta property="og:url" content="https://riffify.vercel.app" />
+      <meta property="twitter:title" content="Riffify" />
+      <meta
+        property="twitter:description"
+        content="Riffify - Play heardle for any artist you want"
+      />
+      <meta property="twitter:image" content="/riffify-cover.png" />
+      <meta property="twitter:card" content="/riffify-cover.png" />
+    </>
+  );
+};
+
 export default Index;
