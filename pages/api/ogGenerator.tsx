@@ -2,6 +2,7 @@ import { ImageResponse } from "@vercel/og";
 import { NextRequest } from "next/server";
 import { URLSearchParams } from "url";
 import { string, z } from "zod";
+import { host } from "../../config";
 
 export const config = {
   runtime: "edge",
@@ -14,21 +15,22 @@ const querySchema = z.object({
 });
 
 const Handler = (req: NextRequest) => {
-  const parse = parseSearchParams(req.nextUrl.searchParams);
-  if (!parse.success) {
+  const queryData = parseSearchParams(req.nextUrl.searchParams);
+  if (!queryData.success) {
     return fallbackImg();
   }
-  const dimensions = getDimensionsFromUrl(parse.data.thumbnail);
+  const dimensions = getDimensionsFromUrl(queryData.data.thumbnail);
   if (!dimensions) {
     return fallbackImg();
   }
 
-  const adjustedDimensions = adjustDimensions(dimensions, 1200);
+  const adjustedHeight = adjustHeight(dimensions, 1200);
   return new ImageResponse(
     (
       <div
         style={{
-          backgroundColor: "rgb(20 30 40)",
+          position: "relative",
+          backgroundColor: "rgb(20 20 20)",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -39,18 +41,50 @@ const Handler = (req: NextRequest) => {
           color: "#fafafa",
         }}
       >
-        <h1 tw="text-5xl">
-          <span style={{ marginRight: "0.25em" }}>{parse.data.name}</span>{" "}
-          heardle. Sorry this isnt pretty
-        </h1>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          tw=""
-          width={adjustedDimensions.width}
-          height={adjustedDimensions.height}
-          src={parse.data.thumbnail}
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            backgroundSize: "contain",
+            zIndex: "-1",
+          }}
+          src={queryData.data.thumbnail}
           alt=""
-        />
+        ></img>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            height: "600px",
+            width: "1200px",
+            backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.70) 0%, rgba(4,13,15,1) 90%)`,
+            zIndex: "-1",
+          }}
+        ></div>
+        <div tw="flex flex-col justify-center items-center text-3xl w-[1200px] h-[600px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${host}/riffify.svg`}
+            style={{
+              position: "absolute",
+              height: "600px",
+              top: "-5rem",
+            }}
+            alt=""
+          />
+          <h1
+            style={{
+              position: "absolute",
+              bottom: "4rem",
+              fontFamily: "'Noto Sans', sans-serif",
+            }}
+          >
+            {queryData.data.name} heardle
+          </h1>
+        </div>
       </div>
     ),
     {
@@ -87,7 +121,7 @@ function getDimensionsFromUrl(thumbnailUrl: string) {
   return { width: parseInt(width), height: parseInt(height) };
 }
 
-function adjustDimensions(
+function adjustHeight(
   dimensions: {
     width: number;
     height: number;
@@ -96,7 +130,7 @@ function adjustDimensions(
 ) {
   const { width, height } = dimensions;
   const multiplier = MAX_WIDTH / width;
-  return { width: width * multiplier, height: height * multiplier };
+  return height * multiplier;
 }
 
 const fallbackImg = () => {
