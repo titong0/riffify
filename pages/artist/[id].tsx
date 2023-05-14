@@ -50,10 +50,13 @@ const OgThings = ({ artist }: { artist: Artist }) => {
   return (
     <>
       <meta property="og:image" content={url.href} />
-      <meta property="og:title" content={`${artist.name} heardle`}></meta>
+      <meta
+        property="og:title"
+        content={`Play heardle for ${artist.name}`}
+      ></meta>
       <meta
         property="og:description"
-        content={`Play heardle for ${artist.name}`}
+        content={`Link to play a heardle for ${artist.name}`}
       />
       <meta property="og:url" content={`${host}/artist/${artist.id}`}></meta>
       <meta property="twitter:image" content={url.href}></meta>
