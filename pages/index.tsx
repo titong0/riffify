@@ -42,10 +42,13 @@ const Index: React.FC = ({}) => {
 const OgThings = () => {
   return (
     <>
-      <meta property="og:title" content="Riffify" />
+      <meta
+        property="og:title"
+        content="Riffify - Play heardle for any artist you want"
+      />
       <meta
         property="og:description"
-        content="Riffify - Play heardle for any artist you want"
+        content={`Play Riffify, the addictive music challenge game! Guess the randomly selected song with as few seconds as possible and compare your score with other players from around the world. Choose any artist and start playing today!`}
       />
       <meta property="og:url" content="https://riffify.vercel.app" />
 
@@ -57,7 +60,7 @@ const OgThings = () => {
       <meta property="twitter:title" content="Riffify" />
       <meta
         property="twitter:description"
-        content="Riffify - Play heardle for any artist you want"
+        content={`Play Riffify, the addictive music challenge game! Guess the randomly selected song with as few seconds as possible and compare your score with other players from around the world. Choose any artist and start playing today!`}
       />
       <meta
         property="twitter:image"
