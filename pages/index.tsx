@@ -52,7 +52,10 @@ const OgThings = () => {
       />
       <meta property="og:url" content="https://riffify.vercel.app" />
 
-      <meta property="og:image" content="/riffify-cover.png" />
+      <meta
+        property="og:image"
+        content="https://riffify.vercel.app/riffify-cover.png"
+      />
       <meta property="og:image:type" content="image/png" />
       <meta property="og:image:width" content="300" />
       <meta property="og:image:height" content="150" />
@@ -65,9 +68,12 @@ const OgThings = () => {
       <meta
         property="twitter:image"
         itemProp="image"
-        content="/riffify-cover.png"
+        content="https://riffify.vercel.app/riffify-cover.png"
       />
-      <meta property="twitter:card" content="/riffify-cover.png" />
+      <meta
+        property="twitter:card"
+        content="https://riffify.vercel.app/riffify-cover.png"
+      />
     </>
   );
 };
