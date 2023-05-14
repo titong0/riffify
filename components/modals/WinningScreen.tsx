@@ -108,10 +108,11 @@ function createSquares(attempts: Attempt[]) {
     Fail: "🟥",
     Success: "🟩",
   };
-  return attempts
-    .map((att) => mapping[att.type])
-    .join("")
-    .padEnd(6, "⬜");
+  return (
+    attempts.map((att) => mapping[att.type]).join("") +
+    // both '🟥' and '🟩' count as length 2, so I can't use padEnd
+    "⬜".repeat(5 - attempts.length)
+  );
 }
 
 export default WinningScreen;
