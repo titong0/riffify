@@ -48,7 +48,7 @@ const OgThings = () => {
       />
       <meta
         property="og:description"
-        content={`Play Riffify, the addictive music challenge game! Guess the randomly selected song with as few seconds as possible and compare your score with other players from around the world. Choose any artist and start playing today!`}
+        content={`Play Riffify! Guess the randomly selected song with as few seconds as possible. Choose any artist and start playing today!`}
       />
       <meta property="og:url" content="https://riffify.vercel.app" />
 
