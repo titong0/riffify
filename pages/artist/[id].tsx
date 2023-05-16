@@ -46,7 +46,7 @@ const OgThings = ({ artist }: { artist: Artist }) => {
   url.searchParams.append("name", artist.name);
   url.searchParams.append("thumbnail", artist.thumbnail);
   url.searchParams.append("id", artist.id);
-  console.log(url.href);
+  // console.log(url.href);
   return (
     <>
       <meta property="og:image" content={url.href} />
@@ -94,16 +94,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   } catch (error) {
     const comingFrom = encodeURIComponent(`/artist/${id}`);
 
-    if (error instanceof Error && error.cause === "no-grid") {
-      return {
-        redirect: {
-          destination: `/no-grid?from=${id}`,
-          statusCode: 301,
-        },
-      };
-    }
-
-    console.error(`Error generating page at /artist/${id}:` + error);
+    console.log(`Error generating page at /artist/${id}:` + error);
     const encoded = JSON.stringify(error);
     const encodedErr = encodeURIComponent(encoded);
     return {
