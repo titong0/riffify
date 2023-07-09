@@ -1,4 +1,4 @@
-import { YTNodes } from "youtubei.js/agnostic";
+import { YT, YTNodes } from "youtubei.js/agnostic";
 import { ObservedArray } from "youtubei.js/dist/src/parser/helpers";
 import {
   YT_SongSchema,
@@ -49,6 +49,7 @@ export async function getAllSongs(
 function removeUnnecesarySections(
   sections: (YTNodes.MusicCarouselShelf | YTNodes.MusicShelf)[]
 ) {
+  console.log(sections);
   const albumsSection =
     sections
       .find((section) => {

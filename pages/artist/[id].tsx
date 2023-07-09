@@ -11,6 +11,7 @@ import SearchBar from "../../components/common/SearchBar";
 import { addToUpdatedToday } from "../api/revalidate";
 import BgImage from "../../components/common/BgImage";
 import { host } from "../../config";
+import { validateHeardle } from "../../server/createHeardle";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -92,6 +93,7 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
       },
     };
   } catch (error) {
+    const isValid = await validateHeardle(id);
     const comingFrom = encodeURIComponent(`/artist/${id}`);
 
     if (error instanceof Error && error.cause === "no-grid") {
@@ -102,10 +104,14 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
         },
       };
     }
-
-    console.error(`Error generating page at /artist/${id}:` + error);
-    const encoded = JSON.stringify(error);
-    const encodedErr = encodeURIComponent(encoded);
+    if (!(error instanceof Error))
+      return {
+        redirect: {
+          destination: `/server-error?from=${comingFrom}`,
+          permanent: false,
+        },
+      };
+    const encodedErr = encodeURIComponent(error.message);
     return {
       redirect: {
         destination: `/server-error?error=${encodedErr}&from=${comingFrom}`,

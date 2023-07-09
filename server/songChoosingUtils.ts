@@ -1,27 +1,27 @@
-export function randomIdsSequence(ids: string[], iteration: number) {
-  const sequence = randomSecuence(ids.length, iteration);
-  return sequence.map((index) => ids[index]);
+export function randomIdsSequence(ids: string[]) {
+  const shuffledIds = shuffle(ids);
+  return shuffledIds;
 }
 
-const randomSecuence = (length: number, seed?: number) => {
-  const nums = Array.from({ length: length }, (_, idx) => idx);
-  seed ||= length;
-  let m = nums.length,
-    t,
-    i;
+function shuffle<T extends Array<any>>(array: T) {
+  let currentIndex = array.length,
+    randomIndex;
 
-  // While there remain elements to shuffle…
-  while (m) {
-    // Pick a remaining element…
-    i = Math.floor(random(seed) * m--); // <-- MODIFIED LINE
-    t = nums[m];
-    nums[m] = nums[i];
-    nums[i] = t;
-    ++seed; // <-- ADDED LINE
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
   }
 
-  return nums;
-};
+  return array;
+}
 
 const random = (seed: number) => {
   const x = Math.sin(seed++) * 100000;

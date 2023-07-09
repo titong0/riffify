@@ -3,7 +3,7 @@ import { db } from "../shared/libSchemas";
 import { TodaySongResponse } from "../shared/schemas";
 import { getDayDifference, checkIntegrity } from "../utils";
 import { createHeardle } from "./createHeardle";
-import { calculateStart, randomIdsSequence } from "./songChoosingUtils";
+import { calculateStart } from "./songChoosingUtils";
 
 const SUPABASE_URL = "https://rlylcdzqewutdtnmgmnu.supabase.co";
 const supabaseKey = process.env.SUPABASE_KEY || "";
@@ -38,36 +38,37 @@ async function getHeardleFromDb(
   if (!res.data) return null;
 
   const heardle = res.data;
-  const idSequence = heardle.ids_sequence;
   const daysSinceCreation = getDayDifference(heardle.created_at, new Date());
   let todaySongId = heardle.ids_sequence[daysSinceCreation];
-  if (!todaySongId) {
-    const iteration = Math.floor(daysSinceCreation / idSequence.length);
-    const ids = randomIdsSequence(idSequence, iteration);
-    const newIdx = daysSinceCreation % idSequence.length;
-    todaySongId = ids[newIdx];
-  }
+  // all songs from artist have been played.
+  // if (!todaySongId) {
+  //   await deleteHeardle(artistId);
+  //   await createHeardle(artistId);
+  //   return await getHeardleFromDb(artistId);
+  // }
+
   const song = await supabase
     .from("songs")
     .select("*")
     .eq("song_id", todaySongId)
     .limit(1)
     .single()
-    .then((i) => checkIntegrity(i, "songs").data);
+    .then((i) => checkIntegrity(i, "select songs").data);
+
   const album = await supabase
     .from("albums")
     .select("*")
     .eq("album_id", song?.album_id)
     .limit(1)
     .single()
-    .then((i) => checkIntegrity(i, "albums").data);
+    .then((i) => checkIntegrity(i, "select albums").data);
   const artistRes = supabase
     .from("artists")
     .select("*")
     .eq("id", artistId)
     .limit(1)
     .single()
-    .then((i) => checkIntegrity(i, "artists").data);
+    .then((i) => checkIntegrity(i, "select artists").data);
 
   const artist = await artistRes;
 

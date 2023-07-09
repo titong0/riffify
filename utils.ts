@@ -53,12 +53,12 @@ export const checkIntegrity = <T extends any>(
   name: string
 ) => {
   if (postgreReq.error) {
-    throw new Error(
+    const err = new Error(
       `Error happened at ${name}. Status ${postgreReq.status} ${
         postgreReq.statusText
-      }: 
-      ${JSON.stringify(postgreReq.error, null, 2)}`
+      }: ${JSON.stringify(postgreReq.error, null, 2)}`
     );
+    throw err;
   }
   const timestamp = `[${new Date().toLocaleString()}.${new Date().getMilliseconds()}]`;
 

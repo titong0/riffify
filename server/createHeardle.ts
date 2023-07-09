@@ -12,10 +12,7 @@ export async function createHeardle(artistId: string) {
   const allSongs = await getAllSongs(artist.sections);
   const { songs, removed } = bigFilter(true, allSongs);
   const artistInfo = getArtistInfo(artist);
-  const idSequence = randomIdsSequence(
-    songs.map((s) => s.id),
-    0
-  );
+  const idSequence = randomIdsSequence(songs.map((s) => s.id));
   await supabase
     .from("heardles")
     .insert({
@@ -88,15 +85,26 @@ export async function createHeardle(artistId: string) {
       checkIntegrity(i, `insert songs, count should be ${songs.length}`)
     );
   await Promise.all([artistIns, albumsIns, removedIns, songsIns]);
-  const validation = await validateHeardle(artistId, idSequence);
+  const validation = await validateHeardle(artistId);
   if (!validation.isValid) addMissingSongs(artistId, validation.missing);
   return;
 }
 
-async function validateHeardle(
-  artistId: string,
-  idSequence: string[]
+export async function validateHeardle(
+  artistId: string
 ): Promise<{ isValid: true } | { isValid: false; missing: string[] }> {
+  const idSequence = await supabase
+    .from("heardles")
+    .select("*")
+    .eq("artist_id", artistId)
+    .limit(1)
+    .single()
+    .then(
+      (i) =>
+        checkIntegrity(i, "req heardle for heardle validation").data
+          .ids_sequence
+    );
+
   const allSongs = await supabase
     .from("songs")
     .select("song_id")
