@@ -47,7 +47,7 @@ const OgThings = ({ artist }: { artist: Artist }) => {
   url.searchParams.append("name", artist.name);
   url.searchParams.append("thumbnail", artist.thumbnail);
   url.searchParams.append("id", artist.id);
-  console.log(url.href);
+  // console.log(url.href);
   return (
     <>
       <meta property="og:image" content={url.href} />
@@ -104,14 +104,10 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
         },
       };
     }
-    if (!(error instanceof Error))
-      return {
-        redirect: {
-          destination: `/server-error?from=${comingFrom}`,
-          permanent: false,
-        },
-      };
-    const encodedErr = encodeURIComponent(error.message);
+
+    console.error(`Error generating page at /artist/${id}:` + error);
+    const encoded = JSON.stringify(error);
+    const encodedErr = encodeURIComponent(encoded);
     return {
       redirect: {
         destination: `/server-error?error=${encodedErr}&from=${comingFrom}`,
