@@ -1,4 +1,4 @@
-import { YT, YTNodes } from "youtubei.js/agnostic";
+import { YT, YTNodes } from "youtubei.js";
 import { ObservedArray } from "youtubei.js/dist/src/parser/helpers";
 import {
   YT_SongSchema,

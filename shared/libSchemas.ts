@@ -1,7 +1,7 @@
 import { Database } from "../supabase";
 
 import { z } from "zod";
-import Innertube from "youtubei.js/agnostic";
+import type Innertube from "youtubei.js";
 
 export const ArtistIdSchema = z.string().length(24);
 const headerTitle = z.object({ text: z.string() });
