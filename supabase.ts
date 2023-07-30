@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -28,6 +28,7 @@ export interface Database {
           name?: string
           thumb_url?: string
         }
+        Relationships: []
       }
       artists: {
         Row: {
@@ -48,26 +49,38 @@ export interface Database {
           id?: string
           name?: string
         }
+        Relationships: []
       }
       heardles: {
         Row: {
           artist_id: string
           created_at: string
           ids_sequence: string[]
+          last_updated: string
           valid_song_names: string[]
         }
         Insert: {
           artist_id: string
           created_at?: string
           ids_sequence: string[]
+          last_updated?: string
           valid_song_names: string[]
         }
         Update: {
           artist_id?: string
           created_at?: string
           ids_sequence?: string[]
+          last_updated?: string
           valid_song_names?: string[]
         }
+        Relationships: [
+          {
+            foreignKeyName: "heardles_artist_id_fkey"
+            columns: ["artist_id"]
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       removed_songs: {
         Row: {
@@ -88,6 +101,7 @@ export interface Database {
           song_id?: string
           title?: string
         }
+        Relationships: []
       }
       songs: {
         Row: {
@@ -111,6 +125,7 @@ export interface Database {
           song_id?: string
           title?: string
         }
+        Relationships: []
       }
       updated_today: {
         Row: {
@@ -122,6 +137,7 @@ export interface Database {
         Update: {
           id?: string
         }
+        Relationships: []
       }
     }
     Views: {

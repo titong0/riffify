@@ -3,7 +3,7 @@ export function randomIdsSequence(ids: string[]) {
   return shuffledIds;
 }
 
-function shuffle<T extends Array<any>>(array: T) {
+export function shuffle<T extends Array<any>>(array: T) {
   let currentIndex = array.length,
     randomIndex;
 
@@ -23,7 +23,7 @@ function shuffle<T extends Array<any>>(array: T) {
   return array;
 }
 
-const random = (seed: number) => {
+const randomWithSeed = (seed: number) => {
   const x = Math.sin(seed++) * 100000;
   return x - Math.floor(x);
 };
@@ -46,5 +46,5 @@ export const calculateStart = (duration: string | number) => {
   const minimumStart = Math.max(secondsLong - 16, 0);
   if (minimumStart === 0) return 0;
 
-  return Math.floor(random(secondsLong) * minimumStart);
+  return Math.floor(randomWithSeed(secondsLong) * minimumStart);
 };

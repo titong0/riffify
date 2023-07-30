@@ -17,7 +17,7 @@ export default function SongSnippet({
         href={`https://www.youtube.com/watch?v=${song.id}`}
         className="w-full p-1 xs:bg-neutral-800"
       >
-        <div className="flex w-full  gap-2 min-h-[100px]">
+        <div className="flex w-full gap-2 min-h-[100px]">
           <div className="relative">
             <Image
               className="rounded-md"
@@ -38,12 +38,14 @@ export default function SongSnippet({
           </div>
         </div>
       </a>
-      <Player
-        attemptCount={5}
-        disableLimit={true}
-        song={song}
-        secondsLimit={16}
-      />
+      <div className="my-4">
+        <Player
+          attemptCount={5}
+          disableLimit={true}
+          song={song}
+          secondsLimit={16}
+        />
+      </div>
     </div>
   );
 }
