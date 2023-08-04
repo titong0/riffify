@@ -8,10 +8,8 @@ import { ArtistIdSchema } from "../../shared/libSchemas";
 import { isToday } from "../../utils";
 import HeardleBeingUpdated from "../../components/common/HeardleBeingUpdated";
 import SearchBar from "../../components/common/SearchBar";
-import { addToUpdatedToday } from "../api/revalidate";
 import BgImage from "../../components/common/BgImage";
 import { host } from "../../config";
-import { validateHeardle } from "../../server/createHeardle";
 
 type ArtistProps = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -47,7 +45,6 @@ const OgThings = ({ artist }: { artist: Artist }) => {
   url.searchParams.append("name", artist.name);
   url.searchParams.append("thumbnail", artist.thumbnail);
   url.searchParams.append("id", artist.id);
-  // console.log(url.href);
   return (
     <>
       <meta property="og:image" content={url.href} />
@@ -66,6 +63,16 @@ const OgThings = ({ artist }: { artist: Artist }) => {
   );
 };
 
+function getSecondsToTomorrow() {
+  const now = new Date();
+  const tomorrow = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() + 1
+  );
+  const diff = tomorrow.getTime() - now.getTime(); // difference in ms
+  return Math.round(diff / 1000); // convert to seconds
+}
 export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   ctx
 ) => {
@@ -75,25 +82,22 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
 
   try {
     const now = new Date();
-    console.log("---------------------\nFETCHING ARTIST:....");
+    console.log("---------------------FETCHING ARTIST:....");
     const today = await getToday(id, true);
 
     const timeItTook = new Date().getMilliseconds() - now.getMilliseconds();
     console.log(`finished FETCHING ARTIST: ${timeItTook}ms `);
-
-    addToUpdatedToday(id);
 
     return {
       props: {
         song: today.song,
         validSongs: today.validSongs,
         artist: today.artist,
-        // removed: today.removed,
         generatedAt: new Date().toString(),
       },
+      revalidate: getSecondsToTomorrow(),
     };
   } catch (error) {
-    const isValid = await validateHeardle(id);
     const comingFrom = encodeURIComponent(`/artist/${id}`);
 
     if (error instanceof Error && error.cause === "no-grid") {
