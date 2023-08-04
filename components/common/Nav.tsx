@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import Logo from "./Logo";
-import { BsCoin } from "react-icons/bs";
+import { FaHandsHelping } from "react-icons/fa";
 const NavLinks = [
   {
     href: "/",
@@ -12,7 +12,7 @@ const NavLinks = [
     ),
   },
   // { href: "/contact", children: <IoMdContact size={30}></IoMdContact> },
-  { href: "/funding", children: <BsCoin size={30}></BsCoin> },
+  { href: "/funding", children: <FaHandsHelping size={25} /> },
 ];
 
 const Nav = () => {
