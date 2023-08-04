@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { LocStorage_Favorite } from "../../shared/schemas";
 import HeardleBubble from "./HeardleBubble";
 import { getFavorites } from "../../storageUtils";
+import { useRouter } from "next/router";
 
 const MOCK_FAVORITES: LocStorage_Favorite[] = [
   {
@@ -28,11 +29,13 @@ const FavoritesSlider = () => {
   const [favorites, setFavorites] = useState<LocStorage_Favorite[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const parentRef = React.useRef<HTMLDivElement>(null);
+  const Router = useRouter();
 
   React.useEffect(() => {
+    console.log(Router.asPath);
     const localFavorites = getFavorites();
     setFavorites(localFavorites || []);
-  }, []);
+  }, [Router.asPath]);
 
   const scrollHorizontal = (direction: "left" | "right") => {
     if (!parentRef.current || !favorites) return;
@@ -64,7 +67,9 @@ const FavoritesSlider = () => {
           &lt;
         </button>
         <div
-          className="flex w-full gap-4 overflow-x-hidden snap-x snap-mandatory"
+          className={`flex ${
+            favorites.length === 1 ? "justify-center" : ""
+          } w-full gap-4 overflow-x-hidden snap-x snap-mandatory`}
           ref={parentRef}
         >
           {favorites.map((fav) => (
