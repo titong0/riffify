@@ -73,14 +73,7 @@ export interface Database {
           last_updated?: string
           valid_song_names?: string[]
         }
-        Relationships: [
-          {
-            foreignKeyName: "heardles_artist_id_fkey"
-            columns: ["artist_id"]
-            referencedRelation: "artists"
-            referencedColumns: ["id"]
-          }
-        ]
+        Relationships: []
       }
       removed_songs: {
         Row: {
