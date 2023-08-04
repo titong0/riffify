@@ -25,8 +25,7 @@ const MOCK_FAVORITES: LocStorage_Favorite[] = [
 ];
 
 const FavoritesSlider = () => {
-  const [favorites, setFavorites] =
-    useState<LocStorage_Favorite[]>(MOCK_FAVORITES);
+  const [favorites, setFavorites] = useState<LocStorage_Favorite[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const parentRef = React.useRef<HTMLDivElement>(null);
 
@@ -54,29 +53,32 @@ const FavoritesSlider = () => {
 
   if (!favorites.length) return null;
   return (
-    <div className="flex items-center w-full gap-4">
-      <button
-        className="w-12 p-3 transition bg-black border rounded-lg bg-opacity-30 disabled:bg-opacity-5"
-        onClick={() => scrollHorizontal("left")}
-        disabled={currentIndex === 0}
-      >
-        &lt;
-      </button>
-      <div
-        className="flex w-full gap-4 overflow-x-hidden snap-x snap-mandatory"
-        ref={parentRef}
-      >
-        {favorites.map((fav) => (
-          <HeardleBubble data={fav} key={fav.id} />
-        ))}
+    <div>
+      <h3 className="my-3 text-center text-1xl">Favorite heardles</h3>
+      <div className="flex items-center w-full gap-4">
+        <button
+          className="w-12 p-3 transition bg-black border rounded-lg bg-opacity-30 disabled:bg-opacity-5"
+          onClick={() => scrollHorizontal("left")}
+          disabled={currentIndex === 0}
+        >
+          &lt;
+        </button>
+        <div
+          className="flex w-full gap-4 overflow-x-hidden snap-x snap-mandatory"
+          ref={parentRef}
+        >
+          {favorites.map((fav) => (
+            <HeardleBubble data={fav} key={fav.id} />
+          ))}
+        </div>
+        <button
+          className="w-12 p-3 transition bg-black border rounded-lg bg-opacity-30 disabled:bg-opacity-5"
+          onClick={() => scrollHorizontal("right")}
+          disabled={currentIndex >= favorites.length - 1}
+        >
+          &gt;
+        </button>
       </div>
-      <button
-        className="w-12 p-3 transition bg-black border rounded-lg bg-opacity-30 disabled:bg-opacity-5"
-        onClick={() => scrollHorizontal("right")}
-        disabled={currentIndex >= favorites.length - 1}
-      >
-        &gt;
-      </button>
     </div>
   );
 };

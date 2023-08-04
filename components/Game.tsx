@@ -58,7 +58,6 @@ const Game = ({
         </section>
       </div>
       <div className="w-full max-w-lg">
-        <h3 className="my-3 text-center text-1xl">Favorites</h3>
         <FavoritesSlider />
       </div>
     </div>
