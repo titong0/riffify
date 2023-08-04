@@ -7,6 +7,7 @@ import GameControls from "./Game-thingies/GameControls";
 import Player from "./Game-thingies/Player";
 import { Instructions } from "./modals/Instructions";
 import StarButton from "./common/StarButton";
+import FavoritesSlider from "./common/FavoritesSlider";
 
 type GameProps = {
   song: Game_Song;
@@ -28,7 +29,7 @@ const Game = ({
   shareableScreen,
 }: GameProps) => {
   return (
-    <div className="flex justify-center w-full mb-8">
+    <div className="flex flex-col items-center w-full gap-4 mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
         {shareableScreen}
         <div className="flex justify-between px-2">
@@ -55,6 +56,10 @@ const Game = ({
             setAttempts={setAttempts}
           />
         </section>
+      </div>
+      <div className="w-full max-w-lg">
+        <h3 className="my-3 text-center text-1xl">Favorites</h3>
+        <FavoritesSlider />
       </div>
     </div>
   );

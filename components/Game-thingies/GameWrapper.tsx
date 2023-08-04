@@ -55,7 +55,7 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
         gameState={gameState}
         attempts={attempts}
         setAttempts={setAttempts}
-      />
+      />{" "}
     </>
   );
 };
