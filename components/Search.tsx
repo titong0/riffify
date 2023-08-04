@@ -3,24 +3,32 @@ import Link from "next/link";
 import { NextRouter, Router, useRouter } from "next/router";
 import { randomWithMax } from "../utils";
 import CTA from "./common/CTA";
-import * as React from "react";
+import React from "react";
 import { useState, useEffect } from "react";
 import { Artist } from "../shared/schemas";
 import { getRecentlyPlayed } from "../storageUtils";
-import ChannelItem from "./ChannelItem";
-import Image from "next/image";
+import { AiOutlineClockCircle } from "react-icons/ai";
+
+const TABS = [
+  { display: "Artist", value: "artist" },
+  { display: "Playlist", value: "playlist" },
+  {
+    display: <AiOutlineClockCircle size={30} className="mx-auto" />,
+    value: "recent",
+  },
+];
 
 const Search = () => {
   return (
     <Tabs.Root
-      defaultValue="Artist"
+      defaultValue="artist"
       className="text-gray-900 bg-gray-900 border-black shadow-sm dark:text-gray-100 "
     >
       <Tabs.List className="flex justify-around border-blue">
-        {["Artist", "Playlist", "Recent"].map((mode, idx) => (
+        {TABS.map((tab, idx) => (
           <Tabs.Trigger
-            key={mode}
-            value={mode}
+            key={tab.value}
+            value={tab.value}
             className={`w-full p-2 transition bg-gray-200 border-b 
             border-black dark:bg-slate-700 dark:text-gray-200 
             border-l-2 first:border-l-0
@@ -28,7 +36,7 @@ const Search = () => {
             dark:rdx-state-inactive:opacity-80
             dark:rdx-state-inactive:hover:bg-slate-600 rdx-state-active:cursor-default`}
           >
-            {mode}
+            {tab.display}
           </Tabs.Trigger>
         ))}
       </Tabs.List>
@@ -72,25 +80,27 @@ const InputBar = () => {
   return (
     <>
       <Tabs.Content
-        value="Artist"
+        value="artist"
         className="p-1 m-2 rdx-state-inactive:hidden"
       >
-        <ArtistForm Router={Router} />
+        <ArtistTab Router={Router} />
       </Tabs.Content>
+
       <Tabs.Content
-        value="Playlist"
+        value="playlist"
         className="p-1 m-2 rdx-state-inactive:hidden"
       >
-        <PlaylistForm />
+        <PlaylistTab />
       </Tabs.Content>
-      <Tabs.Content value="Recent" className="rdx-state-inactive:hidden">
-        <RecentForm recentlyPlayed={recentlyPlayed} />
+
+      <Tabs.Content value="recent" className="rdx-state-inactive:hidden">
+        <RecentTab recentlyPlayed={recentlyPlayed} />
       </Tabs.Content>
     </>
   );
 };
 
-function ArtistForm({ Router }: { Router: NextRouter }) {
+function ArtistTab({ Router }: { Router: NextRouter }) {
   return (
     <form
       className="flex flex-col justify-around h-40"
@@ -122,7 +132,7 @@ function ArtistForm({ Router }: { Router: NextRouter }) {
   );
 }
 
-function PlaylistForm() {
+function PlaylistTab() {
   return (
     <form
       className="flex flex-col justify-around h-40 gap-2"
@@ -144,7 +154,11 @@ function PlaylistForm() {
   );
 }
 
-function RecentForm({ recentlyPlayed }: { recentlyPlayed: Artist[] }) {
+function RecentTab({
+  recentlyPlayed,
+}: {
+  recentlyPlayed: Omit<Artist, "description">[];
+}) {
   if (!recentlyPlayed.length)
     return (
       <div className="flex items-center justify-center h-40">

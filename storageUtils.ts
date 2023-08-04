@@ -3,6 +3,8 @@ import {
   Attempt,
   LocStorage_ArtistAttemptsSchema,
   LocStorage_ArtistStatsSchema,
+  LocStorage_Favorite,
+  LocStorage_FavoriteSchema,
 } from "./shared/schemas";
 import { isToday } from "./utils";
 import { ArtistSchema } from "./shared/schemas";
@@ -19,7 +21,7 @@ const STORAGE = {
   },
   favorites: {
     key: () => "favorite-heardles" as const,
-    value: z.string().array(),
+    value: LocStorage_FavoriteSchema.array(),
   },
   recentlyPlayed: {
     key: () => "recently-played" as const,
@@ -173,4 +175,29 @@ export function saveToRecentlyPlayed(artist: Artist) {
   const artistIdx = copy.findIndex((i) => i.id === artist.id);
   artistIdx !== -1 && copy.splice(artistIdx, 1);
   localSetItem("recentlyPlayed", "recently-played", [artist, ...copy]);
+}
+
+export function getFavorites() {
+  const read = localGetItem("favorites", "favorite-heardles");
+  if (read.success) return read.data;
+  return null;
+}
+
+export function saveToFavorites(artist: LocStorage_Favorite) {
+  const favorites = getFavorites();
+  if (!favorites) {
+    return localSetItem("favorites", "favorite-heardles", [artist]);
+  }
+  if (favorites.findIndex((fav) => fav.id === artist.id) !== -1) return null;
+  favorites.push(artist);
+  localSetItem("favorites", "favorite-heardles", favorites);
+}
+export function removeFromFavorites(artistId: string) {
+  let favorites = getFavorites();
+  if (!favorites)
+    return console.error(
+      "Tried to call removeFromFavorites with empty favorites in Localstorage"
+    );
+  favorites = favorites.filter((fav) => fav.id !== artistId);
+  localSetItem("favorites", "favorite-heardles", favorites);
 }

@@ -3,6 +3,7 @@ import React from "react";
 import Search from "../components/Search";
 import Logo from "../components/common/Logo";
 import { HeardleExplanationDisplay } from "../components/modals/HeardleExplanation";
+import FavoritesSlider from "../components/common/FavoritesSlider";
 
 const Index: React.FC = ({}) => {
   return (
@@ -32,6 +33,10 @@ const Index: React.FC = ({}) => {
         <div className="flex justify-center">
           <div className="w-full max-w-2xl m-2">
             <Search />
+            <h3 className="my-4 text-2xl text-center">
+              Your favorite heardles
+            </h3>
+            <FavoritesSlider />
           </div>
         </div>
       </div>

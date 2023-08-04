@@ -51,7 +51,7 @@ const GameWrapper = ({ song, validSongs, artist }: GameWrapProps) => {
         shareableScreen={shareableScreen}
         song={song}
         validSongs={validSongs}
-        artistId={artist.id}
+        artist={artist}
         gameState={gameState}
         attempts={attempts}
         setAttempts={setAttempts}

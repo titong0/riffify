@@ -1,8 +1,6 @@
 import Link from "next/link";
 import React from "react";
 import Logo from "./Logo";
-import "react-icons/io";
-import { IoMdContact } from "react-icons/io";
 import { BsCoin } from "react-icons/bs";
 const NavLinks = [
   {
@@ -31,7 +29,7 @@ const Nav = () => {
                 : className;
             return (
               <li className="relative h-fit" key={link.href}>
-                <div className={` hover:before:w-full ${adjusted}`}>
+                <div className={`hover:before:w-full ${adjusted}`}>
                   <Link tabIndex={0} href={link.href}>
                     {link.children}
                   </Link>

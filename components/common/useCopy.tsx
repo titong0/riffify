@@ -1,8 +1,8 @@
 import React from "react";
 
+// TODO: implement this for copying "I won yayyy" text
 const useCopy = () => {
   const [copyingState, setCopyingState] = React.useState("");
-
   return { Wrapper };
 };
 

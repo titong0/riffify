@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { Attempt, Game_Song, Song } from "../shared/schemas";
+import { Artist, Attempt, Game_Song, Song } from "../shared/schemas";
 import { GameState, StateSetter } from "../types";
-import { getGameState } from "../utils";
 import Stats, { ArtistStatsDisplay } from "./modals/ArtistStats";
 import FailsDisplay from "./Game-thingies/FailsDisplay";
 import GameControls from "./Game-thingies/GameControls";
 import Player from "./Game-thingies/Player";
 import { Instructions } from "./modals/Instructions";
+import StarButton from "./common/StarButton";
 
 type GameProps = {
   song: Game_Song;
   validSongs: string[];
-  artistId: string;
+  artist: Artist;
   gameState: GameState;
   attempts: Attempt[];
   setAttempts: StateSetter<Attempt[]>;
@@ -21,7 +21,7 @@ type GameProps = {
 const Game = ({
   song,
   validSongs,
-  artistId,
+  artist,
   gameState,
   attempts,
   setAttempts,
@@ -30,10 +30,11 @@ const Game = ({
   return (
     <div className="flex justify-center w-full mb-8">
       <div className="w-full max-w-lg text-gray-200 rounded-md shadow-xl">
+        {shareableScreen}
         <div className="flex justify-between px-2">
           <Instructions />
-          {shareableScreen}
-          <ArtistStatsDisplay artistId={artistId} />
+          <ArtistStatsDisplay artistId={artist.id} />
+          <StarButton artist={artist} />
         </div>
         <FailsDisplay attempts={attempts} />
         <section className="py-2s">
@@ -48,7 +49,7 @@ const Game = ({
           <GameControls
             validSongs={validSongs}
             correctSong={song.title}
-            artistId={artistId}
+            artistId={artist.id}
             gameState={gameState}
             attempts={attempts}
             setAttempts={setAttempts}

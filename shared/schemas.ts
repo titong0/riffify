@@ -31,7 +31,6 @@ const Game_SongSchema = z.object({ startAt: z.number() }).and(SongSchema);
 export const TodaySongResponseSchema = z.object({
   artist: ArtistSchema,
   song: Game_SongSchema,
-  // removed: RemovedSongSchema.array(),
   validSongs: z.string().array(),
 });
 export const Page_GamePropsSchema = TodaySongResponseSchema.and(
@@ -68,6 +67,10 @@ export const LocStorage_ArtistStatsSchema = ArtistStatsSchema.and(
   })
 );
 
+export const LocStorage_FavoriteSchema = ArtistSchema.omit({
+  description: true,
+});
+export type LocStorage_Favorite = z.infer<typeof LocStorage_FavoriteSchema>;
 export type LocStorage_ArtistAttempts = z.infer<
   typeof LocStorage_ArtistAttemptsSchema
 >;
