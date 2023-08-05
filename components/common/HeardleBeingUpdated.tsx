@@ -3,6 +3,10 @@ import { host } from "../../config";
 import { useRouter } from "next/router";
 
 const HeardleBeingUpdated = ({ artistId }: { artistId: string }) => {
+  const Router = useRouter();
+  setTimeout(() => {
+    Router.reload();
+  }, 5000);
   return (
     <div className="flex flex-col items-center justify-center gap-12 h-80">
       <div className="w-full max-w-2xl p-3 font-semibold text-gray-900 bg-amber-300 ">
