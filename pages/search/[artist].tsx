@@ -71,6 +71,7 @@ export const getServerSideProps: GetServerSideProps<{
   const artist = parsedQuery.data;
   try {
     const results = await ArtistSearch(artist);
+    ctx.res.setHeader("Cache-control", "public, s-maxage=100000");
     return { props: { results, artist } };
   } catch (error: any) {
     console.error(JSON.stringify(error.input));
