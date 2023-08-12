@@ -20,7 +20,12 @@ const Artist: React.FC<ArtistProps> = ({
   generatedAt,
 }) => {
   if (!isToday(new Date(generatedAt))) {
-    return <HeardleBeingUpdated artistId={artist.id} />;
+    return (
+      <HeardleBeingUpdated
+        artistId={artist.id}
+        songAmount={validSongs.length}
+      />
+    );
   }
   return (
     <>
@@ -73,6 +78,7 @@ function getSecondsToTomorrow() {
   const diff = tomorrow.getTime() - now.getTime(); // difference in ms
   return Math.round(diff / 1000); // convert to seconds
 }
+
 export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
   ctx
 ) => {
@@ -99,15 +105,6 @@ export const getStaticProps: GetStaticProps<Page_ArtistGameProps> = async (
     };
   } catch (error) {
     const comingFrom = encodeURIComponent(`/artist/${id}`);
-
-    if (error instanceof Error && error.cause === "no-grid") {
-      return {
-        redirect: {
-          destination: `/no-grid?from=${id}`,
-          statusCode: 301,
-        },
-      };
-    }
 
     console.error(`Error generating page at /artist/${id}:` + error);
     const encoded = JSON.stringify(error);
