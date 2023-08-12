@@ -70,7 +70,7 @@ const Combobox: React.FC<ComboProps> = ({ validSongs, setValidInput }) => {
       </div>
       <ul
         {...getMenuProps()}
-        className="absolute w-full p-0 overflow-y-auto bg-white shadow-md max-h-80"
+        className="absolute z-50 w-full p-0 overflow-y-auto bg-white shadow-md max-h-80"
       >
         {isOpen &&
           songs.map((item, index) => (
