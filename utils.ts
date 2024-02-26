@@ -1,10 +1,7 @@
-import {
-  PostgrestFilterBuilder,
-  PostgrestSingleResponse,
-} from "@supabase/postgrest-js";
 import dayjs from "dayjs";
 import { Attempt } from "./shared/schemas";
 import { GameState } from "./types";
+import { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 export const analyzeTry = (attempt: string, correct: string): Attempt => {
   if (attempt === "RESERVED-SKIP") {
@@ -48,8 +45,8 @@ export const getDayDifference = (beforeDate: string, afterDate: Date) => {
   return dayjs(afterDate).diff(beforeDate, "days");
 };
 
-export const checkIntegrity = <T extends any>(
-  postgreReq: PostgrestSingleResponse<T>,
+export const checkIntegrity = <T extends PostgrestSingleResponse<any>>(
+  postgreReq: T,
   name: string
 ) => {
   if (postgreReq.error) {
@@ -63,5 +60,26 @@ export const checkIntegrity = <T extends any>(
   const timestamp = `[${new Date().toLocaleString()}.${new Date().getMilliseconds()}]`;
 
   console.log(`${timestamp} successfully executed ${name}`);
+
   return postgreReq;
 };
+
+export const invariant = <T extends unknown>(
+  falsyValue: T,
+  message: string
+): NonNullable<T> => {
+  if (!Boolean(falsyValue)) {
+    throw new Error(`invariant failed: ${message}`);
+  }
+  // @ts-expect-error whatever man
+  return falsyValue;
+};
+
+export function assertInvariant(
+  falsyValue: any,
+  message: string
+): asserts falsyValue {
+  if (!Boolean(falsyValue)) {
+    throw new Error(`invariant failed: ${message}`);
+  }
+}

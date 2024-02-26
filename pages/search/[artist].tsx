@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps<{
     ctx.res.setHeader("Cache-control", "public, s-maxage=100000");
     return { props: { results, artist } };
   } catch (error: any) {
-    console.error(JSON.stringify(error.input));
+    console.error(JSON.stringify(error));
     const encoded = JSON.stringify(error);
     const comingFrom = encodeURIComponent(`/search/${parsedQuery.data}`);
     const encodedErr = encodeURIComponent(encoded);

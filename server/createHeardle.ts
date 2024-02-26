@@ -99,18 +99,24 @@ export async function validateHeardle(
     .eq("artist_id", artistId)
     .limit(1)
     .single()
-    .then(
-      (i) =>
-        checkIntegrity(i, "req heardle for heardle validation").data
-          .ids_sequence
-    );
+    .then((i) => {
+      const validated = checkIntegrity(
+        i,
+        "req id_sequence for heardle validation"
+      );
+      if (validated.data === null)
+        throw new Error(`could not get id sequences for artist ${artistId}`);
+      return validated.data.ids_sequence;
+    });
 
   const allSongs = await supabase
     .from("songs")
     .select("song_id")
     .eq("for_heardle", artistId)
     .then((i) => checkIntegrity(i, "req songs for heardle validation"));
-
+  if (!allSongs.data) {
+    throw new Error(`No songs for heardle of id ${artistId}`);
+  }
   const missingIds = idSequence.filter(
     (id) => !allSongs.data.find((song) => song.song_id === id)
   );

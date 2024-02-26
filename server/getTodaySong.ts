@@ -1,7 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { db } from "../shared/libSchemas";
 import { TodaySongResponse } from "../shared/schemas";
-import { getDayDifference, checkIntegrity } from "../utils";
+import {
+  getDayDifference,
+  checkIntegrity,
+  invariant,
+  assertInvariant,
+} from "../utils";
 import { createHeardle } from "./createHeardle";
 import { calculateStart, shuffle } from "./songChoosingUtils";
 
@@ -60,15 +65,18 @@ async function getHeardleFromDb(
     .limit(1)
     .single()
     .then((i) => checkIntegrity(i, "select songs").data);
+  assertInvariant(song, "no song matching todaySongId");
 
   const album = await supabase
     .from("albums")
     .select("*")
-    .eq("album_id", song?.album_id)
+    .eq("album_id", song.album_id)
     .limit(1)
     .single()
     .then((i) => checkIntegrity(i, "select albums").data);
-  const artistRes = supabase
+  assertInvariant(album, "no album matching song.album_id");
+
+  const artist = await supabase
     .from("artists")
     .select("*")
     .eq("id", artistId)
@@ -76,7 +84,7 @@ async function getHeardleFromDb(
     .single()
     .then((i) => checkIntegrity(i, "select artists").data);
 
-  const artist = await artistRes;
+  assertInvariant(artist, "no artist matching artistId");
 
   const startTime = calculateStart(song.duration);
 

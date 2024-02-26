@@ -1,7 +1,7 @@
-import { ClientType, Innertube } from "youtubei.js";
 import TextRun from "youtubei.js/dist/src/parser/classes/misc/TextRun";
 import { YT_ArtistSearchSchema } from "../shared/libSchemas";
-export const youtube = Innertube.create({ client_type: ClientType.MUSIC });
+import { Innertube } from "youtubei.js";
+export const youtube = Innertube.create();
 
 export const ArtistSearch = async (artistName: string) => {
   const client = await youtube;
